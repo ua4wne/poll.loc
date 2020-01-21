@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title>{{ $title ?? '' }}</title>
@@ -27,7 +29,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="{{ route('main') }}" class="site_title"><i class="fa fa-paw"></i> <span>Финплан</span></a>
+                        <a href="{{ route('main') }}" class="site_title"><i class="fa fa-paw"></i> <span>Малоэтажная страна</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -54,86 +56,103 @@
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                <li><a href="{{ route('main') }}"><i class="fa fa-home"></i> Рабочий стол </a></li>
-                                <li><a><i class="fa fa-university"></i> Банк и касса <span class="fa fa-chevron-down"></span></a>
+                                <li><a href="{{ route('main') }}"><i class="fa fa-tachometer" aria-hidden="true"></i>Рабочий стол </a></li>
+                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i> Документы <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Банковские выписки</a></li>
-                                        <li><a href="#">Кассовые документы</a></li>
-                                        <li><a href="#">Авансовые отчеты</a></li>
+                                        <li><a href="#">Расчет по арендатору</a></li>
+                                        <li><a href="#">Расчет за период</a></li>
+                                        <li><a href="#">Подключения к интернет</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-credit-card"></i> Покупки и продажи <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-address-book-o" aria-hidden="true"></i> Контакты <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Реализация (продажи)</a></li>
-                                        <li><a href="#">Поступление (покупки)</a></li>
-                                        <li><a href="#">Номенклатура</a></li>
+                                        <li><a href="#">Арендаторы</a></li>
+                                        <li><a href="#">Наши юрлица</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-users"></i> Сотрудники и зарплата <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-users" aria-hidden="true"></i> Маркетинг <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        {{--<li><a href="#">Сотрудники</a></li>--}}
-                                        <li><a href="#">Физические лица</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-sitemap"></i> Наши юр. лица <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="#">Организации</a></li>
-                                        <li><a href="#">Подразделения</a></li>
-                                        <li><a href="#">Банковские счета</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-address-card"></i>Контрагенты <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="#">Группы контрагентов</a></li>
-                                        <li><a href="#">Договоры</a></li>
-                                        <li><a href="#">Физлица</a></li>
-                                        <li><a href="#">Юрлица</a></li>
+                                        <li><a href="#">Анкеты</a></li>
+                                        <li><a href="#">Источники медиарекламы</a></li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-bar-chart-o"></i> Отчеты <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Кассовая книга</a></li>
-                                        <li><a href="#">Карточка счета</a></li>
-                                        <li><a href="#">Оборотно-сальдовая ведомость по счету</a></li>
+                                        <li><a href="#">Анкетирование</a></li>
+                                        <li><a href="#">Посещаемость выставки</a></li>
+                                        <li><a href="#">Присутствие на выставке</a></li>
+                                        <li><a href="#">Затраты ИТ</a></li>
+                                        <li><a href="#">Потребление эл. энергии <span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li><a href="#">Счетчики общие</a></li>
+                                                <li><a href="#">Счетчики арендаторов</a></li>
+                                                <li><a href="#">Собственное потребление</a></li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </li>
-                            </ul>
-                        </div>
-                        <div class="menu_section">
-                            <ul class="nav side-menu">
-                                <li><a><i class="fa fa-address-book"></i> Справочники <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-table" aria-hidden="true"></i> Посещение <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Валюты</a></li>
-                                        <li><a href="#">Банки</a></li>
-                                        <li><a href="#">Виды операции</a></li>
-                                        <li><a href="#">Виды договоров</a></li>
-                                        <li><a href="#">Виды расчетов</a></li>
-                                        <li><a href="#">План счетов бухучета</a></li>
+                                        <li><a href="#">Присутствие на выставке</a></li>
+                                        <li><a href="#">Посещение выставки</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Энергоучет <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Счетчики общие</a></li>
+                                        <li><a href="#">Собственные счетчики</a></li>
+                                        <li><a href="#">Счетчики арендаторов</a></li>
+                                        <li><a href="#">Начальные показания <span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li><a href="#">Счетчики общие</a></li>
+                                                <li><a href="#">Собственные счетчики</a></li>
+                                                <li><a href="#">Счетчики арендаторов</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Расчет потребления</a></li>
                                     </ul>
                                 </li>
                                 {{--@if(\App\User::hasRole('admin'))
-                                <li><a><i class="fa fa-cog"></i> Настройки <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-cogs" aria-hidden="true"></i> Настройки <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Пользователи</a></li>
                                         <li><a href="#">Роли</a></li>
                                         <li><a href="#">Разрешения</a></li>
-                                        </li>
+                                        <li><a href="#">Счетчики общие</a></li>
+                                        <li><a href="#">Собственные счетчики</a></li>
+                                        <li><a href="#">Территории</a></li>
+                                        <li><a href="#">Подписчики</a></li>
                                     </ul>
                                 </li>
+                                <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к интернет </a></li>
                                 @endif--}}
+                                <li><a><i class="fa fa-book" aria-hidden="true"></i>Справочники <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Города</a></li>
+                                        <li><a href="#">Материалы</a></li>
+                                        <li><a href="#">Медиа</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-calculator" aria-hidden="true"></i>Расходы ИТ <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Структурные подразделения</a></li>
+                                        <li><a href="#">Статьи расходов</a></li>
+                                        <li><a href="#">Поставщики</a></li>
+                                        <li><a href="#">Расходы</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
-
                     </div>
                     <!-- /sidebar menu -->
 
                     <!-- /menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                        <a data-toggle="tooltip" data-placement="top" title="Настройки" href="#">
                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        <a data-toggle="tooltip" data-placement="top" title="Затраты ИТ" href="#">
+                            <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
                         </a>
                         <a data-toggle="tooltip" data-placement="top" title="Журнал событий" href="#">
                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
@@ -184,28 +203,36 @@
             @section('tile_widget')
                 <!-- top tiles -->
                     <div class="row top_tiles">
-                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="tile-stats">
-                                <div class="icon"><i class="fa fa-rub"></i></div>
-                                <div class="count">Касса</div>
-                                <h3>Остаток: {{ empty($kassa) ? '0' : $kassa }} (руб.)</h3>
+                                <div class="icon"><i class="fa fa-users" aria-hidden="true"></i></div>
+                                <div class="count">{{ empty($kassa) ? '0' : $kassa }} чел.</div>
+                                <h3>Посещение выставки</h3>
                                 <p><a href="#">подробнее</a></p>
                             </div>
                         </div>
-                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="tile-stats">
-                                <div class="icon"><i class="fa fa-arrow-down"></i></div>
-                                <div class="count">Приход</div>
-                                <h3>Итого: {{ empty($coming) ? '0' : $coming }} (руб.)</h3>
-                                <p>за текущий год</p>
+                                <div class="icon"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
+                                <div class="count">{{ empty($coming) ? '0' : $coming }} <i class="fa fa-arrow-circle-down" aria-hidden="true"></i> {{ empty($coming) ? '0' : $coming }} <i class="fa fa-arrow-circle-up" aria-hidden="true"></i></div>
+                                <h3>Счетчики посетителей </h3>
+                                <p>подробнее</p>
                             </div>
                         </div>
-                        <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                             <div class="tile-stats">
-                                <div class="icon"><i class="fa fa-arrow-up"></i></div>
-                                <div class="count">Расход</div>
-                                <h3>Итого: {{ empty($expense) ? '0' : $expense }} (руб.)</h3>
-                                <p>за текущий год</p>
+                                <div class="icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                                <div class="count">{{ empty($expense) ? '0' : $expense }} час.</div>
+                                <h3>Работа домов </h3>
+                                <p>подробнее</p>
+                            </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="tile-stats">
+                                <div class="icon"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                                <div class="count">{{ empty($expense) ? '0' : $expense }} кВт</div>
+                                <h3>Энергопотребление</h3>
+                                <p>подробнее</p>
                             </div>
                         </div>
                     </div>

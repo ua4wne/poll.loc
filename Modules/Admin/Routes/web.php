@@ -10,13 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Auth::routes();
-
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-//activate
-Route::get('/activate','Auth\LoginController@activate');
-
-Route::middleware(['auth'])->group(function(){
-    Route::get('/', 'MainController@index')->name('main');
+Route::middleware(['auth'])->group(function() {
+    Route::prefix('admin')->group(function () {
+        Route::get('/', 'AdminController@index');
+    });
 });
