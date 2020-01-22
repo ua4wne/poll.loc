@@ -19,6 +19,9 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(module_path('Admin', 'Database/Migrations'));
+        $this->commands([
+            \Modules\Admin\Console\AddAdminRole::class,
+        ]);
     }
 
     /**

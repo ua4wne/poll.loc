@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="images/favicon.ico" type="image/ico" />
+    <link rel="icon" href="images/favicon.ico" type="image/ico"/>
 
     <title>{{ $title ?? '' }}</title>
 
@@ -50,27 +50,31 @@
                     </div>
                     <!-- /menu profile quick info -->
 
-                    <br />
+                    <br/>
 
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                <li><a href="{{ route('main') }}"><i class="fa fa-tachometer" aria-hidden="true"></i>Рабочий стол </a></li>
-                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i> Документы <span class="fa fa-chevron-down"></span></a>
+                                <li><a href="{{ route('main') }}"><i class="fa fa-tachometer" aria-hidden="true"></i>Рабочий
+                                        стол </a></li>
+                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i> Документы <span
+                                            class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Расчет по арендатору</a></li>
                                         <li><a href="#">Расчет за период</a></li>
                                         <li><a href="#">Подключения к интернет</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-address-book-o" aria-hidden="true"></i> Контакты <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-address-book-o" aria-hidden="true"></i> Контакты <span
+                                            class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Арендаторы</a></li>
                                         <li><a href="#">Наши юрлица</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-users" aria-hidden="true"></i> Маркетинг <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-users" aria-hidden="true"></i> Маркетинг <span
+                                            class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Анкеты</a></li>
                                         <li><a href="#">Источники медиарекламы</a></li>
@@ -91,13 +95,15 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-table" aria-hidden="true"></i> Посещение <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-table" aria-hidden="true"></i> Посещение <span
+                                            class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Присутствие на выставке</a></li>
                                         <li><a href="#">Посещение выставки</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Энергоучет <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Энергоучет <span
+                                            class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Счетчики общие</a></li>
                                         <li><a href="#">Собственные счетчики</a></li>
@@ -112,35 +118,41 @@
                                         <li><a href="#">Расчет потребления</a></li>
                                     </ul>
                                 </li>
-                                {{--@if(\App\User::hasRole('admin'))
-                                <li><a><i class="fa fa-cogs" aria-hidden="true"></i> Настройки <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="#">Пользователи</a></li>
-                                        <li><a href="#">Роли</a></li>
-                                        <li><a href="#">Разрешения</a></li>
-                                        <li><a href="#">Счетчики общие</a></li>
-                                        <li><a href="#">Собственные счетчики</a></li>
-                                        <li><a href="#">Территории</a></li>
-                                        <li><a href="#">Подписчики</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к интернет </a></li>
-                                @endif--}}
-                                <li><a><i class="fa fa-book" aria-hidden="true"></i>Справочники <span class="fa fa-chevron-down"></span></a>
+                                @if(\App\User::hasRole('admin'))
+                                    <li><a><i class="fa fa-cogs" aria-hidden="true"></i> Настройки <span
+                                                class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="#">Пользователи</a></li>
+                                            <li><a href="#">Роли</a></li>
+                                            <li><a href="#">Разрешения</a></li>
+                                            <li><a href="#">Счетчики общие</a></li>
+                                            <li><a href="#">Собственные счетчики</a></li>
+                                            <li><a href="#">Территории</a></li>
+                                            <li><a href="#">Подписчики</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к
+                                            интернет </a></li>
+                                @endif
+                                <li><a><i class="fa fa-book" aria-hidden="true"></i>Справочники <span
+                                            class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Города</a></li>
                                         <li><a href="#">Материалы</a></li>
                                         <li><a href="#">Медиа</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-calculator" aria-hidden="true"></i>Расходы ИТ <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="#">Структурные подразделения</a></li>
-                                        <li><a href="#">Статьи расходов</a></li>
-                                        <li><a href="#">Поставщики</a></li>
-                                        <li><a href="#">Расходы</a></li>
-                                    </ul>
-                                </li>
+                                @if(\App\User::hasRole('admin'))
+                                    <li><a><i class="fa fa-calculator" aria-hidden="true"></i>Расходы ИТ <span
+                                                class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="#">Структурные подразделения</a></li>
+                                            <li><a href="#">Статьи расходов</a></li>
+                                            <li><a href="#">Поставщики</a></li>
+                                            <li><a href="#">Расходы</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -164,9 +176,9 @@
                     <!-- /menu footer buttons -->
                 </div>
             </div>
-    @show
+        @show
 
-    @section('top_nav')
+        @section('top_nav')
         <!-- top navigation -->
             <div class="top_nav">
                 <div class="nav_menu">
@@ -177,7 +189,8 @@
 
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                                   aria-expanded="false">
                                     @if(Auth::user()->image)
                                         <img src="{{ Auth::user()->image }}" alt="...">
                                     @else
@@ -188,7 +201,8 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li><a href="javascript:;"> Профиль</a></li>
-                                    <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                    <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out pull-right"></i> Log
+                                            Out</a></li>
                                 </ul>
                             </li>
 
@@ -198,76 +212,78 @@
                 </div>
             </div>
             <!-- /top navigation -->
-    @show
-            <div class="right_col" role="main">
-            @section('tile_widget')
-                <!-- top tiles -->
-                    <div class="row top_tiles">
-                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="tile-stats">
-                                <div class="icon"><i class="fa fa-users" aria-hidden="true"></i></div>
-                                <div class="count">{{ empty($kassa) ? '0' : $kassa }} чел.</div>
-                                <h3>Посещение выставки</h3>
-                                <p><a href="#">подробнее</a></p>
-                            </div>
-                        </div>
-                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="tile-stats">
-                                <div class="icon"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
-                                <div class="count">{{ empty($coming) ? '0' : $coming }} <i class="fa fa-arrow-circle-down" aria-hidden="true"></i> {{ empty($coming) ? '0' : $coming }} <i class="fa fa-arrow-circle-up" aria-hidden="true"></i></div>
-                                <h3>Счетчики посетителей </h3>
-                                <p>подробнее</p>
-                            </div>
-                        </div>
-                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="tile-stats">
-                                <div class="icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-                                <div class="count">{{ empty($expense) ? '0' : $expense }} час.</div>
-                                <h3>Работа домов </h3>
-                                <p>подробнее</p>
-                            </div>
-                        </div>
-                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <div class="tile-stats">
-                                <div class="icon"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
-                                <div class="count">{{ empty($expense) ? '0' : $expense }} кВт</div>
-                                <h3>Энергопотребление</h3>
-                                <p>подробнее</p>
-                            </div>
+        @show
+        <div class="right_col" role="main">
+        @section('tile_widget')
+            <!-- top tiles -->
+                <div class="row top_tiles">
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-users" aria-hidden="true"></i></div>
+                            <div class="count">{{ empty($kassa) ? '0' : $kassa }} чел.</div>
+                            <h3>Посещение выставки</h3>
+                            <p><a href="#">подробнее</a></p>
                         </div>
                     </div>
-                    <!-- /top tiles -->
-            @endsection
-            @yield('tile_widget')
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
+                            <div class="count">{{ empty($coming) ? '0' : $coming }} <i class="fa fa-arrow-circle-down"
+                                                                                       aria-hidden="true"></i> {{ empty($coming) ? '0' : $coming }}
+                                <i class="fa fa-arrow-circle-up" aria-hidden="true"></i></div>
+                            <h3>Счетчики посетителей </h3>
+                            <p>подробнее</p>
+                        </div>
+                    </div>
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                            <div class="count">{{ empty($expense) ? '0' : $expense }} час.</div>
+                            <h3>Работа домов </h3>
+                            <p>подробнее</p>
+                        </div>
+                    </div>
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="tile-stats">
+                            <div class="icon"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                            <div class="count">{{ empty($expense) ? '0' : $expense }} кВт</div>
+                            <h3>Энергопотребление</h3>
+                            <p>подробнее</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /top tiles -->
+        @endsection
+        @yield('tile_widget')
 
-    @yield('content')
+        @yield('content')
 
         @section('footer')
-        <!-- footer content -->
-        <footer>
-            <div class="pull-right">
-                Великолепные системы
-            </div>
-            <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
+            <!-- footer content -->
+                <footer>
+                    <div class="pull-right">
+                        Великолепные системы
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+                <!-- /footer content -->
+        </div>
     </div>
-</div>
 
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="/js/bootstrap.min.js"></script>
-<!-- FastClick -->
-<script src="/js/fastclick.js"></script>
-<!-- NProgress -->
-<script src="/js/nprogress.js"></script>
-<!-- iCheck -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/js/nprogress.js"></script>
+    <!-- iCheck -->
 {{--<script src="/js/icheck.min.js"></script>--}}
 
 
 <!-- Custom Theme Scripts -->
-<script src="/js/custom.min.js"></script>
+    <script src="/js/custom.min.js"></script>
 
 @show
 
