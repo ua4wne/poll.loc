@@ -122,9 +122,9 @@
                                     <li><a><i class="fa fa-cogs" aria-hidden="true"></i> Настройки <span
                                                 class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><a href="#">Пользователи</a></li>
-                                            <li><a href="#">Роли</a></li>
-                                            <li><a href="#">Разрешения</a></li>
+                                            <li><a href="{{ route('users') }}">Пользователи</a></li>
+                                            <li><a href="{{ route('roles') }}">Роли</a></li>
+                                            <li><a href="{{ route('actions') }}">Разрешения</a></li>
                                             <li><a href="#">Счетчики общие</a></li>
                                             <li><a href="#">Собственные счетчики</a></li>
                                             <li><a href="#">Территории</a></li>

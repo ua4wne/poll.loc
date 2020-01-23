@@ -26,7 +26,7 @@ class Role extends Model
      */
     public function actions()
     {
-        return $this->belongsToMany('Action');
+        return $this->belongsToMany('Modules\Admin\Entities\Action');
     }
 
     public static function granted($code){

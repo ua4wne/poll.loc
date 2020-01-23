@@ -16,6 +16,6 @@ class Action extends Model
      */
     public function roles()
     {
-        return $this->belongsToMany('Role');
+        return $this->belongsToMany('Modules\Admin\Entities\Role');
     }
 }

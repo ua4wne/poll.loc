@@ -31,4 +31,25 @@ Route::middleware(['auth'])->group(function() {
         //actions/edit
         Route::match(['get','post','delete'],'/edit/{id}',['uses'=>'ActionController@edit','as'=>'actionEdit']);
     });
+
+    //users/ группа обработки роутов users
+    Route::group(['prefix'=>'users'], function(){
+        Route::get('/',['uses'=>'UserController@index','as'=>'users']);
+        //users/add
+        Route::match(['get','post'],'/add',['uses'=>'UserController@create','as'=>'userAdd']);
+        //users/edit
+        Route::match(['get','post','delete'],'/edit/{id}',['uses'=>'UserController@edit','as'=>'userEdit']);
+        //users/reset
+        Route::get('/reset/{id}',['uses'=>'UserController@resetPass','as'=>'userReset']);
+        //users/ajax/edit
+        Route::post('/ajax/edit',['uses'=>'Ajax\UserController@switchLogin','as'=>'switchLogin']);
+        //users/ajax/edit_login
+        Route::post('/ajax/edit_login',['uses'=>'Ajax\UserController@editLogin','as'=>'editLogin']);
+        //users/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\UserController@delete','as'=>'deleteLogin']);
+        //users/ajax/add_role
+        Route::post('/ajax/add_role',['uses'=>'Ajax\UserController@addRole','as'=>'addRole']);
+        //users/ajax/get_role
+        Route::post('/ajax/get_role',['uses'=>'Ajax\UserController@getRole','as'=>'getRole']);
+    });
 });
