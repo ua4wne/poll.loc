@@ -29,7 +29,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="{{ route('main') }}" class="site_title"><i class="fa fa-paw"></i> <span>Малоэтажная страна</span></a>
+                        <a href="{{ route('main') }}" class="site_title"><i class="fa fa-home" aria-hidden="true"></i> <span>МС портал</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -125,10 +125,10 @@
                                             <li><a href="{{ route('users') }}">Пользователи</a></li>
                                             <li><a href="{{ route('roles') }}">Роли</a></li>
                                             <li><a href="{{ route('actions') }}">Разрешения</a></li>
-                                            <li><a href="#">Счетчики общие</a></li>
-                                            <li><a href="#">Собственные счетчики</a></li>
-                                            <li><a href="#">Территории</a></li>
-                                            <li><a href="#">Подписчики</a></li>
+                                            <li><a href="{{ route('ecounters') }}">Счетчики общие</a></li>
+                                            <li><a href="{{ route('own-ecounters') }}">Собственные счетчики</a></li>
+                                            <li><a href="{{ route('places') }}">Территории</a></li>
+                                            <li><a href="{{ route('describers') }}">Подписчики</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к

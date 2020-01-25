@@ -52,4 +52,48 @@ Route::middleware(['auth'])->group(function() {
         //users/ajax/get_role
         Route::post('/ajax/get_role',['uses'=>'Ajax\UserController@getRole','as'=>'getRole']);
     });
+
+    //ecounters/ группа обработки роутов ecounters
+    Route::group(['prefix'=>'ecounters'], function(){
+        Route::get('/',['uses'=>'EcounterController@index','as'=>'ecounters']);
+        //ecounters/add
+        Route::match(['get','post'],'/add',['uses'=>'EcounterController@create','as'=>'ecounterAdd']);
+        //ecounters/ajax/edit_counter
+        Route::post('/ajax/edit',['uses'=>'Ajax\EcounterController@edit','as'=>'editEcounter']);
+        //ecounters/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\EcounterController@delete','as'=>'deleteEcounter']);
+    });
+
+    //own-ecounters/ группа обработки роутов own-ecounters
+    Route::group(['prefix'=>'own-ecounters'], function(){
+        Route::get('/',['uses'=>'OwnEcounterController@index','as'=>'own-ecounters']);
+        //own-ecounters/add
+        Route::match(['get','post'],'/add',['uses'=>'OwnEcounterController@create','as'=>'own-ecounterAdd']);
+        //own-ecounters/ajax/edit_counter
+        Route::post('/ajax/edit',['uses'=>'Ajax\OwnEcounterController@edit','as'=>'editOwnEcounter']);
+        //own-ecounters/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\OwnEcounterController@delete','as'=>'deleteOwnEcounter']);
+    });
+
+    //describers/ группа обработки роутов describers
+    Route::group(['prefix'=>'describers'], function(){
+        Route::get('/',['uses'=>'DescriberController@index','as'=>'describers']);
+        //describers/add
+        Route::match(['get','post'],'/add',['uses'=>'DescriberController@create','as'=>'describerAdd']);
+        //describers/ajax/edit
+        Route::post('/ajax/edit',['uses'=>'Ajax\DescriberController@switchStatus','as'=>'switchStatus']);
+        //describers/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\DescriberController@delete','as'=>'deleteDescriber']);
+    });
+
+    //places/ группа обработки роутов places
+    Route::group(['prefix'=>'places'], function(){
+        Route::get('/',['uses'=>'PlaceController@index','as'=>'places']);
+        //places/add
+        Route::match(['get','post'],'/add',['uses'=>'PlaceController@create','as'=>'placeAdd']);
+        //places/ajax/edit
+        Route::post('/ajax/edit',['uses'=>'Ajax\PlaceController@edit','as'=>'editPlace']);
+        //places/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\PlaceController@delete','as'=>'deletePlace']);
+    });
 });

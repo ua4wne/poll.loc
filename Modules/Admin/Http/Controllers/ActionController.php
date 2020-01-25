@@ -62,6 +62,7 @@ class ActionController extends Controller
 
             $action = new Action();
             $action->fill($input);
+            $action->created_at = date('Y-m-d H:i:s');
             if($action->save()){
                 $msg = 'Разрешение '. $input['name'] .' было успешно добавлено!';
                 $ip = $request->getClientIp();

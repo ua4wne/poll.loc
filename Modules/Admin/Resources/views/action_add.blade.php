@@ -21,7 +21,7 @@
         <div class="form-group">
             {!! Form::label('code','Символьный код:',['class' => 'col-xs-2 control-label'])   !!}
             <div class="col-xs-8">
-                {!! Form::text('code',old('code'),['class' => 'form-control','placeholder'=>'Введите символьный код'])!!}
+                {!! Form::text('code',old('code'),['class' => 'form-control','placeholder'=>'Введите символьный код','required'=>'required'])!!}
                 {!! $errors->first('code', '<p class="text-danger">:message</p>') !!}
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="form-group">
             {!! Form::label('name','Наименование:',['class' => 'col-xs-2 control-label'])   !!}
             <div class="col-xs-8">
-                {!! Form::text('name',old('name'),['class' => 'form-control','placeholder'=>'Введите наименование роли'])!!}
+                {!! Form::text('name',old('name'),['class' => 'form-control','placeholder'=>'Введите наименование роли','required'=>'required'])!!}
                 {!! $errors->first('name', '<p class="text-danger">:message</p>') !!}
             </div>
         </div>
