@@ -146,10 +146,10 @@
                                     <li><a><i class="fa fa-calculator" aria-hidden="true"></i>Расходы ИТ <span
                                                 class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><a href="#">Структурные подразделения</a></li>
-                                            <li><a href="#">Статьи расходов</a></li>
-                                            <li><a href="#">Поставщики</a></li>
-                                            <li><a href="#">Расходы</a></li>
+                                            <li><a href="{{ route('unit-groups') }}">Структурные подразделения</a></li>
+                                            <li><a href="{{ route('expenses') }}">Статьи расходов</a></li>
+                                            <li><a href="{{ route('suppliers') }}">Поставщики</a></li>
+                                            <li><a href="{{ route('costs') }}">Расходы</a></li>
                                         </ul>
                                     </li>
                                 @endif

@@ -20,7 +20,7 @@ class PlaceController extends Controller
             if(!User::hasRole('admin')){//вызываем event
                 $msg = 'Попытка изменения данных территории '.$place->name;
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
                 return 'NO';
             }
             if($place->update()){
@@ -48,7 +48,7 @@ class PlaceController extends Controller
             if($model->delete()) {
                 $msg = 'Территория '.$model->name.' была удалена!';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else{

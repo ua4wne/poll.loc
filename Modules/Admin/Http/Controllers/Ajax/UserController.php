@@ -34,7 +34,7 @@ class UserController extends Controller
                 else
                     $msg = 'Учетная запись '.$user->login.' была выключена';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else
@@ -58,7 +58,7 @@ class UserController extends Controller
             if($user->update()){
                 $msg = 'Учетная запись '.$user->login.' была изменена!';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else
@@ -82,7 +82,7 @@ class UserController extends Controller
             if($model->delete()) {
                 $msg = 'Учетная запись '.$model->login.' была удалена!';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else{
@@ -115,7 +115,7 @@ class UserController extends Controller
             if(DB::table('role_user')->insert($values)){
                 $msg = 'Изменены роли для учетной записи '.$login;
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else

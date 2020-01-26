@@ -1,0 +1,13 @@
+{
+    "name": "Oit",
+    "alias": "oit",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Oit\\Providers\\OitServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

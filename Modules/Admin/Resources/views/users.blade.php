@@ -207,7 +207,7 @@
 
         $('#save').click(function(e){
             e.preventDefault();
-            var error=0;
+            let error=0;
             $("#edit_login").find(":input").each(function() {// проверяем каждое поле ввода в форме
                 if($(this).attr("required")=='required'){ //обязательное для заполнения поле формы?
                     if(!$(this).val()){// если поле пустое
@@ -267,7 +267,7 @@
         });
 
         $('.label-success').click(function(){
-            var id = $(this).attr("id");
+            let id = $(this).attr("id");
             $.ajax({
                 type: 'POST',
                 url: '{{ route('switchLogin') }}',
@@ -289,7 +289,7 @@
         });
 
         $('.label-danger').click(function(){
-            var id = $(this).attr("id");
+            let id = $(this).attr("id");
             $.ajax({
                 type: 'POST',
                 url: '{{ route('switchLogin') }}',
@@ -311,9 +311,9 @@
         });
 
         $('.login_edit').click(function(){
-            var id = $(this).parent().parent().prevAll().eq(0).find('span').attr("id");
-            var status = $(this).parent().parent().prevAll().eq(0).text();
-            var login = $(this).parent().parent().prevAll().eq(2).text();
+            let id = $(this).parent().parent().prevAll().eq(0).find('span').attr("id");
+            let status = $(this).parent().parent().prevAll().eq(0).text();
+            let login = $(this).parent().parent().prevAll().eq(2).text();
             var email = $(this).parent().parent().prevAll().eq(3).text();
             var name = $(this).parent().parent().prevAll().eq(4).text();
             if(id==1){

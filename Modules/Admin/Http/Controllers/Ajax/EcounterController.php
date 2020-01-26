@@ -20,7 +20,7 @@ class EcounterController extends Controller
             if(!User::hasRole('admin')){//вызываем event
                 $msg = 'Попытка изменения данных счетчика '.$counter->name;
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
                 return 'NO';
             }
             if($counter->update()){
@@ -48,7 +48,7 @@ class EcounterController extends Controller
             if($model->delete()) {
                 $msg = 'Счетчик '.$model->name.' был удален!';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else{

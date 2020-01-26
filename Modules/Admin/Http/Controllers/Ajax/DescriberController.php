@@ -32,7 +32,7 @@ class DescriberController extends Controller
                 else
                     $msg = 'Подписчик с e-mail '.$describer->email.' была деактивирован';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else
@@ -54,7 +54,7 @@ class DescriberController extends Controller
             if($model->delete()) {
                 $msg = 'Подписчик '.$model->email.' был удален!';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
             }
             else{

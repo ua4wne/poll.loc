@@ -61,9 +61,9 @@ class LoginController extends Controller
         }
         else{
             //вызываем event
-            $msg = 'Не удачная попытка входа в систему '.date('Y-m-d H:i:s');
+            $msg = 'Не удачная попытка входа в систему login '.$data['login']. ' ' .date('Y-m-d H:i:s');
             $ip = $request->getClientIp();
-            event(new AddEventLogs('logon',Auth::id(),$msg,$ip));
+            event(new AddEventLogs('logon',1,$msg,$ip));
             return redirect()->intended($this->redirectTo);
         }
     }
