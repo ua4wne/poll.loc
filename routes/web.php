@@ -19,4 +19,15 @@ Route::get('/activate','Auth\LoginController@activate');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/', 'MainController@index')->name('main');
+
+    //divisions/ группа обработки роутов divisions
+    Route::group(['prefix'=>'divisions'], function(){
+        Route::get('/',['uses'=>'DivisionController@index','as'=>'divisions']);
+        //divisions/add
+        Route::match(['get','post'],'/add',['uses'=>'DivisionController@create','as'=>'divisionAdd']);
+        //divisions/ajax/edit_counter
+        Route::post('/ajax/edit',['uses'=>'Ajax\DivisionController@edit','as'=>'editDivision']);
+        //divisions/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\DivisionController@delete','as'=>'deleteDivision']);
+    });
 });

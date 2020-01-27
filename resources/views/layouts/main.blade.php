@@ -70,7 +70,9 @@
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Арендаторы</a></li>
-                                        <li><a href="#">Наши юрлица</a></li>
+                                        @if(\App\User::hasRole('admin'))
+                                        <li><a href="{{ route('divisions') }}">Наши юрлица</a></li>
+                                        @endif
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-users" aria-hidden="true"></i> Маркетинг <span
@@ -134,14 +136,16 @@
                                     <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к
                                             интернет </a></li>
                                 @endif
+                                @if(\App\User::hasRole('admin'))
                                 <li><a><i class="fa fa-book" aria-hidden="true"></i>Справочники <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Города</a></li>
-                                        <li><a href="#">Материалы</a></li>
-                                        <li><a href="#">Медиа</a></li>
+                                        <li><a href="{{ route('cities') }}">Города</a></li>
+                                        <li><a href="{{ route('materials') }}">Материалы</a></li>
+                                        <li><a href="{{ route('tvsources') }}">Медиа</a></li>
                                     </ul>
                                 </li>
+                                @endif
                                 @if(\App\User::hasRole('admin'))
                                     <li><a><i class="fa fa-calculator" aria-hidden="true"></i>Расходы ИТ <span
                                                 class="fa fa-chevron-down"></span></a>

@@ -1,30 +1,29 @@
 <?php
 
-namespace Modules\Marketing\Http\Controllers\Ajax;
+namespace App\Http\Controllers\Ajax;
 
 use App\Events\AddEventLogs;
+use App\Models\Division;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Modules\Marketing\Entities\Material;
 
-class MaterialController extends Controller
+class DivisionController extends Controller
 {
     public function edit(Request $request){
         if($request->isMethod('post')){
             $input = $request->except('_token'); //параметр _token нам не нужен
-            $material = Material::find($input['id']);
-            $material->fill($input);
+            $division = Division::find($input['id']);
+            $division->fill($input);
             if(!User::hasRole('admin')){//вызываем event
-                $msg = 'Попытка изменения записи '.$material->name. ' справочника материалов.';
+                $msg = 'Попытка изменения записи юрлица '.$division->name;
                 $ip = $request->getClientIp();
                 event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'NO';
             }
-            if($material->update()){
-                $msg = 'Запись '.$material->name.' справочника материалов была изменена!';
+            if($division->update()){
+                $msg = 'Запись юрлица '.$division->name.' была изменена!';
                 $ip = $request->getClientIp();
                 event(new AddEventLogs('info',Auth::id(),$msg,$ip));
                 return 'OK';
@@ -38,16 +37,16 @@ class MaterialController extends Controller
     {
         if ($request->isMethod('post')) {
             $id = $request->input('id');
-            $model = Material::find($id);
+            $model = Division::find($id);
             if (!User::hasRole('admin')) {//вызываем event
-                $msg = 'Попытка удаления записи ' . $model->name . ' из справочника материалов.';
+                $msg = 'Попытка удаления записи юрлица ' . $model->name;
                 $ip = $request->getClientIp();
                 event(new AddEventLogs('access', Auth::id(), $msg, $ip));
                 return 'NO';
             }
 
             if ($model->delete()) {
-                $msg = 'Удалена запись ' . $model->name . ' из справочника материалов!';
+                $msg = 'Удалена запись ' . $model->name . ' из справочника медиа-источников!';
                 $ip = $request->getClientIp();
                 event(new AddEventLogs('info', Auth::id(), $msg, $ip));
                 return 'OK';

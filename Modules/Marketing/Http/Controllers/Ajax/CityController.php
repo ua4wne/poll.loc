@@ -2,78 +2,58 @@
 
 namespace Modules\Marketing\Http\Controllers\Ajax;
 
+use App\Events\AddEventLogs;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Modules\Marketing\Entities\City;
 
 class CityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('marketing::index');
+    public function edit(Request $request){
+        if($request->isMethod('post')){
+            $input = $request->except('_token'); //параметр _token нам не нужен
+            $city = City::find($input['id']);
+            $city->fill($input);
+            if(!User::hasRole('admin')){//вызываем event
+                $msg = 'Попытка изменения записи '.$city->name. ' справочника городов.';
+                $ip = $request->getClientIp();
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                return 'NO';
+            }
+            if($city->update()){
+                $msg = 'Запись '.$city->name.' справочника городов была изменена!';
+                $ip = $request->getClientIp();
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                return 'OK';
+            }
+            else
+                return 'ERR';
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
+    public function delete(Request $request)
     {
-        return view('marketing::create');
-    }
+        if ($request->isMethod('post')) {
+            $id = $request->input('id');
+            $model = City::find($id);
+            if (!User::hasRole('admin')) {//вызываем event
+                $msg = 'Попытка удаления записи ' . $model->name . ' из справочника городов.';
+                $ip = $request->getClientIp();
+                event(new AddEventLogs('access', Auth::id(), $msg, $ip));
+                return 'NO';
+            }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('marketing::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('marketing::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+            if ($model->delete()) {
+                $msg = 'Удалена запись ' . $model->name . ' из справочника городов!';
+                $ip = $request->getClientIp();
+                event(new AddEventLogs('info', Auth::id(), $msg, $ip));
+                return 'OK';
+            } else {
+                return 'ERR';
+            }
+        }
     }
 }

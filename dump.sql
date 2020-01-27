@@ -2,7 +2,7 @@
 -- Хост:                         127.0.0.1
 -- Версия сервера:               5.7.25 - MySQL Community Server (GPL)
 -- Операционная система:         Win64
--- HeidiSQL Версия:              10.2.0.5599
+-- HeidiSQL Версия:              10.1.0.5464
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `action_role` (
   CONSTRAINT `action_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.action_role: ~30 rows (приблизительно)
+-- Дамп данных таблицы poll_db.action_role: ~31 rows (приблизительно)
 DELETE FROM `action_role`;
 /*!40000 ALTER TABLE `action_role` DISABLE KEYS */;
 INSERT INTO `action_role` (`id`, `action_id`, `role_id`, `created_at`, `updated_at`) VALUES
@@ -103,11 +103,91 @@ CREATE TABLE IF NOT EXISTS `cities` (
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.cities: ~0 rows (приблизительно)
+-- Дамп данных таблицы poll_db.cities: ~79 rows (приблизительно)
 DELETE FROM `cities`;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
+INSERT INTO `cities` (`id`, `name`, `created_at`, `updated_at`) VALUES
+	(1, 'Люберцы', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(2, 'Котельники', '2017-09-27 21:10:30', '2017-09-29 20:49:51'),
+	(3, 'Дзержинский', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(4, 'Реутов', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(5, 'Бронницы', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(6, 'Верея', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(7, 'Видное', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(8, 'Волоколамск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(9, 'Воскресенск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(10, 'Высоковск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(11, 'Голицыно', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(12, 'Дмитров', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(13, 'Долгопрудный', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(14, 'Домодедово', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(15, 'Дрезна', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(16, 'Дубна', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(17, 'Егорьевск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(18, 'Железнодорожный', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(19, 'Жуковский', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(20, 'Зарайск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(21, 'Звенигород', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(22, 'Зеленоград', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(23, 'Ивантеевка', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(24, 'Истра', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(25, 'Кашира', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(26, 'Климовск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(27, 'Клин', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(28, 'Коломна', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(29, 'Королев', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(30, 'Красноармейск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(31, 'Красногорск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(32, 'Краснозаводск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(33, 'Краснознаменск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(34, 'Кубинка', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(35, 'Куровское', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(36, 'Ликино-Дулево', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(37, 'Лобня', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(38, 'Лосино-Петровский', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(39, 'Луховицы', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(40, 'Лыткарино', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(41, 'Можайск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(42, 'Мытищи', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(43, 'Наро-Фоминск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(44, 'Ногинск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(45, 'Одинцово', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(46, 'Ожерелье', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(47, 'Озеры', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(48, 'Орехово-Зуево', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(49, 'Павловский Посад', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(50, 'Подольск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(51, 'Протвино', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(52, 'Пушкино', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(53, 'Пущино', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(54, 'Раменское', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(55, 'Рошаль', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(56, 'Руза', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(57, 'Сергиев Посад', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(58, 'Серпухов', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(59, 'Солнечногорск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(60, 'Стремилово', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(61, 'Ступино', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(62, 'Сходня', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(63, 'Талдом', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(64, 'Троицк', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(65, 'Фрязино', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(66, 'Химки', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(67, 'Хотьково', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(68, 'Черноголовка', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(69, 'Чехов', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(70, 'Шатура', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(71, 'Щелково', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(72, 'Щербинка', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(73, 'Электрогорск', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(74, 'Электросталь', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(75, 'Электроугли', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(76, 'Юбилейный', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(77, 'Яхрома', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(78, 'Балашиха', '2017-09-27 21:10:30', '2017-09-27 21:10:37'),
+	(79, 'Апрелевка', '2017-09-27 21:10:30', '2017-09-27 21:10:37');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 
 -- Дамп структуры для таблица poll_db.costs
@@ -268,6 +348,26 @@ INSERT INTO `describers` (`id`, `email`, `status`, `created_at`, `updated_at`) V
 	(4, 'stadler@m-strana.ru', 1, '2020-01-25 13:16:51', '2020-01-25 13:30:46');
 /*!40000 ALTER TABLE `describers` ENABLE KEYS */;
 
+-- Дамп структуры для таблица poll_db.divisions
+DROP TABLE IF EXISTS `divisions`;
+CREATE TABLE IF NOT EXISTS `divisions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Дамп данных таблицы poll_db.divisions: ~0 rows (приблизительно)
+DELETE FROM `divisions`;
+/*!40000 ALTER TABLE `divisions` DISABLE KEYS */;
+INSERT INTO `divisions` (`id`, `name`, `created_at`, `updated_at`) VALUES
+	(1, 'ИП Коняхин Р.А.', '2020-01-27 12:28:06', '2020-01-27 12:29:04'),
+	(2, 'ИП Борисенко А.В.', '2020-01-27 12:28:21', '2020-01-27 12:28:21'),
+	(3, 'ИП Леньшин И.В.', '2020-01-27 12:28:32', '2020-01-27 12:28:32'),
+	(4, 'ИП Леньшина Л.Г.', '2020-01-27 12:28:43', '2020-01-27 12:28:43');
+/*!40000 ALTER TABLE `divisions` ENABLE KEYS */;
+
 -- Дамп структуры для таблица poll_db.ecounters
 DROP TABLE IF EXISTS `ecounters`;
 CREATE TABLE IF NOT EXISTS `ecounters` (
@@ -303,9 +403,9 @@ CREATE TABLE IF NOT EXISTS `eventlogs` (
   PRIMARY KEY (`id`),
   KEY `eventlogs_user_id_foreign` (`user_id`),
   CONSTRAINT `eventlogs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.eventlogs: ~147 rows (приблизительно)
+-- Дамп данных таблицы poll_db.eventlogs: ~173 rows (приблизительно)
 DELETE FROM `eventlogs`;
 /*!40000 ALTER TABLE `eventlogs` DISABLE KEYS */;
 INSERT INTO `eventlogs` (`id`, `type`, `user_id`, `text`, `ip`, `created_at`, `updated_at`) VALUES
@@ -455,7 +555,42 @@ INSERT INTO `eventlogs` (`id`, `type`, `user_id`, `text`, `ip`, `created_at`, `u
 	(144, 'info', 1, 'Данные записи расхода ИТ Годовая лицензия KAV для ЛИВ_ЛЛГ были изменены!', '127.0.0.1', '2020-01-26 14:03:05', '2020-01-26 14:03:05'),
 	(145, 'logon', 1, 'Не удачная попытка входа в систему login admin 2020-01-26 17:35:46', '127.0.0.1', '2020-01-26 17:35:46', '2020-01-26 17:35:46'),
 	(146, 'logon', 1, 'Не удачная попытка входа в систему login admin 2020-01-26 17:35:51', '127.0.0.1', '2020-01-26 17:35:51', '2020-01-26 17:35:51'),
-	(147, 'logon', 1, 'Пользователь вошел в систему 2020-01-26 17:35:54', '127.0.0.1', '2020-01-26 17:35:54', '2020-01-26 17:35:54');
+	(147, 'logon', 1, 'Пользователь вошел в систему 2020-01-26 17:35:54', '127.0.0.1', '2020-01-26 17:35:54', '2020-01-26 17:35:54'),
+	(148, 'logon', 1, 'Пользователь вошел в систему 2020-01-27 08:18:51', '127.0.0.1', '2020-01-27 08:18:51', '2020-01-27 08:18:51'),
+	(149, 'logon', 1, 'Не удачная попытка входа в систему login admin 2020-01-27 08:29:25', '127.0.0.1', '2020-01-27 08:29:25', '2020-01-27 08:29:25'),
+	(150, 'logon', 1, 'Пользователь вошел в систему 2020-01-27 08:29:34', '127.0.0.1', '2020-01-27 08:29:34', '2020-01-27 08:29:34'),
+	(151, 'info', 1, 'Новый пользователь Овсиенко А.А. был успешно добавлен!', NULL, '2020-01-27 08:33:21', '2020-01-27 08:33:21'),
+	(152, 'info', 1, 'Новый пользователь Стадлер М.С. был успешно добавлен!', NULL, '2020-01-27 08:38:39', '2020-01-27 08:38:39'),
+	(153, 'info', 1, 'Учетная запись pykhov была изменена!', '127.0.0.1', '2020-01-27 08:39:37', '2020-01-27 08:39:37'),
+	(154, 'info', 1, 'Учетная запись antipin была изменена!', '127.0.0.1', '2020-01-27 08:39:43', '2020-01-27 08:39:43'),
+	(155, 'info', 1, 'Учетная запись ovsienko была изменена!', '127.0.0.1', '2020-01-27 08:39:49', '2020-01-27 08:39:49'),
+	(156, 'info', 1, 'Учетная запись stadler была изменена!', '127.0.0.1', '2020-01-27 08:39:55', '2020-01-27 08:39:55'),
+	(157, 'info', 1, 'Новый город Люберцы был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 09:11:48', '2020-01-27 09:11:48'),
+	(158, 'info', 1, 'Запись Люберцы1 справочника городов была изменена!', '127.0.0.1', '2020-01-27 09:11:55', '2020-01-27 09:11:55'),
+	(159, 'info', 1, 'Удалена запись Люберцы1 из справочника городов!', '127.0.0.1', '2020-01-27 09:12:00', '2020-01-27 09:12:00'),
+	(160, 'info', 1, 'Новый материал steel был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 09:27:32', '2020-01-27 09:27:32'),
+	(161, 'info', 1, 'Новый материал wood был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 09:28:00', '2020-01-27 09:28:00'),
+	(162, 'info', 1, 'Удалена запись wood из справочника материалов!', '127.0.0.1', '2020-01-27 09:28:05', '2020-01-27 09:28:05'),
+	(163, 'info', 1, 'Запись steelll справочника материалов была изменена!', '127.0.0.1', '2020-01-27 09:28:11', '2020-01-27 09:28:11'),
+	(164, 'info', 1, 'Удалена запись steelll из справочника материалов!', '127.0.0.1', '2020-01-27 09:28:15', '2020-01-27 09:28:15'),
+	(165, 'info', 1, 'Новый медиа-источник Рен ТВ был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 10:38:19', '2020-01-27 10:38:19'),
+	(166, 'info', 1, 'Новый медиа-источник ТВ Центр был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 10:38:31', '2020-01-27 10:38:31'),
+	(167, 'info', 1, 'Новый медиа-источник Россия 1 был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 10:38:44', '2020-01-27 10:38:44'),
+	(168, 'info', 1, 'Новый медиа-источник Евроньюс был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 10:38:57', '2020-01-27 10:38:57'),
+	(169, 'info', 1, 'Новый медиа-источник Не помню был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 10:39:08', '2020-01-27 10:39:08'),
+	(170, 'info', 1, 'Новый медиа-источник Другое (свой вариант) был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 10:39:22', '2020-01-27 10:39:22'),
+	(171, 'info', 1, 'Новый медиа-источник тесттт был успешно добавлен в справочник!', '127.0.0.1', '2020-01-27 10:39:32', '2020-01-27 10:39:32'),
+	(172, 'info', 1, 'Запись тест справочника медиа-источников была изменена!', '127.0.0.1', '2020-01-27 10:39:40', '2020-01-27 10:39:40'),
+	(173, 'info', 1, 'Удалена запись тест из справочника медиа-источников!', '127.0.0.1', '2020-01-27 10:39:43', '2020-01-27 10:39:43'),
+	(174, 'info', 1, 'Новое юрлицо ИП Коняхин Р.А. было успешно добавлено!', '127.0.0.1', '2020-01-27 12:28:06', '2020-01-27 12:28:06'),
+	(175, 'info', 1, 'Новое юрлицо ИП Борисенко А.В. было успешно добавлено!', '127.0.0.1', '2020-01-27 12:28:21', '2020-01-27 12:28:21'),
+	(176, 'info', 1, 'Новое юрлицо ИП Леньшин И.В. было успешно добавлено!', '127.0.0.1', '2020-01-27 12:28:32', '2020-01-27 12:28:32'),
+	(177, 'info', 1, 'Новое юрлицо ИП Леньшина Л.Г. было успешно добавлено!', '127.0.0.1', '2020-01-27 12:28:43', '2020-01-27 12:28:43'),
+	(178, 'info', 1, 'Запись юрлица ИП Коняхин Р.А.222 была изменена!', '127.0.0.1', '2020-01-27 12:28:53', '2020-01-27 12:28:53'),
+	(179, 'info', 1, 'Запись юрлица ИП Коняхин Р.А. была изменена!', '127.0.0.1', '2020-01-27 12:29:04', '2020-01-27 12:29:04'),
+	(180, 'info', 1, 'Новое юрлицо dbrbrrb было успешно добавлено!', '127.0.0.1', '2020-01-27 12:29:13', '2020-01-27 12:29:13'),
+	(181, 'info', 1, 'Удалена запись dbrbrrb из справочника медиа-источников!', '127.0.0.1', '2020-01-27 12:29:18', '2020-01-27 12:29:18'),
+	(182, 'logoff', 1, 'Пользователь вышел из системы 2020-01-27 12:30:52', NULL, '2020-01-27 12:30:52', '2020-01-27 12:30:52');
 /*!40000 ALTER TABLE `eventlogs` ENABLE KEYS */;
 
 -- Дамп структуры для таблица poll_db.expenses
@@ -466,7 +601,7 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Дамп данных таблицы poll_db.expenses: ~3 rows (приблизительно)
 DELETE FROM `expenses`;
@@ -485,11 +620,24 @@ CREATE TABLE IF NOT EXISTS `materials` (
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.materials: ~0 rows (приблизительно)
+-- Дамп данных таблицы poll_db.materials: ~12 rows (приблизительно)
 DELETE FROM `materials`;
 /*!40000 ALTER TABLE `materials` DISABLE KEYS */;
+INSERT INTO `materials` (`id`, `name`, `created_at`, `updated_at`) VALUES
+	(1, 'Лако-красочные покрытия', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(2, 'Кровли', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(3, 'Фасадные материалы', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(4, 'Фундаменты', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(5, 'Отделка внутренняя', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(6, 'Окна и двери', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(7, 'Бани', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(8, 'Садовые домики, беседки, гриль, хоз. блок', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(9, 'Дизайн  экстерьера (ланшафтный дизайн, мебель для сада, др.)', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(10, 'Дизайн интерьера (мебель  для дома, шторы, люстры, двери, обои, и т.д )', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(11, 'Входные группы и системы безопасности (рольставни, заборы, ворота)', '2017-09-27 21:16:25', '2017-09-27 21:16:55'),
+	(12, 'Инженерные системы', '2017-09-27 21:16:25', '2017-09-27 21:16:55');
 /*!40000 ALTER TABLE `materials` ENABLE KEYS */;
 
 -- Дамп структуры для таблица poll_db.migrations
@@ -499,9 +647,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.migrations: ~18 rows (приблизительно)
+-- Дамп данных таблицы poll_db.migrations: ~20 rows (приблизительно)
 DELETE FROM `migrations`;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -522,7 +670,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(16, '2020_01_26_091942_create_suppliers_table', 6),
 	(17, '2020_01_26_174057_create_cities_table', 7),
 	(18, '2020_01_26_174110_create_materials_table', 7),
-	(19, '2020_01_26_174150_create_tvsources_table', 7);
+	(19, '2020_01_26_174150_create_tvsources_table', 7),
+	(20, '2020_01_27_104824_create_divisions_table', 8),
+	(21, '2020_01_27_104916_create_renters_table', 8);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Дамп структуры для таблица poll_db.own_ecounters
@@ -538,7 +688,7 @@ CREATE TABLE IF NOT EXISTS `own_ecounters` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.own_ecounters: ~2 rows (приблизительно)
+-- Дамп данных таблицы poll_db.own_ecounters: ~0 rows (приблизительно)
 DELETE FROM `own_ecounters`;
 /*!40000 ALTER TABLE `own_ecounters` DISABLE KEYS */;
 INSERT INTO `own_ecounters` (`id`, `name`, `text`, `koeff`, `tarif`, `created_at`, `updated_at`) VALUES
@@ -585,6 +735,36 @@ INSERT INTO `places` (`id`, `name`, `ecounter_id`, `created_at`, `updated_at`) V
 	(7, 'МС Участок №225-2', 3, '2020-01-25 12:32:45', '2020-01-25 12:32:45');
 /*!40000 ALTER TABLE `places` ENABLE KEYS */;
 
+-- Дамп структуры для таблица poll_db.renters
+DROP TABLE IF EXISTS `renters`;
+CREATE TABLE IF NOT EXISTS `renters` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `area` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agent` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone1` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone2` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `encounter` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `koeff` double(8,2) NOT NULL DEFAULT '5.80',
+  `place_id` int(10) unsigned NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT '1',
+  `division_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `renters_encounter_unique` (`encounter`),
+  KEY `renters_place_id_foreign` (`place_id`),
+  KEY `renters_division_id_foreign` (`division_id`),
+  CONSTRAINT `renters_division_id_foreign` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`),
+  CONSTRAINT `renters_place_id_foreign` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Дамп данных таблицы poll_db.renters: ~0 rows (приблизительно)
+DELETE FROM `renters`;
+/*!40000 ALTER TABLE `renters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `renters` ENABLE KEYS */;
+
 -- Дамп структуры для таблица poll_db.roles
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
@@ -625,7 +805,7 @@ CREATE TABLE IF NOT EXISTS `role_user` (
   CONSTRAINT `role_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.role_user: ~5 rows (приблизительно)
+-- Дамп данных таблицы poll_db.role_user: ~6 rows (приблизительно)
 DELETE FROM `role_user`;
 /*!40000 ALTER TABLE `role_user` DISABLE KEYS */;
 INSERT INTO `role_user` (`id`, `role_id`, `user_id`, `created_at`, `updated_at`) VALUES
@@ -694,11 +874,18 @@ CREATE TABLE IF NOT EXISTS `tvsources` (
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.tvsources: ~0 rows (приблизительно)
+-- Дамп данных таблицы poll_db.tvsources: ~6 rows (приблизительно)
 DELETE FROM `tvsources`;
 /*!40000 ALTER TABLE `tvsources` DISABLE KEYS */;
+INSERT INTO `tvsources` (`id`, `name`, `created_at`, `updated_at`) VALUES
+	(1, 'Рен ТВ', '2020-01-27 10:38:19', '2020-01-27 10:38:19'),
+	(2, 'ТВ Центр', '2020-01-27 10:38:31', '2020-01-27 10:38:31'),
+	(3, 'Россия 1', '2020-01-27 10:38:44', '2020-01-27 10:38:44'),
+	(4, 'Евроньюс', '2020-01-27 10:38:57', '2020-01-27 10:38:57'),
+	(5, 'Не помню', '2020-01-27 10:39:08', '2020-01-27 10:39:08'),
+	(6, 'Другое (свой вариант)', '2020-01-27 10:39:22', '2020-01-27 10:39:22');
 /*!40000 ALTER TABLE `tvsources` ENABLE KEYS */;
 
 -- Дамп структуры для таблица poll_db.unit_groups
@@ -709,7 +896,7 @@ CREATE TABLE IF NOT EXISTS `unit_groups` (
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Дамп данных таблицы poll_db.unit_groups: ~2 rows (приблизительно)
 DELETE FROM `unit_groups`;
@@ -738,9 +925,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_login_unique` (`login`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Дамп данных таблицы poll_db.users: ~5 rows (приблизительно)
+-- Дамп данных таблицы poll_db.users: ~9 rows (приблизительно)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `active`, `login`, `sex`, `image`, `auth_code`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
@@ -749,7 +936,10 @@ INSERT INTO `users` (`id`, `active`, `login`, `sex`, `image`, `auth_code`, `name
 	(3, 1, 'borisenko', 'male', '/images/male.png', 'HWaSseqDm1E30db9', 'Борисенко А.В.', 'borisenko@m-strana.ru', NULL, '$2y$10$oeDI/AqcUeCn/VjyFYFwN.eTS1Na5VHmjvQGu6xwr6inoIiNTJdWu', NULL, '2020-01-23 13:22:53', '2020-01-23 13:29:00'),
 	(4, 1, 'lenshin', 'male', '/images/male.png', 'quQMtfVoXYDv68Hy', 'Леньшин И.В.', 'oblako@mirkdt.com', NULL, '$2y$10$QU3qxlZHHYU.5ysy1vG/8ueG8ubgDnS5bWBgM/x9c2NH5u8O1XEfa', NULL, '2020-01-23 13:29:37', '2020-01-23 13:40:04'),
 	(5, 1, 'konyahin', 'male', '/images/male.png', 'VJymo9xFgAIDMvTi', 'Коняхин Р.А.', 'konyahin@m-strana.ru', NULL, '$2y$10$x1vORRlgEJaMKaLN4vzLcuXIKlMr8zEPToyNxKRan5Dgff/yPhF7i', NULL, '2020-01-23 13:36:36', '2020-01-23 13:40:00'),
-	(6, 0, 'pykhov', 'male', '/images/male.png', 'vX4ikaVAYZfBLIyM', 'Пыхов Н.Н.', 'pykhov@m-strana.ru', NULL, '$2y$10$1mU0MqzMowYDko0/GCp5lOAu5jk3bUEtM2vZRfa/CTvubnAOKjqyO', NULL, '2020-01-25 06:41:09', '2020-01-25 06:41:09');
+	(6, 1, 'pykhov', 'male', '/images/male.png', 'vX4ikaVAYZfBLIyM', 'Пыхов Н.Н.', 'pykhov@m-strana.ru', NULL, '$2y$10$1mU0MqzMowYDko0/GCp5lOAu5jk3bUEtM2vZRfa/CTvubnAOKjqyO', NULL, '2020-01-25 06:41:09', '2020-01-27 08:39:36'),
+	(7, 1, 'antipin', 'male', '/images/male.png', 'aJpEXGb4u7ysAncK', 'Антипин А.Д.', 'antipin@m-strana.ru', NULL, '$2y$10$e0GwaY6vbscts4o9xyAxkugJbTAyX2.QyIbZw1b4uwKwhNd93iwTm', NULL, '2020-01-27 08:30:53', '2020-01-27 08:39:43'),
+	(8, 1, 'ovsienko', 'male', '/images/male.png', 'FOj4PTYyow8qNA65', 'Овсиенко А.А.', 'ovsienko@m-strana.ru', NULL, '$2y$10$32atyQaKAAvF7e5MWQukuujox7QMPCQQBVbtEsOEpChJSVj/yPtvG', NULL, '2020-01-27 08:33:20', '2020-01-27 08:39:49'),
+	(9, 1, 'stadler', 'female', '/images/female.png', 'RmEJagL8tv5nAy3x', 'Стадлер М.С.', 'stadler@m-strana.ru', NULL, '$2y$10$Nd3YWdZtXspI8MVc1UCDV.skiwSIZn84u1ie0MGOGpIljTNpg4ScG', NULL, '2020-01-27 08:38:38', '2020-01-27 08:39:55');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
