@@ -30,4 +30,19 @@ Route::middleware(['auth'])->group(function(){
         //divisions/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\DivisionController@delete','as'=>'deleteDivision']);
     });
+
+    //renters/ группа обработки роутов renters
+    Route::group(['prefix'=>'renters'], function(){
+        Route::get('/',['uses'=>'RenterController@index','as'=>'renters']);
+        //renters/view/
+        Route::get('/view/{status}',['uses'=>'RenterController@view','as'=>'view_renters']);
+        //renters/add
+        Route::match(['get','post'],'/add',['uses'=>'RenterController@create','as'=>'renterAdd']);
+        //renters/ajax/edit
+        Route::post('/ajax/edit',['uses'=>'Ajax\RenterController@edit','as'=>'editRenter']);
+        //renters/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\RenterController@delete','as'=>'deleteRenter']);
+        //renters/ajax/status
+        Route::post('/ajax/status',['uses'=>'Ajax\RenterController@switchRenter','as'=>'switchRenter']);
+    });
 });

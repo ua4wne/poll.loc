@@ -47,6 +47,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            {!! Form::label('status', 'Статус:',['class'=>'col-xs-3 control-label']) !!}
+                            <div class="col-xs-8">
+                                {!! Form::select('status', $statsel, old('status'),['class' => 'form-control','required' => 'required','id'=>'status']); !!}
+                            </div>
+                        </div>
+
                         {!! Form::close() !!}
                     </div>
                     <div class="modal-footer">
@@ -69,6 +76,7 @@
                         <thead>
                         <tr>
                             <th>Наименование</th>
+                            <th>Статус</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -78,6 +86,13 @@
 
                             <tr>
                                 <td>{{ $row->name }}</td>
+                                <td>
+                                    @if($row->status)
+                                        <span role="button" class="label label-success">Действующий</span>
+                                    @else
+                                        <span role="button" class="label label-danger">Не действующий</span>
+                                    @endif
+                                </td>
 
                                 <td style="width:110px;">
                                     <div class="form-group" role="group">
@@ -153,10 +168,13 @@
 
         $('.btn_edit').click(function(){
             let id = $(this).attr("id");
-            let name = $(this).parent().parent().prevAll().eq(0).text();
+            let status = $(this).parent().parent().prevAll().eq(0).text();
+            let name = $(this).parent().parent().prevAll().eq(1).text();
 
             $('#name').val(name);
             $('#division_id').val(id);
+            if(status)
+                $("#status :contains('"+status+"')").attr("selected", "selected");
         });
 
         $('.btn_del').click(function(){

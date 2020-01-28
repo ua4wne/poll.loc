@@ -9,7 +9,7 @@ class Division extends Model
     //указываем имя таблицы
     protected $table = 'divisions';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','status'];
 
     /**
      * Арендаторы, принадлежащие дивизиону.

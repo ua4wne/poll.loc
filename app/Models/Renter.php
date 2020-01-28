@@ -13,7 +13,7 @@ class Renter extends Model
 
     public function place()
     {
-        return $this->belongsTo('App\Modules\Admin\Entities\Place');
+        return $this->belongsTo('Modules\Admin\Entities\Place');
     }
 
     public function division()

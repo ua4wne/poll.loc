@@ -151,7 +151,7 @@
         });
 
         $('#my_datatable').DataTable( {
-            "order": [[ 5, "desc" ]]
+            "order": [ 5, "desc" ]
         } );
 
         $('#save').click(function(e){

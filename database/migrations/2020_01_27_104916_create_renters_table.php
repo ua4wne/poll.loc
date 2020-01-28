@@ -21,7 +21,7 @@ class CreateRentersTable extends Migration
             $table->string('agent',50);
             $table->string('phone1',20)->nullable();
             $table->string('phone2',20)->nullable();
-            $table->string('encounter',20)->unique();
+            $table->string('encounter',20);
             $table->float('koeff')->default(5.8);
             $table->integer('place_id')->unsigned();
             $table->foreign('place_id')->references('id')->on('places');

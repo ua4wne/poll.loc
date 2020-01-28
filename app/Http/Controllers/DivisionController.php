@@ -18,11 +18,13 @@ class DivisionController extends Controller
         }
         if(view()->exists('divisions')){
             $title='Наши юрлица';
+            $statsel = ['1'=>'Действующий','0'=>'Не действующий'];
             $rows = Division::paginate(env('PAGINATION_SIZE')); //all();
             $data = [
                 'title' => $title,
                 'head' => 'Наши юрлица',
                 'rows' => $rows,
+                'statsel' => $statsel,
             ];
             return view('divisions',$data);
         }
@@ -61,8 +63,10 @@ class DivisionController extends Controller
             }
         }
         if(view()->exists('division_add')){
+            $statsel = ['1'=>'Действующий','0'=>'Не действующий'];
             $data = [
                 'title' => 'Новая запись',
+                'statsel' => $statsel,
             ];
             return view('division_add', $data);
         }

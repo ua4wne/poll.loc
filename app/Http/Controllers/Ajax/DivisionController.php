@@ -19,7 +19,7 @@ class DivisionController extends Controller
             if(!User::hasRole('admin')){//вызываем event
                 $msg = 'Попытка изменения записи юрлица '.$division->name;
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
                 return 'NO';
             }
             if($division->update()){

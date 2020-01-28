@@ -56,4 +56,15 @@ Route::middleware(['auth'])->group(function() {
         //costs/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\CostController@delete','as'=>'deleteCost']);
     });
+
+    //connections/ группа обработки роутов connections
+    Route::group(['prefix'=>'connections'], function(){
+        Route::get('/',['uses'=>'ConnectionController@index','as'=>'connections']);
+        //connections/add
+        Route::match(['get','post'],'/add',['uses'=>'ConnectionController@create','as'=>'connectionAdd']);
+        //connections/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\ConnectionController@delete','as'=>'deleteConnection']);
+        //connections/ajax/type
+        Route::post('/ajax/type',['uses'=>'Ajax\ConnectionController@switchType','as'=>'switchType']);
+    });
 });

@@ -15,4 +15,9 @@ class Place extends Model
     {
         return $this->belongsTo('Modules\Admin\Entities\Ecounter');
     }
+
+    public function renters()
+    {
+        return $this->belongsToMany('App\Models\Renter');
+    }
 }

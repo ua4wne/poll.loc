@@ -20,6 +20,7 @@
     <link href="/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="/css/custom.min.css" rel="stylesheet">
+    <link href="/css/select2.min.css" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -69,7 +70,7 @@
                                 <li><a><i class="fa fa-address-book-o" aria-hidden="true"></i> Контакты <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Арендаторы</a></li>
+                                        <li><a href="{{ route('renters') }}">Арендаторы</a></li>
                                         @if(\App\User::hasRole('admin'))
                                         <li><a href="{{ route('divisions') }}">Наши юрлица</a></li>
                                         @endif
@@ -133,7 +134,7 @@
                                             <li><a href="{{ route('describers') }}">Подписчики</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к
+                                    <li><a href="{{ route('connections') }}"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к
                                             интернет </a></li>
                                 @endif
                                 @if(\App\User::hasRole('admin'))
