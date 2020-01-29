@@ -14,10 +14,10 @@
     <!-- page content -->
     <div class="row">
         <div class="col-md-12">
-            <h2 class="text-center">{{ $head }}</h2>
+            <h2 class="text-header text-center">{{ $head }}</h2>
             @if($typesel)
                 <div class="x_content">
-                    {!! Form::open(['url' => route('it_costView'),'class'=>'form-horizontal','method'=>'POST']) !!}
+                    {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST']) !!}
 
                     <div class="form-group">
                         {!! Form::label('year','Укажите год:',['class' => 'col-xs-2 control-label'])   !!}
@@ -42,7 +42,10 @@
 
                     {!! Form::close() !!}
                 </div>
+                <a href="#" onclick="$('.x_content').show(); $('#result').hide(); $('.fa-plus-square-o').hide(); return false;"><i class="fa fa-plus-square-o fa-lg" aria-hidden="true"></i></a>
                 <div class="x_panel" id="result">
+                    <div id="bar-chart"></div>
+                    <div id="table-data"></div>
                 </div>
             @endif
         </div>
@@ -52,10 +55,58 @@
 @endsection
 
 @section('user_script')
-
+    <script src="/js/raphael.min.js"></script>
+    <script src="/js/morris.min.js"></script>
     <script>
 
         $('#result').hide();
+        $('.fa-plus-square-o').hide();
+        $('#main-report').click(function(e) {
+            e.preventDefault();
+            var year = $('#year').val();
+            var type = $('#type').val();
+            $.ajax({
+                url: '{{ route('it_costGraph') }}',
+                type: 'POST',
+                data: {'year': year, 'type': type},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (res) {
+                    $('#result').show();
+                    //alert("Сервер вернул вот что: " + res);
+                    $("#bar-chart").empty();
+                    Morris.Bar({
+                        element: 'bar-chart',
+                        data: JSON.parse(res),
+                        xkey: 'y',
+                        ykeys: ['a'],
+                        labels: ['Сумма, руб']
+                    });
+                    $.ajax({
+                        url: '{{ route('it_costTable') }}',
+                        type: 'POST',
+                        data: {'year': year, 'type': type},
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (res) {
+                            //alert("Сервер вернул вот что: " + res);
+                            $("#table-data").html(res);
+                        },
+                        error: function (xhr, response) {
+                            alert('Error! ' + xhr.responseText);
+                        }
+                    });
+                    $(".text-header").html('<h4>Динамика затрат по ИТ за ' + year + ' год</h4>');
+                    $('.x_content').hide();
+                    $('.fa-plus-square-o').show();
+                },
+                error: function (xhr, response) {
+                    alert('Error! ' + xhr.responseText);
+                }
+            });
+        });
 
     </script>
 @endsection

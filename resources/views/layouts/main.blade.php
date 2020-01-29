@@ -64,7 +64,7 @@
                                     <ul class="nav child_menu">
                                         <li><a href="#">Расчет по арендатору</a></li>
                                         <li><a href="#">Расчет за период</a></li>
-                                        <li><a href="#">Подключения к интернет</a></li>
+                                        <li><a href="{{ route('inet-conn') }}">Подключения к интернет</a></li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-address-book-o" aria-hidden="true"></i> Контакты <span

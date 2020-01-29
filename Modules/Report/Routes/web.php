@@ -17,7 +17,10 @@ Route::middleware(['auth'])->group(function() {
     Route::group(['prefix'=>'reports'], function(){
 
         Route::get('/it-cost',['uses'=>'ItCostController@index','as'=>'it-cost']);
-        Route::post('/it-cost/view',['uses'=>'ItCostController@view','as'=>'it_costView']);
+        Route::post('/it-cost/graph',['uses'=>'ItCostController@graph','as'=>'it_costGraph']);
+        Route::post('/it-cost/table',['uses'=>'ItCostController@table','as'=>'it_costTable']);
+
+        Route::get('/connections',['uses'=>'InetConnectionController@index','as'=>'inet-conn']);
 
     });
 
