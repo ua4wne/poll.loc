@@ -88,7 +88,9 @@
                                         <li><a href="#">Анкетирование</a></li>
                                         <li><a href="#">Посещаемость выставки</a></li>
                                         <li><a href="#">Присутствие на выставке</a></li>
-                                        <li><a href="#">Затраты ИТ</a></li>
+                                        @if(\App\User::hasRole('admin') || \App\User::hasRole('director'))
+                                        <li><a href="{{ route('it-cost') }}">Затраты ИТ</a></li>
+                                        @endif
                                         <li><a href="#">Потребление эл. энергии <span class="fa fa-chevron-down"></span></a>
                                             <ul class="nav child_menu">
                                                 <li><a href="#">Счетчики общие</a></li>
