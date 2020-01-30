@@ -33,11 +33,15 @@ class InetConnectionController extends Controller
                 join places p on p.id = r.place_id
                 order by p.name, CAST(r.area AS UNSIGNED)");
             foreach ($rows as $row){
-                if($row->type=='static')
+                if($row->type=='static'){
                     $type = 'Выделенный IP';
-                if($row->type=='dynamic')
+                    $class = 'class="warning"';
+                }
+                if($row->type=='dynamic'){
                     $type = 'Динамический IP';
-                $content .= '<tr><td>'. $row->name .'</td>
+                    $class='';
+                }
+                $content .= '<tr '.$class.'><td>'. $row->name .'</td>
                                 <td>'. $row->title .'</td>
                                 <td>'. $row->area .'</td>
                                 <td>'. $row->date_on .'</td>

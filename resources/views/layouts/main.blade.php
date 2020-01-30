@@ -100,13 +100,16 @@
                                         </li>
                                     </ul>
                                 </li>
+                                @if(\App\User::hasRole('admin') || \App\User::hasRole('guard'))
                                 <li><a><i class="fa fa-table" aria-hidden="true"></i> Посещение <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Присутствие на выставке</a></li>
-                                        <li><a href="#">Посещение выставки</a></li>
+                                        <li><a href="{{ route('visits') }}">Посещение выставки</a></li>
                                     </ul>
                                 </li>
+                                @endif
+                                @if(\App\User::hasRole('admin') || \App\User::hasRole('energy'))
                                 <li><a><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Энергоучет <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
@@ -123,6 +126,7 @@
                                         <li><a href="#">Расчет потребления</a></li>
                                     </ul>
                                 </li>
+                                @endif
                                 @if(\App\User::hasRole('admin'))
                                     <li><a><i class="fa fa-cogs" aria-hidden="true"></i> Настройки <span
                                                 class="fa fa-chevron-down"></span></a>

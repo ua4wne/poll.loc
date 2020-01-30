@@ -45,4 +45,15 @@ Route::middleware(['auth'])->group(function(){
         //renters/ajax/status
         Route::post('/ajax/status',['uses'=>'Ajax\RenterController@switchRenter','as'=>'switchRenter']);
     });
+
+    //visits/ группа обработки роутов visits
+    Route::group(['prefix'=>'visits'], function(){
+        Route::get('/',['uses'=>'VisitController@index','as'=>'visits']);
+        //visits/add
+        Route::match(['get','post'],'/add',['uses'=>'VisitController@create','as'=>'visitAdd']);
+        //visits/ajax/edit_counter
+        //Route::post('/ajax/edit',['uses'=>'Ajax\VisitController@edit','as'=>'editVisit']);
+        //visits/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\VisitController@delete','as'=>'deleteVisit']);
+    });
 });
