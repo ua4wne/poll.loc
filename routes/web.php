@@ -51,9 +51,22 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/',['uses'=>'VisitController@index','as'=>'visits']);
         //visits/add
         Route::match(['get','post'],'/add',['uses'=>'VisitController@create','as'=>'visitAdd']);
-        //visits/ajax/edit_counter
-        //Route::post('/ajax/edit',['uses'=>'Ajax\VisitController@edit','as'=>'editVisit']);
+        //visits/upload
+        Route::get('/upload',['uses'=>'VisitController@upload','as'=>'uploadVisit']);
+        Route::post('/import-visitor', ['uses'=>'VisitController@download','as'=>'importVisitor']);
         //visits/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\VisitController@delete','as'=>'deleteVisit']);
+    });
+
+    //works/ группа обработки роутов works
+    Route::group(['prefix'=>'works'], function(){
+        Route::get('/',['uses'=>'WorkController@index','as'=>'works']);
+        //works/add
+        Route::match(['get','post'],'/add',['uses'=>'WorkController@create','as'=>'workAdd']);
+        //works/upload
+        Route::post('/upload',['uses'=>'WorkController@upload','as'=>'uploadWork']);
+        Route::post('/import-work', ['uses'=>'WorkController@download','as'=>'importWork']);
+        //works/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\WorkController@delete','as'=>'deleteWork']);
     });
 });

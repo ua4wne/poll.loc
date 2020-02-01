@@ -8,7 +8,7 @@
     <!-- START BREADCRUMB -->
     <ul class="breadcrumb">
         <li><a href="{{ route('main') }}">Рабочий стол</a></li>
-        <li class="active">{{ $title }}</li>
+        <li class="active">{{ $head }}</li>
     </ul>
     <!-- END BREADCRUMB -->
     <!-- page content -->
@@ -21,7 +21,35 @@
         </div>
     @endif
     <div class="row">
-        <div class="modal fade" id="importVisitor" tabindex="-1" role="dialog" aria-labelledby="importVisitor" aria-hidden="true">
+        <div class="modal fade" id="exportWork" tabindex="-1" role="dialog" aria-labelledby="exportWork" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-times-circle fa-lg" aria-hidden="true"></i>
+                        </button>
+                        <h4 class="modal-title">Выберите дату</h4>
+                    </div>
+                    {!! Form::open(array('route' => 'uploadWork','method'=>'POST')) !!}
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            {!! Form::label('data', 'Дата:',['class'=>'col-xs-2 control-label']) !!}
+                            <div class="col-xs-8">
+                                {{ Form::date('data', \Carbon\Carbon::createFromFormat('Y-m-d', date('Y-m-d')),['class' => 'form-control']) }}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                        {!! Form::submit('Создать',['class'=>'btn btn-primary']) !!}
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="importWork" tabindex="-1" role="dialog" aria-labelledby="importWork" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -30,7 +58,7 @@
                         </button>
                         <h4 class="modal-title">Загрузка данных</h4>
                     </div>
-                    {!! Form::open(array('route' => 'importVisitor','method'=>'POST','files'=>'true')) !!}
+                    {!! Form::open(array('route' => 'importWork','method'=>'POST','files'=>'true')) !!}
                     <div class="modal-body">
 
                         <div class="form-group">
@@ -51,26 +79,36 @@
             </div>
         </div>
         <div class="col-md-12">
-            <h2 class="text-center">{{ $head }}</h2>
+            <h2 class="text-center">{{ $title }}</h2>
             @if($rows)
                 <div class="x_content">
-                    <a href="{{route('visitAdd')}}">
+                    <a href="{{route('workAdd')}}">
                         <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus green" aria-hidden="true"></i> Новая запись</button>
                     </a>
-                    <a href="{{ route('uploadVisit') }}" id="upload">
-                        <button type="button" class="btn btn-info btn-sm"><i class="fa fa-upload" aria-hidden="true"></i> Выгрузить в шаблон</button>
+                    <a href="#" id="upload">
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exportWork"><i class="fa fa-upload" aria-hidden="true"></i> Выгрузить в шаблон</button>
                     </a>
                     <a href="#" id="download">
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#importVisitor"><i class="fa fa-download" aria-hidden="true"></i> Загрузить из шаблона</button>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#importWork"><i class="fa fa-download" aria-hidden="true"></i> Загрузить из шаблона</button>
                     </a>
                 </div>
                 <div class="x_panel">
                     <table id="datatable" class="table table-striped table-bordered">
                         <thead>
                         <tr>
+                            <th>Юрлицо</th>
                             <th>Дата</th>
-                            <th>Период времени</th>
-                            <th>Кол-во посетителей</th>
+                            <th>10:00-11:00</th>
+                            <th>11:00-12:00</th>
+                            <th>12:00-13:00</th>
+                            <th>13:00-14:00</th>
+                            <th>14:00-15:00</th>
+                            <th>15:00-16:00</th>
+                            <th>16:00-17:00</th>
+                            <th>17:00-18:00</th>
+                            <th>18:00-19:00</th>
+                            <th>19:00-20:00</th>
+                            <th>20:00-21:00</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -79,9 +117,19 @@
                         @foreach($rows as $k => $row)
 
                             <tr>
+                                <td>{{ $row->renter->name }}</td>
                                 <td>{{ $row->data }}</td>
-                                <td>{{ $row->hours }}</td>
-                                <td>{{ $row->ucount }}</td>
+                                <td>{{ $row->period1 }}</td>
+                                <td>{{ $row->period2 }}</td>
+                                <td>{{ $row->period3 }}</td>
+                                <td>{{ $row->period4 }}</td>
+                                <td>{{ $row->period5 }}</td>
+                                <td>{{ $row->period6 }}</td>
+                                <td>{{ $row->period7 }}</td>
+                                <td>{{ $row->period8 }}</td>
+                                <td>{{ $row->period9 }}</td>
+                                <td>{{ $row->period10 }}</td>
+                                <td>{{ $row->period11 }}</td>
 
                                 <td style="width:110px;">
                                     <div class="form-group" role="group">
@@ -120,7 +168,7 @@
             if (x) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('deleteVisit') }}',
+                    url: '{{ route('deleteWork') }}',
                     data: {'id':id},
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

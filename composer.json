@@ -14,7 +14,8 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.6",
         "maatwebsite/excel": "^3.0",
-        "nwidart/laravel-modules": "^6.2"
+        "nwidart/laravel-modules": "^6.2",
+        "phpoffice/phpspreadsheet": "^1.10"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

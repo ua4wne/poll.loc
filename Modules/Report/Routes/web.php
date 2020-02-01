@@ -22,6 +22,9 @@ Route::middleware(['auth'])->group(function() {
 
         Route::get('/connections',['uses'=>'InetConnectionController@index','as'=>'inet-conn']);
 
+        Route::get('/visit',['uses'=>'VisitController@index','as'=>'visit-report']);
+        Route::get('/work',['uses'=>'WorkController@index','as'=>'work-report']);
+
     });
 
 });

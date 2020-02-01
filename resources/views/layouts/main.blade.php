@@ -86,8 +86,8 @@
                                 <li><a><i class="fa fa-bar-chart-o"></i> Отчеты <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Анкетирование</a></li>
-                                        <li><a href="#">Посещаемость выставки</a></li>
-                                        <li><a href="#">Присутствие на выставке</a></li>
+                                        <li><a href="{{ route('visit-report') }}">Посещаемость выставки</a></li>
+                                        <li><a href="{{ route('work-report') }}">Присутствие на выставке</a></li>
                                         @if(\App\User::hasRole('admin') || \App\User::hasRole('director'))
                                         <li><a href="{{ route('it-cost') }}">Затраты ИТ</a></li>
                                         @endif
@@ -104,7 +104,7 @@
                                 <li><a><i class="fa fa-table" aria-hidden="true"></i> Посещение <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Присутствие на выставке</a></li>
+                                        <li><a href="{{ route('works') }}">Присутствие на выставке</a></li>
                                         <li><a href="{{ route('visits') }}">Посещение выставки</a></li>
                                     </ul>
                                 </li>
