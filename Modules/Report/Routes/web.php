@@ -22,8 +22,12 @@ Route::middleware(['auth'])->group(function() {
 
         Route::get('/connections',['uses'=>'InetConnectionController@index','as'=>'inet-conn']);
 
-        Route::get('/visit',['uses'=>'VisitController@index','as'=>'visit-report']);
-        Route::get('/work',['uses'=>'WorkController@index','as'=>'work-report']);
+        Route::match(['get','post'],'/visit',['uses'=>'VisitController@index','as'=>'visit-report']);
+        Route::post('/visit-table',['uses'=>'VisitController@table','as'=>'visitTable']);
+        Route::post('/analise',['uses'=>'VisitController@analise','as'=>'analise']);
+
+        Route::match(['get','post'],'/work',['uses'=>'WorkController@index','as'=>'work-report']);
+        Route::post('/rentsel',['uses'=>'WorkController@select','as'=>'rentsel']);
 
     });
 
