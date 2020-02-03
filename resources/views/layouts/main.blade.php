@@ -113,7 +113,7 @@
                                 <li><a><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Энергоучет <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Счетчики общие</a></li>
+                                        <li><a href="{{ route('main-counter') }}">Счетчики общие</a></li>
                                         <li><a href="#">Собственные счетчики</a></li>
                                         <li><a href="#">Счетчики арендаторов</a></li>
                                         <li><a href="#">Начальные показания <span class="fa fa-chevron-down"></span></a>
