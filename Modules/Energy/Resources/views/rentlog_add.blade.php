@@ -17,7 +17,7 @@
         <div class="row">
             <div class="alert alert-success panel-remove col-xs-offset-2 col-xs-8">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
-                {{ session('status') }}
+                {!! session('status') !!}
             </div>
         </div>
     @endif
@@ -25,13 +25,13 @@
         <div class="row">
             <div class="alert alert-danger panel-remove col-xs-offset-2 col-xs-8">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
-                {{ session('error') }}
+                {!! session('error') !!}
             </div>
         </div>
     @endif
     <div class="x_content">
         <h2 class="text-center">{{ $title }}</h2>
-        {!! Form::open(['url' => route('add_rentVal'),'class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
+        {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
 
         <div class="form-group">
             {!! Form::label('place_id', 'Территория:',['class'=>'col-xs-2 control-label']) !!}
@@ -77,6 +77,9 @@
         </div>
 
         {!! Form::close() !!}
+        <div class="x_panel">
+        <div id="tbl"></div>
+        </div>
     </div>
     </div>
 @endsection
@@ -87,13 +90,14 @@
         //select2
         $('.select2').css('width','100%').select2({allowClear:false})
 
+        $("#place_id :first").attr("selected", "selected");
         $("#renter_id").prepend($('<option value="0">Выберите арендатора</option>'));
         $("#renter_id :first").attr("selected", "selected");
         $("#renter_id :first").attr("disabled", "disabled");
 
         $('#place_id').change(function() {
             // отправляем AJAX запрос
-            var selrent=$("#place_id").val();
+            let selrent=$("#place_id").val();
             $.ajax({
                 type: "POST",
                 url: "{{ route('sel_renters') }}",
@@ -103,15 +107,35 @@
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                 },
                 // success - это обработчик удачного выполнения событий
-                success: function(response) {
+                success: function(res) {
                     //alert("Сервер вернул вот что: " + response);
-                    document.getElementById('renter_id').innerHTML = response;
+                    //document.getElementById('renter_id').innerHTML = res;
+                    $('#renter_id').html(res);
+                    $('#renter_id').change();
                 }
             });
         });
 
-        $('#submit').click(function () {
-            //e.preventDefault();
+        $('#renter_id').change(function(){
+            let renter_id = $('#renter_id').val();
+            $.ajax({
+                type: "POST",
+                url: "{{ route('table_renter') }}",
+                dataType: "html",
+                data: {renter_id:renter_id},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                // success - это обработчик удачного выполнения событий
+                success: function(res) {
+                    //alert("Сервер вернул вот что: " + response);
+                    $('#tbl').html(res);
+                }
+            });
+        });
+
+        $('#submit').click(function (e) {
+            e.preventDefault();
             let error = 0;
             $("#new_val").find(":input").each(function () {// проверяем каждое поле ввода в форме
                 if ($(this).attr("required") == 'required') { //обязательное для заполнения поле формы?
@@ -128,7 +152,29 @@
                 alert("Необходимо заполнять все доступные поля!");
                 return false;
             }
-            return true;
+            $.ajax({
+                type: "POST",
+                url: "{{ route('add_rentVal') }}",
+                data: $('#new_val').serialize(),
+                // success - это обработчик удачного выполнения событий
+                success: function(res) {
+                    //alert("Сервер вернул вот что: " + res);
+                    if(res=='OK'){
+                        alert('Данные счетчика успешно добавлены!');
+                        $('#renter_id').change();
+                    }
+                    if(res=='ERR')
+                        alert('Возникла ошибка при попытке записи данных!');
+                    if(res==0)
+                        alert('Отсутствует показание счетчика за предыдущий месяц!');
+                    if(res==1)
+                        alert('Предыдущее показание счетчика арендатора больше, чем текущее!');
+                    if(res==2)
+                        alert('Предыдущее показание счетчика арендатора меньше, чем текущее!');
+                    $('#encount').focus();
+                    $('#encount').val('');
+                }
+            });
         });
     </script>
 @endsection

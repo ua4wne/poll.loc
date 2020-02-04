@@ -24,6 +24,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/renters-counter',['uses'=>'RentersCounterController@index','as'=>'renters-counter']);
         Route::match(['get','post'],'/rentlog/add',['uses'=>'RentersCounterController@create','as'=>'add_rentVal']);
         Route::post('/selrenters',['uses'=>'RentersCounterController@select','as'=>'sel_renters']);
+        Route::post('/tblrenter',['uses'=>'RentersCounterController@table','as'=>'table_renter']);
 
     });
 

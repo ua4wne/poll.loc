@@ -2,6 +2,7 @@
 
 namespace Modules\Energy\Entities;
 
+use App\Models\Renter;
 use Illuminate\Database\Eloquent\Model;
 
 class EnergyLog extends Model
@@ -11,8 +12,8 @@ class EnergyLog extends Model
 
     protected $fillable = ['renter_id','year','month','encount','delta','price'];
 
-    public function renter()
+    public function renter($id)
     {
-        return $this->belongsTo('App\Models\Renter');
+        return Renter::find($id);
     }
 }

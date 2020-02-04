@@ -16,7 +16,6 @@ class CreateEnergylogsTable extends Migration
         Schema::create('energylogs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('renter_id')->unsigned();
-            $table->foreign('renter_id')->references('id')->on('renters');
             $table->string('year',4);
             $table->string('month',2);
             $table->float('encount');
