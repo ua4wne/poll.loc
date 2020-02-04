@@ -3,6 +3,7 @@
 namespace Modules\Energy\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Admin\Entities\Ecounter;
 
 class MainLog extends Model
 {
@@ -15,4 +16,5 @@ class MainLog extends Model
     {
         return $this->belongsTo('Modules\Admin\Entities\Ecounter');
     }
+
 }

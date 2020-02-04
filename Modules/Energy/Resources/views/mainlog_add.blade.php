@@ -15,7 +15,7 @@
     <!-- page content -->
     @if (session('status'))
         <div class="row">
-            <div class="alert alert-success panel-remove">
+            <div class="alert alert-success panel-remove col-xs-offset-2 col-xs-8">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 {{ session('status') }}
             </div>
@@ -23,7 +23,7 @@
     @endif
     @if (session('error'))
         <div class="row">
-            <div class="alert alert-danger panel-remove">
+            <div class="alert alert-danger panel-remove col-xs-offset-2 col-xs-8">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 {{ session('error') }}
             </div>
@@ -32,7 +32,8 @@
     <div class="x_content">
         <h2 class="text-center">{{ $title }}</h2>
         <div class="row">
-            <div class="alert alert-info col-xs-offset-2 col-xs-8"><p class="text-center">Для главного счетчика вводим его фактическое потребление. Для остальных счетчиков вводим их показания!</p></div>
+            <div class="alert alert-warning col-xs-offset-2 col-xs-8"><p class="text-center">Для главного счетчика вводим
+                    его фактическое потребление. Для остальных счетчиков вводим их показания!</p></div>
         </div>
         {!! Form::open(['url' => route('add_mainVal'),'class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
 
@@ -73,29 +74,27 @@
         </div>
 
         {!! Form::close() !!}
-
     </div>
     </div>
 @endsection
 
 @section('user_script')
     <script>
-        $('#submitt').click(function(){
+        $('#submit').click(function () {
             //e.preventDefault();
-            let error=0;
-            $("#new_val").find(":input").each(function() {// проверяем каждое поле ввода в форме
-                if($(this).attr("required")=='required'){ //обязательное для заполнения поле формы?
-                    if(!$(this).val()){// если поле пустое
+            let error = 0;
+            $("#new_val").find(":input").each(function () {// проверяем каждое поле ввода в форме
+                if ($(this).attr("required") == 'required') { //обязательное для заполнения поле формы?
+                    if (!$(this).val()) {// если поле пустое
                         $(this).css('border', '1px solid red');// устанавливаем рамку красного цвета
-                        error=1;// определяем индекс ошибки
-                    }
-                    else{
+                        error = 1;// определяем индекс ошибки
+                    } else {
                         $(this).css('border', '1px solid green');// устанавливаем рамку зеленого цвета
                     }
 
                 }
             })
-            if(error){
+            if (error) {
                 alert("Необходимо заполнять все доступные поля!");
                 return false;
             }

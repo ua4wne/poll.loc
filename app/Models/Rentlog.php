@@ -25,6 +25,11 @@ class Rentlog extends Model
         return $renters;
     }
 
+    //выборка всех действующих арендаторов в зависимости от площадки
+    public static function GetActiveRentersByPlace($place_id){
+        return Renter::select(['id','title','area'])->where(['status'=>1,'place_id'=>$place_id])->orderBy('title', 'asc')->get();
+    }
+
     //сохраняем данные по присутствию арендаторов на выставке в базу
     public function SaveData($alltime,$notime,$periods)
     {
