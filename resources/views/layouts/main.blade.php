@@ -62,8 +62,8 @@
                                 <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i> Документы <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Расчет по арендатору</a></li>
-                                        <li><a href="#">Расчет за период</a></li>
+                                        <li><a href="{{ route('rent-calculate') }}">Расчет по арендатору</a></li>
+                                        <li><a href="{{ route('rent-period') }}">Расчет за период</a></li>
                                         <li><a href="{{ route('inet-conn') }}">Подключения к интернет</a></li>
                                     </ul>
                                 </li>
@@ -118,12 +118,12 @@
                                         <li><a href="{{ route('renters-counter') }}">Счетчики арендаторов</a></li>
                                         <li><a href="#">Начальные показания <span class="fa fa-chevron-down"></span></a>
                                             <ul class="nav child_menu">
-                                                <li><a href="#">Счетчики общие</a></li>
-                                                <li><a href="#">Собственные счетчики</a></li>
-                                                <li><a href="#">Счетчики арендаторов</a></li>
+                                                <li><a href="{{ route('initmain') }}">Счетчики общие</a></li>
+                                                <li><a href="{{ route('initown') }}">Собственные счетчики</a></li>
+                                                <li><a href="{{ route('initcounter') }}">Счетчики арендаторов</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Расчет потребления</a></li>
+                                        <li><a href="{{ route('billing') }}">Расчет потребления</a></li>
                                     </ul>
                                 </li>
                                 @endif

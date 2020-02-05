@@ -46,19 +46,13 @@ class LibController extends Controller
         foreach ($models as $model){
             $content.='<tr><td>'.$model->name.'</td>';
             $logs = MainLog::select(['month','delta'])->where(['ecounter_id'=>$model->id,'year'=>$year])->orderBy('month','asc')->get();
+            $temps = array(1=>0,0,0,0,0,0,0,0,0,0,0,0);
             //return print_r($logs);
-            $k=1;
             foreach($logs as $log){
-                if((int)$log->month == $k){
-                    $content .='<td>'.$log->delta.'</td>';
-                }
-                else
-                    $content .='<td>0</td>';
-                $k++;
+                $temps[(int)$log->month] = $log->delta;
             }
-            while($k<13){
-                $content .='<td>0</td>';
-                $k++;
+            foreach ($temps as $val){
+                $content .='<td>'.$val.'</td>';
             }
             $content .='</tr>';
             //считаем потери
@@ -98,7 +92,7 @@ class LibController extends Controller
 
     //показания собственных счетчиков в таблицу
     public static function GetOwnEnergyTable($year){
-        $data = array(1=>0,0,0,0,0,0,0,0,0,0,0,0); //показания собственных счетчиков, нумерация с 1
+        //$data = array(1=>0,0,0,0,0,0,0,0,0,0,0,0); //показания собственных счетчиков, нумерация с 1
         $content='<table class="table table-hover table-striped">
             <tr><th>Счетчик</th><th>Январь</th><th>Февраль</th><th>Март</th><th>Апрель</th><th>Май</th><th>Июнь</th><th>Июль</th><th>Август</th><th>Сентябрь</th>
                 <th>Октябрь</th><th>Ноябрь</th><th>Декабрь</th>
@@ -107,30 +101,24 @@ class LibController extends Controller
         foreach ($models as $model){
             $content.='<tr><td>'.$model->name.'</td>';
             $logs = OwnLog::select(['month','delta'])->where(['own_ecounter_id'=>$model->id,'year'=>$year])->orderBy('month','asc')->get();
+            $temps = array(1=>0,0,0,0,0,0,0,0,0,0,0,0);
             //return print_r($logs);
-            $k=1;
             foreach($logs as $log){
-                if((int)$log->month == $k){
-                    $content .='<td>'.$log->delta.'</td>';
-                }
-                else
-                    $content .='<td>0</td>';
-                $k++;
+                $temps[(int)$log->month] = $log->delta;
             }
-            while($k<13){
-                $content .='<td>0</td>';
-                $k++;
+            foreach ($temps as $val){
+                $content .='<td>'.$val.'</td>';
             }
             $content .='</tr>';
             //считаем потери
-            $k=1;
+            /*$k=1;
             foreach ($logs as $log) {
                     if ((int)$log->month == $k)
                         $data[$k] = $data[$k] + $log->delta;
                     else
                         $data[$k] = $data[$k] + 0;
                     $k++;
-                }
+                }*/
         }
         $content.='</table>';
         return $content;

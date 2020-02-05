@@ -168,17 +168,12 @@ class RentersCounterController extends Controller
         $content .= '<tr><td>' . $renter->name .' (' . $renter->area . ')</td>';
         $logs = EnergyLog::select(['month', 'delta'])->where(['renter_id' => $renter_id, 'year' => $year])->orderBy('month', 'asc')->get();
         //return print_r($logs);
-        $k = 1;
-        foreach ($logs as $log) {
-            if ((int)$log->month == $k) {
-                $content .= '<td>' . $log->delta . '</td>';
-            } else
-                $content .= '<td>0</td>';
-            $k++;
+        foreach($logs as $log){
+            $data[(int)$log->month] = $log->delta;
         }
-        while ($k < 13) {
-            $content .= '<td>0</td>';
-            $k++;
+        //return print_r($data);
+        foreach ($data as $val){
+            $content .='<td>'.$val.'</td>';
         }
         $content .= '</tr>';
         $content .= '</table>';

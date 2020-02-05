@@ -26,6 +26,14 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/selrenters',['uses'=>'RentersCounterController@select','as'=>'sel_renters']);
         Route::post('/tblrenter',['uses'=>'RentersCounterController@table','as'=>'table_renter']);
 
+        Route::match(['get','post'],'/initmain',['uses'=>'InitMainController@index','as'=>'initmain']);
+        Route::match(['get','post'],'/initown',['uses'=>'InitOwnController@index','as'=>'initown']);
+        Route::match(['get','post'],'/initcounter',['uses'=>'InitCounterController@index','as'=>'initcounter']);
+
+        Route::get('/billing',['uses'=>'BillingController@index','as'=>'billing']);
+        Route::match(['get','post'],'/rent-calculate',['uses'=>'BillingController@calculate','as'=>'rent-calculate']);
+        Route::match(['get','post'],'/rent-period',['uses'=>'BillingController@period','as'=>'rent-period']);
+
     });
 
 });
