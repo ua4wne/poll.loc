@@ -30,7 +30,7 @@
                 <div class="x_content">
                     <a class="btn btn-primary" href="#" id="send-mail">
                         <i class="fa fa-envelope-o"></i> Отправить</a>
-                    <a class="btn btn-primary" href="#" id="report">
+                    <a class="btn btn-primary" href="{{ route('energy_report') }}" id="report">
                         <i class="fa fa-file-excel-o"></i> Скачать</a>
                 </div>
                 <div class="x_panel">
@@ -71,13 +71,6 @@
             e.preventDefault();
             $("#loader").show();
             alert('Send mail');
-            $("#loader").hide();
-        });
-
-        $('#report').click(function(e){
-            e.preventDefault();
-            $("#loader").show();
-            alert('Report');
             $("#loader").hide();
         });
 

@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/billing',['uses'=>'BillingController@index','as'=>'billing']);
         Route::match(['get','post'],'/rent-calculate',['uses'=>'BillingController@calculate','as'=>'rent-calculate']);
         Route::match(['get','post'],'/rent-period',['uses'=>'BillingController@period','as'=>'rent-period']);
+        Route::get('/report',['uses'=>'BillingController@report','as'=>'energy_report']);
+        Route::post('/viamail',['uses'=>'BillingController@viamail','as'=>'energy_mail']);
 
     });
 
