@@ -29,6 +29,21 @@ Route::middleware(['auth'])->group(function() {
         Route::match(['get','post'],'/work',['uses'=>'WorkController@index','as'=>'work-report']);
         Route::post('/rentsel',['uses'=>'WorkController@select','as'=>'rentsel']);
 
+        Route::get('/main-report',['uses'=>'MainCounterController@index','as'=>'cnt-main-report']);
+        Route::post('/main-graph',['uses'=>'MainCounterController@graph','as'=>'main-graph']);
+        Route::post('/main-pie',['uses'=>'MainCounterController@pie_graph','as'=>'main-pie']);
+        Route::post('/main-table',['uses'=>'MainCounterController@table','as'=>'main-table']);
+
+        Route::get('/own-report',['uses'=>'OwnCounterController@index','as'=>'own-report']);
+        Route::post('/own-graph',['uses'=>'OwnCounterController@graph','as'=>'own-graph']);
+        Route::post('/own-pie',['uses'=>'OwnCounterController@pie_graph','as'=>'own-pie']);
+        Route::post('/own-table',['uses'=>'OwnCounterController@table','as'=>'own-table']);
+
+        Route::get('/rent-report',['uses'=>'RenterCounterController@index','as'=>'rent-report']);
+        Route::post('/rent-graph',['uses'=>'RenterCounterController@graph','as'=>'rent-graph']);
+        Route::post('/rent-pie',['uses'=>'RenterCounterController@pie_graph','as'=>'rent-pie']);
+        Route::post('/rent-table',['uses'=>'RenterCounterController@table','as'=>'rent-table']);
+
     });
 
 });

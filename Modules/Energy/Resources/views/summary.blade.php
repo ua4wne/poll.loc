@@ -8,20 +8,27 @@
     <!-- START BREADCRUMB -->
     <ul class="breadcrumb">
         <li><a href="{{ route('main') }}">Рабочий стол</a></li>
-        <li class="active"><a href="{{ route('rent-calculate') }}">{{ $head }}</a></li>
+        <li class="active"><a href="{{ route('summary') }}">{{ $head }}</a></li>
     </ul>
     <!-- END BREADCRUMB -->
     <div id="loader"></div> <!--  идентификатор загрузки (анимация) - ожидания выполнения-->
     <!-- page content -->
-    <h2 class="text-center" id="title">{{ $title }}</h2>
+    <h2 class="text-center">{{ $title }}</h2>
+    <p class="text-center text-info" id="title"></p>
     <div class="x_content" id="filter">
-        {!! Form::open(['url' => route('calc-excel'),'class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
+        {!! Form::open(['url' => route('summary_excel'),'class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
 
         <div class="form-group">
-            {!! Form::label('year','Год:',['class' => 'col-xs-2 control-label'])   !!}
+            {!! Form::label('start', 'Начало периода:',['class'=>'col-xs-2 control-label']) !!}
             <div class="col-xs-8">
-                {!! Form::text('year',$year,['class' => 'form-control','placeholder'=>'ГГГГ','required'=>'required','size'=>'4','id'=>'year'])!!}
-                {!! $errors->first('year', '<p class="text-danger">:message</p>') !!}
+                {{ Form::date('start', \Carbon\Carbon::createFromFormat('Y-m-d', date('Y-m-'.'01')),['class' => 'form-control','required' => 'required','id'=>'start']) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('finish', 'Конец периода:',['class'=>'col-xs-2 control-label']) !!}
+            <div class="col-xs-8">
+                {{ Form::date('finish', \Carbon\Carbon::createFromFormat('Y-m-d', date('Y-m-d')),['class' => 'form-control','required' => 'required','id'=>'finish']) }}
             </div>
         </div>
 
@@ -40,9 +47,18 @@
         </div>
 
         <div class="form-group">
+            {!! Form::label('email','E-mail получателя:',['class' => 'col-xs-2 control-label'])   !!}
+            <div class="col-xs-8">
+                {!! Form::email('email',old('email'),['class' => 'form-control','placeholder'=>'Введите e-mail','id'=>'email'])!!}
+                {!! $errors->first('email', '<p class="text-danger">:message</p>') !!}
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-xs-offset-2 col-xs-10">
                 {!! Form::button('<span class="fa  fa-bar-chart-o"></span> Сформировать', ['class' => 'btn btn-primary','type'=>'submit','id' => 'report','name' => 'report','value' => 'report']) !!}
                 {!! Form::button('<span class="fa  fa-table"></span> Скачать', ['class' => 'btn btn-primary','type'=>'submit','id' => 'export','name' => 'export','value' => 'export']) !!}
+                {!! Form::button('<span class="fa  fa-envelope-o"></span> Отправить', ['class' => 'btn btn-primary','type'=>'submit','id' => 'viamail','name' => 'viamail','value' => 'viamail']) !!}
             </div>
         </div>
 
@@ -108,7 +124,7 @@
             }
             $.ajax({
                 type: "POST",
-                url: "{{ route('rent-calculate') }}",
+                url: "{{ route('summary') }}",
                 data: $('#new_val').serialize(),
                 // success - это обработчик удачного выполнения событий
                 success: function(res) {
@@ -118,7 +134,51 @@
                     $('#result').empty();
                     $('.fa-plus-square-o').show();
                     $('#result').html(res);
-                    $('#title').text('Данные расчета счетчиков за '+$('#year').val()+' год.');
+                    $('#title').text('За период с '+$('#start').val()+' по '+$('#finish').val());
+                }
+            });
+            $('#loader').hide();
+        });
+
+        $('#viamail').click(function (e) {
+            e.preventDefault();
+            $('#loader').show();
+            let error = 0;
+            $("#new_val").find(":input").each(function () {// проверяем каждое поле ввода в форме
+                if ($(this).attr("required") == 'required') { //обязательное для заполнения поле формы?
+                    if (!$(this).val()) {// если поле пустое
+                        $(this).css('border', '1px solid red');// устанавливаем рамку красного цвета
+                        error = 1;// определяем индекс ошибки
+                    } else {
+                        $(this).css('border', '1px solid green');// устанавливаем рамку зеленого цвета
+                    }
+
+                }
+            })
+            if (error) {
+                alert("Необходимо заполнять все доступные поля!");
+                $('#loader').hide();
+                return false;
+            }
+            if ($('#email').val()=='') {
+                alert("Не указан e-mail!");
+                $('#loader').hide();
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "{{ route('summary_mail') }}",
+                data: $('#new_val').serialize(),
+                // success - это обработчик удачного выполнения событий
+                success: function(res) {
+                    //alert("Сервер вернул вот что: " + res);
+                    if(res=='OK'){
+                        alert('Почта успешно отправлена!');
+                    }
+                    if(res=='ERR')
+                        alert('Возникла ошибка при отправке почты!');
+                    if(res=='NO')
+                        alert('Файл отчета не обнаружен на сервере!');
                 }
             });
             $('#loader').hide();

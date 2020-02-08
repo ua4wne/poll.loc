@@ -21,7 +21,7 @@
         <div class="form-group">
             {!! Form::label('data', 'Дата:',['class'=>'col-xs-3 control-label']) !!}
             <div class="col-xs-8">
-                {{ Form::date('data', \Carbon\Carbon::createFromFormat('Y-m-d', date('Y-m-d')),['class' => 'form-control']) }}
+                {{ Form::date('data', \Carbon\Carbon::createFromFormat('Y-m-d', date('Y-m-d')),['class' => 'form-control','required' => 'required','id'=>'data']) }}
             </div>
         </div>
 

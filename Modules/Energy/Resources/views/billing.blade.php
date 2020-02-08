@@ -70,7 +70,25 @@
         $('#send-mail').click(function(e){
             e.preventDefault();
             $("#loader").show();
-            alert('Send mail');
+            $.ajax({
+                type: "POST",
+                url: "{{ route('energy_mail') }}",
+                data: {type:'mail'},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                // success - это обработчик удачного выполнения событий
+                success: function(res) {
+                    //alert("Сервер вернул вот что: " + response);
+                    if(res=='OK'){
+                        alert('Почта успешно отправлена!');
+                    }
+                    if(res=='ERR')
+                        alert('Возникла ошибка при отправке почты!');
+                    if(res=='NO')
+                        alert('Файл отчета не обнаружен на сервере!');
+                }
+            });
             $("#loader").hide();
         });
 

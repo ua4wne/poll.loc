@@ -32,9 +32,12 @@ Route::middleware(['auth'])->group(function() {
 
         Route::get('/billing',['uses'=>'BillingController@index','as'=>'billing']);
         Route::match(['get','post'],'/rent-calculate',['uses'=>'BillingController@calculate','as'=>'rent-calculate']);
-        Route::match(['get','post'],'/rent-period',['uses'=>'BillingController@period','as'=>'rent-period']);
+        Route::match(['get','post'],'/calc-excel',['uses'=>'BillingController@calcExcel','as'=>'calc-excel']);
+        Route::match(['get','post'],'/summary',['uses'=>'BillingController@summary','as'=>'summary']);
+        Route::post('/summary-excel',['uses'=>'BillingController@summaryExcel','as'=>'summary_excel']);
         Route::get('/report',['uses'=>'BillingController@report','as'=>'energy_report']);
         Route::post('/viamail',['uses'=>'BillingController@viamail','as'=>'energy_mail']);
+        Route::post('/summary-mail',['uses'=>'BillingController@summaryMail','as'=>'summary_mail']);
 
     });
 

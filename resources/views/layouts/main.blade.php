@@ -63,7 +63,7 @@
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('rent-calculate') }}">Расчет по арендатору</a></li>
-                                        <li><a href="{{ route('rent-period') }}">Расчет за период</a></li>
+                                        <li><a href="{{ route('summary') }}">Расчет за период</a></li>
                                         <li><a href="{{ route('inet-conn') }}">Подключения к интернет</a></li>
                                     </ul>
                                 </li>
@@ -93,9 +93,9 @@
                                         @endif
                                         <li><a href="#">Потребление эл. энергии <span class="fa fa-chevron-down"></span></a>
                                             <ul class="nav child_menu">
-                                                <li><a href="#">Счетчики общие</a></li>
-                                                <li><a href="#">Счетчики арендаторов</a></li>
-                                                <li><a href="#">Собственное потребление</a></li>
+                                                <li><a href="{{ route('cnt-main-report') }}">Счетчики общие</a></li>
+                                                <li><a href="{{ route('rent-report') }}">Счетчики арендаторов</a></li>
+                                                <li><a href="{{ route('own-report') }}">Собственное потребление</a></li>
                                             </ul>
                                         </li>
                                     </ul>

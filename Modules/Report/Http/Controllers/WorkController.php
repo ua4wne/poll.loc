@@ -25,8 +25,7 @@ class WorkController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index(Request $request
-    )
+    public function index(Request $request)
     {
         if(!Role::granted('view_report')){
             abort(503);
