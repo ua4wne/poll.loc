@@ -45,4 +45,15 @@ Route::middleware(['auth'])->group(function() {
         //tvsources/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\TvsourceController@delete','as'=>'deleteTvsource']);
     });
+
+    //forms/ группа обработки роутов forms
+    Route::group(['prefix'=>'forms'], function(){
+        Route::get('/',['uses'=>'FormController@index','as'=>'forms']);
+        //forms/add
+        Route::match(['get','post'],'/add',['uses'=>'FormController@create','as'=>'formAdd']);
+        //forms/ajax/edit
+        Route::post('/ajax/edit',['uses'=>'Ajax\FormController@edit','as'=>'editForm']);
+        //forms/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\FormController@delete','as'=>'deleteForm']);
+    });
 });

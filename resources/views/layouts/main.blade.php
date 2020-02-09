@@ -76,13 +76,15 @@
                                         @endif
                                     </ul>
                                 </li>
+                                @if(\App\User::hasRole('admin') || \App\User::hasRole('market') || \App\User::hasRole('guard'))
                                 <li><a><i class="fa fa-users" aria-hidden="true"></i> Маркетинг <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Анкеты</a></li>
+                                        <li><a href="{{ route('forms') }}">Анкеты</a></li>
                                         <li><a href="#">Источники медиарекламы</a></li>
                                     </ul>
                                 </li>
+                                @endif
                                 <li><a><i class="fa fa-bar-chart-o"></i> Отчеты <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#">Анкетирование</a></li>
