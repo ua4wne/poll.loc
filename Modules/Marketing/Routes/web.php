@@ -56,4 +56,15 @@ Route::middleware(['auth'])->group(function() {
         //forms/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\FormController@delete','as'=>'deleteForm']);
     });
+
+    //questions/ группа обработки роутов questions
+    Route::group(['prefix'=>'questions'], function(){
+        Route::get('/{id}',['uses'=>'QuestionController@index','as'=>'questions']);
+        //questions/add
+        Route::match(['get','post'],'/add',['uses'=>'QuestionController@create','as'=>'questionAdd']);
+        //questions/ajax/edit
+        Route::post('/ajax/edit',['uses'=>'Ajax\QuestionController@edit','as'=>'editQuestion']);
+        //questions/ajax/delete
+        Route::post('/ajax/delete',['uses'=>'Ajax\QuestionController@delete','as'=>'deleteQuestion']);
+    });
 });

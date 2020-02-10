@@ -12,9 +12,10 @@ class QuestionController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index($id)
     {
-        return view('marketing::index');
+        return 'Questions - '.$id;
+        //return view('marketing::index');
     }
 
     /**

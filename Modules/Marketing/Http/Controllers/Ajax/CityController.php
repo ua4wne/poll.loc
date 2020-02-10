@@ -20,7 +20,7 @@ class CityController extends Controller
             if(!User::hasRole('admin')){//вызываем event
                 $msg = 'Попытка изменения записи '.$city->name. ' справочника городов.';
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                event(new AddEventLogs('access',Auth::id(),$msg,$ip));
                 return 'NO';
             }
             if($city->update()){

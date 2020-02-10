@@ -20,8 +20,9 @@
             </div>
         </div>
     @endif
+    <div id="loader"></div> <!--  идентификатор загрузки (анимация) - ожидания выполнения-->
     <div class="row">
-        <div class="modal fade" id="editMaterial" tabindex="-1" role="dialog" aria-labelledby="editMaterial" aria-hidden="true">
+        <div class="modal fade" id="editAnket" tabindex="-1" role="dialog" aria-labelledby="editAnket" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -31,11 +32,11 @@
                         <h4 class="modal-title">Редактирование записи</h4>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['url' => '#','id'=>'edit_material','class'=>'form-horizontal','method'=>'POST']) !!}
+                        {!! Form::open(['url' => '#','id'=>'edit_anket','class'=>'form-horizontal','method'=>'POST']) !!}
 
                         <div class="form-group">
                             <div class="col-xs-10">
-                                {!! Form::hidden('id','',['class' => 'form-control','required'=>'required','id'=>'material_id']) !!}
+                                {!! Form::hidden('id','',['class' => 'form-control','required'=>'required','id'=>'form_id']) !!}
                             </div>
                         </div>
 
@@ -44,6 +45,20 @@
                             <div class="col-xs-8">
                                 {!! Form::text('name',old('name'),['class' => 'form-control','placeholder'=>'Введите наименование','required'=>'required','id'=>'name'])!!}
                                 {!! $errors->first('name', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('is_active', 'Статус активности:',['class'=>'col-xs-3 control-label']) !!}
+                            <div class="col-xs-8">
+                                {!! Form::select('is_active', ['0'=>'Не активная','1'=>'Активная'], old('is_active'),['class' => 'form-control','required' => 'required','id'=>'is_active']); !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('is_work', 'Видимость анкеты:',['class'=>'col-xs-3 control-label']) !!}
+                            <div class="col-xs-8">
+                                {!! Form::select('is_work', ['0'=>'Отключена','1'=>'В работе'], old('is_work'),['class' => 'form-control','required' => 'required','id'=>'is_work']); !!}
                             </div>
                         </div>
 
@@ -56,12 +71,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <h2 class="text-center">{{ $head }}</h2>
             @if($rows)
                 <div class="x_content">
-                    <a href="{{route('materialAdd')}}">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus green" aria-hidden="true"></i> Новая запись</button>
+                    <a href="{{route('formAdd')}}">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus green" aria-hidden="true"></i> Новая анкета</button>
                     </a>
                 </div>
                 <div class="x_panel">
@@ -69,6 +84,8 @@
                         <thead>
                         <tr>
                             <th>Наименование</th>
+                            <th>Статус активности</th>
+                            <th>Видимость анкеты</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -78,10 +95,22 @@
 
                             <tr>
                                 <td>{{ $row->name }}</td>
+                                @if($row->is_active)
+                                    <td><span role="button" class="label label-success">Активная</span></td>
+                                @else
+                                    <td><span role="button" class="label label-danger">Не активная</span></td>
+                                @endif
+                                @if($row->is_work)
+                                    <td><span role="button" class="label label-success">В работе</span></td>
+                                @else
+                                    <td><span role="button" class="label label-danger">Отключена</span></td>
+                                @endif
 
-                                <td style="width:110px;">
+                                <td style="width:220px;">
                                     <div class="form-group" role="group">
-                                        {!! Form::button('<i class="fa fa-edit fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-success btn-sm btn_edit','type'=>'button','title'=>'Редактироватьть запись','data-toggle'=>'modal','data-target'=>'#editMaterial','id'=>$row->id]) !!}
+                                        <a href="{{ route('questions',[$row->id]) }}"><button class="btn btn-info btn_qst" type="button" title="Вопросы анкеты"><i class="fa fa-question-circle-o fa-lg>" aria-hidden="true"></i></button></a>
+                                        {!! Form::button('<i class="fa fa-eye fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-warning btn_view','type'=>'button','title'=>'Просмотр анкеты']) !!}
+                                        {!! Form::button('<i class="fa fa-edit fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-success btn_edit','type'=>'button','title'=>'Редактироватьть запись','data-toggle'=>'modal','data-target'=>'#editAnket','id'=>$row->id]) !!}
                                         {!! Form::button('<i class="fa fa-trash-o fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-danger btn_del','type'=>'button','title'=>'Удалить запись']) !!}
                                     </div>
                                     {!! Form::close() !!}
@@ -118,7 +147,7 @@
         $('#save').click(function(e){
             e.preventDefault();
             let error=0;
-            $("#edit_material").find(":input").each(function() {// проверяем каждое поле ввода в форме
+            $("#edit_anket").find(":input").each(function() {// проверяем каждое поле ввода в форме
                 if($(this).attr("required")=='required'){ //обязательное для заполнения поле формы?
                     if(!$(this).val()){// если поле пустое
                         $(this).css('border', '1px solid red');// устанавливаем рамку красного цвета
@@ -137,19 +166,14 @@
             else{
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('editMaterial') }}',
-                    data: $('#edit_material').serialize(),
+                    url: '{{ route('editForm') }}',
+                    data: $('#edit_anket').serialize(),
                     success: function(res){
                         //alert(res);
                         if(res=='OK')
                             location.reload(true);
                         if(res=='ERR')
                             alert('Ошибка обновления данных.');
-                        if(res=='NO')
-                            alert('Выполнение операции запрещено!');
-                        else{
-                            alert('Ошибка валидации данных');
-                        }
                     }
                 });
             }
@@ -157,19 +181,24 @@
 
         $('.btn_edit').click(function(){
             let id = $(this).attr("id");
-            let name = $(this).parent().parent().prevAll().eq(0).text();
+            let name = $(this).parent().parent().prevAll().eq(2).text();
+            let isactive = $(this).parent().parent().prevAll().eq(1).text();
+            let iswork = $(this).parent().parent().prevAll().eq(0).text();
 
             $('#name').val(name);
-            $('#material_id').val(id);
+            $('#form_id').val(id);
+            $("#is_active :contains('"+isactive+"')").attr("selected", "selected");
+            $("#is_work :contains('"+iswork+"')").attr("selected", "selected");
         });
 
         $('.btn_del').click(function(){
             let id = $(this).prev().attr("id");
-            let x = confirm("Выбранная запись будет удалена. Продолжить (Да/Нет)?");
+            let x = confirm("Выбранная анкета будет удалена безвозвратно со всей имеющейся статистикой. Продолжить (Да/Нет)?");
+            $("#loader").show();
             if (x) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('deleteMaterial') }}',
+                    url: '{{ route('deleteForm') }}',
                     data: {'id':id},
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -180,12 +209,16 @@
                             $('#'+id).parent().parent().parent().hide();
                         if(res=='NO')
                             alert('Выполнение операции запрещено!');
-                    }
+                    },
+                    error: function (xhr, response) {
+                    alert('Error! ' + xhr.responseText);
+                }
                 });
             }
             else {
                 return false;
             }
+            $("#loader").hide();
         });
 
     </script>
