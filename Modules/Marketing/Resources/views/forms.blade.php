@@ -108,7 +108,7 @@
 
                                 <td style="width:220px;">
                                     <div class="form-group" role="group">
-                                        <a href="{{ route('questions',[$row->id]) }}"><button class="btn btn-info btn_qst" type="button" title="Вопросы анкеты"><i class="fa fa-question-circle-o fa-lg>" aria-hidden="true"></i></button></a>
+                                        <a href="{{ route('questions',[$row->id]) }}"><button class="btn btn-info btn_qst" type="button" title="Вопросы анкеты"><i class="fa fa-list-ol fa-lg>" aria-hidden="true"></i></button></a>
                                         {!! Form::button('<i class="fa fa-eye fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-warning btn_view','type'=>'button','title'=>'Просмотр анкеты']) !!}
                                         {!! Form::button('<i class="fa fa-edit fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-success btn_edit','type'=>'button','title'=>'Редактироватьть запись','data-toggle'=>'modal','data-target'=>'#editAnket','id'=>$row->id]) !!}
                                         {!! Form::button('<i class="fa fa-trash-o fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-danger btn_del','type'=>'button','title'=>'Удалить запись']) !!}

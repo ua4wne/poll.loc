@@ -61,10 +61,19 @@ Route::middleware(['auth'])->group(function() {
     Route::group(['prefix'=>'questions'], function(){
         Route::get('/{id}',['uses'=>'QuestionController@index','as'=>'questions']);
         //questions/add
-        Route::match(['get','post'],'/add',['uses'=>'QuestionController@create','as'=>'questionAdd']);
+        Route::match(['get','post'],'/add/{id}',['uses'=>'QuestionController@create','as'=>'questionAdd']);
         //questions/ajax/edit
         Route::post('/ajax/edit',['uses'=>'Ajax\QuestionController@edit','as'=>'editQuestion']);
         //questions/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\QuestionController@delete','as'=>'deleteQuestion']);
+    });
+
+    //answers/ группа обработки роутов answers
+    Route::group(['prefix'=>'answers'], function(){
+        Route::get('/{id}',['uses'=>'AnswerController@index','as'=>'answers']);
+        //answers/add
+        Route::match(['get','post'],'/add/{id}',['uses'=>'AnswerController@create','as'=>'answerAdd']);
+        //answers/delete
+        Route::post('/delete',['uses'=>'AnswerController@delete','as'=>'deleteAnswer']);
     });
 });
