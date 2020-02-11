@@ -15,9 +15,9 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-header text-center">{{ $head }}</h2>
-
+            <p class="text-header text-center"></p>
             <div class="x_content">
-                {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST']) !!}
+                {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
 
                 <div class="form-group">
                     {!! Form::label('start', 'Начало периода:',['class'=>'col-xs-2 control-label']) !!}
@@ -36,7 +36,7 @@
                 <div class="form-group">
                     {!! Form::label('form_id', 'Выбор анкет:',['class'=>'col-xs-2 control-label']) !!}
                     <div class="col-xs-8">
-                        {!! Form::select('form_id', $formselect, old('form_id'),['class' => 'select2 form-control','required' => 'required','id'=>'form_id','multiple' => 'true']); !!}
+                        {!! Form::select('form_id', $formselect, old('form_id'),['class' => 'select2 form-control','required' => 'required','id'=>'form_id']); !!}
                     </div>
                 </div>
 
@@ -49,7 +49,8 @@
 
                 <div class="form-group">
                     <div class="col-xs-offset-2 col-xs-8">
-                        {!! Form::button('<span class="fa  fa-bar-chart-o"></span> Сформировать', ['class' => 'btn btn-primary','type'=>'submit','id'=>'form-report']) !!}
+                        {!! Form::button('<span class="fa  fa-bar-chart-o"></span> Сформировать', ['class' => 'btn btn-primary','type'=>'submit','id'=>'report']) !!}
+                        {!! Form::button('<span class="fa  fa-file-excel-o"></span> Скачать', ['class' => 'btn btn-primary','type'=>'submit','id' => 'export']) !!}
                     </div>
                 </div>
 
@@ -59,8 +60,7 @@
                onclick="$('.x_content').show(); $('#result').hide(); $('.fa-plus-square-o').hide(); return false;"><i
                     class="fa fa-plus-square-o fa-lg" aria-hidden="true"></i></a>
             <div class="x_panel" id="result">
-                <div class="pull-left" style="width: 70%;" id="chart-main"></div>
-                <div class="pull-right" style="width: 30%; height: 400px;" id="graph_pie"></div>
+                <div class="pull-center" style="width: 50%; height: 400px;" id="graph_pie"></div>
                 <div id="table-data"></div>
             </div>
 
@@ -71,73 +71,44 @@
 @endsection
 
 @section('user_script')
-    <script src="/js/raphael.min.js"></script>
-    <script src="/js/morris.min.js"></script>
+    <script src="/js/select2.min.js"></script>
     <script src="/js/gstatic_charts_loader.js"></script>
     <script>
-
+        $('.select2').css('width', '100%').select2({allowClear: false})
         $('#result').hide();
         $('.fa-plus-square-o').hide();
-        $('#main-report').click(function (e) {
+        $('#report').click(function (e) {
             e.preventDefault();
-            var year = $('#year').val();
-            if(year==''){
-                let dt = new Date();
-                year = dt.getFullYear();
-            }
             $.ajax({
-                url: '{{ route('rent-graph') }}',
+                url: '{{ route('anket-report') }}',
                 type: 'POST',
-                data: {'year': year},
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
+                data: $('#new_val').serialize(),
                 success: function (res) {
+                    $("p.text-header").text('за период с '+$('#start').val()+' по '+$('#finish').val()+' опрошено '+res+' человек');
                     $('#result').show();
                     //alert("Сервер вернул вот что: " + res);
-                    $("#chart-main").empty();
                     $("#graph_pie").empty();
-                    Morris.Line({
-                        element: 'chart-main',
-                        data: JSON.parse(res),
-                        xkey: 'm',
-                        ykeys: ['d','p'],
-                        labels: ['Потребление,кВт.','Стоимость, руб.']
-                    });
-                    $.ajax({
-                        url: '{{ route('rent-pie') }}',
-                        type: 'POST',
-                        data: {'year': year},
-                        headers: {
-                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function (res) {
-                            //alert("Сервер вернул вот что: " + res);
-                            var obj = jQuery.parseJSON(res);
-                            google.charts.load('current', {'packages': ['corechart']});
-                            google.charts.setOnLoadCallback(drawChart);
+                    //alert("Сервер вернул вот что: " + res);
+                    var obj = jQuery.parseJSON(res);
+                    google.charts.load('current', {'packages': ['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
 
-                            function drawChart() {
-                                var data = new google.visualization.DataTable();
-                                data.addColumn('string', 'counter');
-                                data.addColumn('number', 'cost');
-                                $.each(obj, function(key,value) {
-                                    data.addRow([
-                                        value.name,
-                                        parseFloat(value.delta),
-                                    ]);
-                                });
-                                var options = {
-                                    is3D: true,
-                                };
-                                var chart = new google.visualization.PieChart(document.getElementById('graph_pie'));
-                                chart.draw(data, options);
-                            }
-                        },
-                        error: function (xhr, response) {
-                            alert('Error! ' + xhr.responseText);
-                        }
-                    });
+                    function drawChart() {
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'counter');
+                        data.addColumn('number', 'cost');
+                        $.each(obj, function (key, value) {
+                            data.addRow([
+                                value.name,
+                                parseFloat(value.delta),
+                            ]);
+                        });
+                        var options = {
+                            is3D: true,
+                        };
+                        var chart = new google.visualization.PieChart(document.getElementById('graph_pie'));
+                        chart.draw(data, options);
+                    }
                     $.ajax({
                         url: '{{ route('rent-table') }}',
                         type: 'POST',
@@ -153,7 +124,7 @@
                             alert('Error! ' + xhr.responseText);
                         }
                     });
-                    $(".text-header").html('<h4>Отчет по потреблению арендаторов за ' + year + ' год</h4>');
+                    $("h2.text-header").text($('#form_id').text());
                     $('.x_content').hide();
                     $('.fa-plus-square-o').show();
                 },
