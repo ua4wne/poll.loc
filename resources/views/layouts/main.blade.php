@@ -80,14 +80,16 @@
                                 <li><a><i class="fa fa-users" aria-hidden="true"></i> Маркетинг <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
+                                        @if(\App\User::hasRole('admin') || \App\User::hasRole('market'))
                                         <li><a href="{{ route('forms') }}">Анкеты</a></li>
-                                        <li><a href="#">Источники медиарекламы</a></li>
+                                        @endif
+                                        <li><a href="{{ route('media_form') }}">Источники медиарекламы</a></li>
                                     </ul>
                                 </li>
                                 @endif
                                 <li><a><i class="fa fa-bar-chart-o"></i> Отчеты <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#">Анкетирование</a></li>
+                                        <li><a href="{{ route('anket-report') }}">Анкетирование</a></li>
                                         <li><a href="{{ route('visit-report') }}">Посещаемость выставки</a></li>
                                         <li><a href="{{ route('work-report') }}">Присутствие на выставке</a></li>
                                         @if(\App\User::hasRole('admin') || \App\User::hasRole('director'))

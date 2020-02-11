@@ -66,7 +66,7 @@ class QuestionController extends Controller
             $qst->fill($input);
             $qst->created_at = date('Y-m-d H:i:s');
             if($qst->save()){
-                $msg = 'Новый вопрос '. $qst['name'] .' добавлен в анкету '.$qst->form->name.'!';
+                $msg = 'Новый вопрос '. $qst->name .' добавлен в анкету '.$qst->form->name.'!';
                 $ip = $request->getClientIp();
                 //вызываем event
                 event(new AddEventLogs('info',Auth::id(),$msg,$ip));

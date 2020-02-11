@@ -14,7 +14,7 @@ class CreateLogformsTable extends Migration
     public function up()
     {
         Schema::create('logforms', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->date('data');
             $table->integer('form_id');
             $table->integer('question_id');

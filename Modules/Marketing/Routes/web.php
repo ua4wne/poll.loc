@@ -55,6 +55,8 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/ajax/edit',['uses'=>'Ajax\FormController@edit','as'=>'editForm']);
         //forms/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\FormController@delete','as'=>'deleteForm']);
+        //forms/media
+        Route::match(['get','post'],'/media',['uses'=>'FormController@media','as'=>'media_form']);
     });
 
     //questions/ группа обработки роутов questions

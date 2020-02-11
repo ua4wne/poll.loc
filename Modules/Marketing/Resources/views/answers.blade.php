@@ -37,7 +37,10 @@
                     <table id="my_datatable" class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>Наименование</th>
+                            <th>Вопрос</th>
+                            <th>Ответ</th>
+                            <th>Вид HTML</th>
+                            <th>Справочник</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -46,7 +49,10 @@
                         @foreach($rows as $k => $row)
 
                             <tr>
-                                <td>{!! $row->name !!}</td>
+                                <td>{{ $row->question->name }}</td>
+                                <td>{{ $row->name }}</td>
+                                <td>{!! $row->htmlcode !!}</td>
+                                <td>{{ $row->source }}</td>
 
                                 <td style="width:70px;">
                                     <div class="form-group" role="group">
@@ -77,7 +83,7 @@
 
         $('.btn_del').click(function(){
             let id = $(this).attr("id");
-            let x = confirm("Вопрос будет удален безвозвратно со всей имеющейся статистикой. Продолжить (Да/Нет)?");
+            let x = confirm("Ответ будет удален безвозвратно со всей имеющейся статистикой. Продолжить (Да/Нет)?");
             $("#loader").show();
             if (x) {
                 $.ajax({
@@ -100,6 +106,7 @@
                 });
             }
             else {
+                $("#loader").hide();
                 return false;
             }
             $("#loader").hide();
