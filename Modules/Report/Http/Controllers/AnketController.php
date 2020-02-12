@@ -11,6 +11,10 @@ use Modules\Marketing\Entities\Form;
 use Modules\Marketing\Entities\FormQty;
 use Modules\Marketing\Entities\Logform;
 use Modules\Marketing\Entities\Question;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class AnketController extends Controller
 {
@@ -28,20 +32,27 @@ class AnketController extends Controller
             $start = $input['start'];
             $finish = $input['finish'];
             $form_id = $input['form_id'];
+            if(isset($input['export'])){
+                if(!Role::granted('export')){
+                    abort(503);
+                }
+                return $this->export($form_id,$start,$finish);
+            }
             $data = array();
-            $pie = array();
             $qty = FormQty::where(['form_id'=>$form_id])->whereBetween('date', [$start, $finish])->sum('qty');
             array_push($data,["qty"=>"$qty"]);
+            $pie = array();
             $content = '';
             //определяем вопросы анкеты из логов
             $rows = DB::select("SELECT DISTINCT `name` FROM (`questions` JOIN `logforms`  ON((`questions`.`id` = `logforms`.`question_id`))) WHERE `questions`.`form_id`=$form_id AND `data` BETWEEN '$start' AND '$finish' ");
             $i=1;
             foreach ($rows as $row) {
+                $qst = array();
                 $question = Question::where(['form_id'=>$form_id,'name'=>$row->name])->first();
                 $sum = Logform::select('answer')->where(['question_id' => $question->id])->whereBetween('data',[$start,$finish])->count('answer');
                 $values = DB::select("select answer,count(answer) as kol,count(answer)/$sum as percent from logforms where question_id=$question->id 
                                      and (`data` between '$start' and '$finish') group by answer order by kol DESC");
-                $content.= '<div class="col-md-offset-2 col-md-8"><div class="pie" id="pie-'.$i.'">График</div>';
+                $content.= '<div class="col-md-offset-2 col-md-8"><h2 class="text-info text-center">'.$row->name.'</h2><div class="pie" id="pie-'.$i.'">График</div>';
                 $content.= '<button type="button" class="btn btn-default btn-sm"><i class="fa fa-expand fa-lg show" aria-hidden="true"></i></button><div class="other">';
                 $content.='<table class="table table-hover table-bordered"><tr><th>Ответ</th><th>Кол-во ответов</th><th>% ответов</th></tr>';
                 foreach ($values as $val){
@@ -49,10 +60,11 @@ class AnketController extends Controller
                     $content.= '<tr><td>'.$val->answer.'</td><td>'.$val->kol.'</td><td>'.round($val->percent*100,2).'</td></tr>';
                     $tmp['answer'] = $val->answer;
                     $tmp['kol'] = $val->kol;
-                    array_push($pie,$tmp);
+                    array_push($qst,$tmp);
                 }
-                $content .= '</table></div></div>';
+                $content .= '</table></div><hr></div>';
                 $i++;
+                array_push($pie,$qst);
             }
             array_push($data,["content"=>$content]);
             array_push($data,["pie"=>$pie]);
@@ -61,7 +73,7 @@ class AnketController extends Controller
         if(view()->exists('report::anket')){
             $title='Анкетирование';
             $forms = Form::where(['is_active'=>1])->get();
-            $verselect = ['new'=>'Новый вариант (версия 2)','old'=>'Старый вариант (версия 1)'];
+            //$verselect = ['new'=>'Новый вариант (версия 2)','old'=>'Старый вариант (версия 1)'];
             foreach($forms as $form) {
                 $formselect[$form->id] = $form->name; //массив для заполнения данных в select формы
             }
@@ -69,11 +81,116 @@ class AnketController extends Controller
                 'title' => $title,
                 'head' => 'Задайте условия отбора',
                 'formselect' => $formselect,
-                'verselect' => $verselect,
+                //'verselect' => $verselect,
             ];
             return view('report::anket',$data);
         }
         abort(404);
+    }
+
+    private function export($form_id,$start,$finish){
+        $styleArray = array(
+            'font' => array(
+                'bold' => true,
+            ),
+            'alignment' => array(
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+            ),
+            'borders' => array(
+                'top' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+                'bottom' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+                'left' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+                'right' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+            )
+        );
+        $styleRow = array(
+            'font' => array(
+                'bold' => false,
+            ),
+            'alignment' => array(
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+            ),
+            'borders' => array(
+                'top' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+                'bottom' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+                'left' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+                'right' => array(
+                    'style' => Border::BORDER_THIN,
+                ),
+            )
+        );
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Статистика');
+        //$p=0;
+        //$objPHPExcel->setActiveSheetIndex($p);
+        //$objPHPExcel->getActiveSheet()->setTitle('Статистика');
+        $k=1;
+        $sheet->setCellValue('A'.$k, Form::find($form_id)->name);
+        $sheet->mergeCells('A'.$k.':B'.$k);
+        $sheet->getStyle('A'.$k.':B'.$k)->getFont()->setBold(true);
+        $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $k=2;
+        $sheet->setCellValue('A'.$k, 'статистика за период с '.$start.' по '.$finish);
+        $sheet->mergeCells('A'.$k.':B'.$k);
+        //$sheet->getStyle('A'.$k.':B'.$k)->getFont()->setBold(true);
+        $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $k++;
+        $qty = FormQty::where(['form_id'=>$form_id])->whereBetween('date', [$start, $finish])->sum('qty');
+        $sheet->setCellValue('A'.$k, 'Опрошено человек: ');
+        $sheet->setCellValue('B'.$k, $qty);
+        $sheet->getStyle('B'.$k.':B'.$k)->getFont()->setBold(true);
+        //$sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $k=5;
+        //определяем все вопросы анкеты
+        $questions = Question::where(['form_id'=>$form_id])->get();
+        foreach ($questions as $question){
+            if($question->name != 'Ваши контакты'){
+                $rows = DB::select("select answer,count(answer) as qty from logforms where question_id=$question->id and `data` between '$start' and '$finish' group by answer");
+                if(!empty($rows)){
+                    $sheet->setCellValue('A'.$k, $question->name);
+                    $sheet->mergeCells('A'.$k.':B'.$k);
+                    $sheet->getStyle('A'.$k.':B'.$k)->getFont()->setBold(true);
+                    $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                    $k++;
+                    $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                    $sheet->setCellValue('A'.$k, 'Ответ');
+                    $sheet->setCellValue('B'.$k, 'Общее кол-во');
+                    $sheet->getStyle('A'.$k.':B'.$k)->applyFromArray($styleArray);
+                    $k++;
+                    foreach ($rows as $row){
+                        $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                        $sheet->setCellValue('A'.$k, $row->answer);
+                        $sheet->setCellValue('B'.$k, $row->qty);
+                        $sheet->getStyle('A'.$k.':B'.$k)->applyFromArray($styleRow);
+                        $k++;
+                    }
+                    $k++;
+                }
+            }
+        }
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $filename = "statpoll";
+        header('Content-Disposition: attachment;filename=' . $filename . ' ');
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 
 

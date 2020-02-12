@@ -93,7 +93,7 @@
                         },
                         success: function (res) {
                             //alert("Сервер вернул вот что: " + res);
-                            var obj = jQuery.parseJSON(res);
+                            let obj = jQuery.parseJSON(res);
                             google.charts.load('current', {'packages': ['corechart']});
                             google.charts.setOnLoadCallback(drawChart);
 
@@ -104,7 +104,7 @@
                                 $.each(obj, function(key,value) {
                                     data.addRow([
                                         value.name,
-                                        parseFloat(value.delta),
+                                        parseInt(value.delta),
                                     ]);
                                 });
                                 var options = {

@@ -30,6 +30,9 @@ class VisitController extends Controller
             $start = $input['start'];
             $finish = $input['finish'];
             if(isset($input['export'])){
+                if(!Role::granted('export')){
+                    abort(503);
+                }
                 return $this->export($start,$finish);
             }
             $group = $input['group'];
