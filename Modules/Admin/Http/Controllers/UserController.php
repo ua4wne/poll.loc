@@ -26,7 +26,7 @@ class UserController extends Controller
         if(view()->exists('admin::users')){
             $title='Учетные записи';
             //$users = User::all();
-            $users = User::paginate(env('PAGINATION_SIZE')); //all();
+            $users = User::all();
             $roles = Role::all();
             $data = [
                 'title' => $title,

@@ -184,7 +184,6 @@
                 @endforeach
                 </tbody>
             </table>
-            {{ $users->links() }}
         </div>
         @endif
     </div>
@@ -198,7 +197,7 @@
 
     <script>
         $(document).ready(function(){
-            var options = {
+            let options = {
                 'backdrop' : 'true',
                 'keyboard' : 'true'
             }
@@ -237,9 +236,6 @@
                             alert('Ошибка обновления данных.');
                         if(res=='NO')
                             alert('Выполнение операции запрещено!');
-                        else{
-                            alert('Ошибка валидации данных');
-                        }
                     }
                 });
             }
@@ -314,8 +310,8 @@
             let id = $(this).parent().parent().prevAll().eq(0).find('span').attr("id");
             let status = $(this).parent().parent().prevAll().eq(0).text();
             let login = $(this).parent().parent().prevAll().eq(2).text();
-            var email = $(this).parent().parent().prevAll().eq(3).text();
-            var name = $(this).parent().parent().prevAll().eq(4).text();
+            let email = $(this).parent().parent().prevAll().eq(3).text();
+            let name = $(this).parent().parent().prevAll().eq(4).text();
             if(id==1){
                 $("#active :contains("+status+")").attr("selected", "selected");
                 $("#active").attr("disabled", true);
@@ -331,8 +327,8 @@
         });
 
         $('.login_role').click(function(){
-            var id = $(this).parent().parent().prevAll().eq(0).find('span').attr("id");
-            var name = $(this).parent().parent().prevAll().eq(4).text();
+            let id = $(this).parent().parent().prevAll().eq(0).find('span').attr("id");
+            let name = $(this).parent().parent().prevAll().eq(4).text();
             $('#name').val(name);
             $('#role_id').val(id);
             $('#role-title').text('Роли для пользователя '+name);
@@ -360,8 +356,8 @@
         });
 
         $('.login_delete').click(function(){
-            var id = $(this).parent().parent().prevAll().eq(0).find('span').attr("id");
-            var x = confirm("Выбраный логин будет удален. Продолжить (Да/Нет)?");
+            let id = $(this).parent().parent().prevAll().eq(0).find('span').attr("id");
+            let x = confirm("Выбраный логин будет удален. Продолжить (Да/Нет)?");
             if (x) {
                 $.ajax({
                     type: 'POST',

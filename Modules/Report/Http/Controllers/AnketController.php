@@ -141,14 +141,14 @@ class AnketController extends Controller
         //$objPHPExcel->getActiveSheet()->setTitle('Статистика');
         $k=1;
         $sheet->setCellValue('A'.$k, Form::find($form_id)->name);
-        $sheet->mergeCells('A'.$k.':B'.$k);
-        $sheet->getStyle('A'.$k.':B'.$k)->getFont()->setBold(true);
-        $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->mergeCells('A'.$k.':C'.$k);
+        $sheet->getStyle('A'.$k.':C'.$k)->getFont()->setBold(true);
+        $sheet->getStyle('A'.$k.':C'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $k=2;
         $sheet->setCellValue('A'.$k, 'статистика за период с '.$start.' по '.$finish);
-        $sheet->mergeCells('A'.$k.':B'.$k);
+        $sheet->mergeCells('A'.$k.':C'.$k);
         //$sheet->getStyle('A'.$k.':B'.$k)->getFont()->setBold(true);
-        $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('A'.$k.':C'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $k++;
         $qty = FormQty::where(['form_id'=>$form_id])->whereBetween('date', [$start, $finish])->sum('qty');
         $sheet->setCellValue('A'.$k, 'Опрошено человек: ');
@@ -160,23 +160,25 @@ class AnketController extends Controller
         $questions = Question::where(['form_id'=>$form_id])->get();
         foreach ($questions as $question){
             if($question->name != 'Ваши контакты'){
-                $rows = DB::select("select answer,count(answer) as qty from logforms where question_id=$question->id and `data` between '$start' and '$finish' group by answer");
+                $rows = DB::select("select answer,count(answer) as qty, count(answer)/$qty as percent from logforms where question_id=$question->id and `data` between '$start' and '$finish' group by answer order by qty DESC");
                 if(!empty($rows)){
                     $sheet->setCellValue('A'.$k, $question->name);
-                    $sheet->mergeCells('A'.$k.':B'.$k);
-                    $sheet->getStyle('A'.$k.':B'.$k)->getFont()->setBold(true);
-                    $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                    $sheet->mergeCells('A'.$k.':C'.$k);
+                    $sheet->getStyle('A'.$k.':C'.$k)->getFont()->setBold(true);
+                    $sheet->getStyle('A'.$k.':C'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                     $k++;
-                    $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                    $sheet->getStyle('A'.$k.':C'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                     $sheet->setCellValue('A'.$k, 'Ответ');
                     $sheet->setCellValue('B'.$k, 'Общее кол-во');
-                    $sheet->getStyle('A'.$k.':B'.$k)->applyFromArray($styleArray);
+                    $sheet->setCellValue('C'.$k, '% ответов');
+                    $sheet->getStyle('A'.$k.':C'.$k)->applyFromArray($styleArray);
                     $k++;
                     foreach ($rows as $row){
-                        $sheet->getStyle('A'.$k.':B'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                        $sheet->getStyle('A'.$k.':C'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                         $sheet->setCellValue('A'.$k, $row->answer);
                         $sheet->setCellValue('B'.$k, $row->qty);
-                        $sheet->getStyle('A'.$k.':B'.$k)->applyFromArray($styleRow);
+                        $sheet->setCellValue('C'.$k, round($row->percent*100,2));
+                        $sheet->getStyle('A'.$k.':C'.$k)->applyFromArray($styleRow);
                         $k++;
                     }
                     $k++;
@@ -185,6 +187,7 @@ class AnketController extends Controller
         }
         $sheet->getColumnDimension('A')->setAutoSize(true);
         $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         $filename = "statpoll";
         header('Content-Disposition: attachment;filename=' . $filename . ' ');

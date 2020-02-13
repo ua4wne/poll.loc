@@ -115,6 +115,7 @@
                 alert("Необходимо заполнять все доступные поля!");
                 return false;
             }
+            $("#loader").show();
             return true;
         });
 

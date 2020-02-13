@@ -175,15 +175,19 @@
 
                     <!-- /menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Настройки" href="#">
+                        <a data-toggle="tooltip" data-placement="top" title="Настройки" href="{{ route('profiles') }}">
                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Затраты ИТ" href="#">
+                        @if(\App\User::hasRole('admin') || \App\User::hasRole('director'))
+                        <a data-toggle="tooltip" data-placement="top" title="Затраты ИТ" href="{{ route('it-cost') }}">
                             <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Журнал событий" href="#">
+                        @endif
+                        @if(\App\User::hasRole('admin'))
+                        <a data-toggle="tooltip" data-placement="top" title="Журнал событий" href="{{ route('events') }}">
                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                         </a>
+                        @endif
                         <a data-toggle="tooltip" data-placement="top" title="Logout" href="{{ route('logout') }}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
@@ -215,7 +219,7 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;"> Профиль</a></li>
+                                    <li><a href="{{ route('profiles') }}"><i class="fa fa-cog pull-right"></i> Профиль</a></li>
                                     <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out pull-right"></i> Log
                                             Out</a></li>
                                 </ul>

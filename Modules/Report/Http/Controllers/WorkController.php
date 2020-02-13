@@ -48,7 +48,10 @@ class WorkController extends Controller
                 ];
                 return view('report::work-report',$data);
             }
-            if(isset($input['export'])){
+            if(isset($input['export'])) {
+                if(!Role::granted('export')){
+                    abort(503);
+                }
                 return $this->RenterReport($renter_id,$start,$finish);
             }
         }

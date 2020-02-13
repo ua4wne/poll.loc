@@ -32,6 +32,13 @@ Route::middleware(['auth'])->group(function() {
         Route::match(['get','post','delete'],'/edit/{id}',['uses'=>'ActionController@edit','as'=>'actionEdit']);
     });
 
+    //events/ группа обработки роутов events
+    Route::group(['prefix'=>'events'], function(){
+        Route::get('/',['uses'=>'EventLogController@index','as'=>'events']);
+        //events/delete
+        Route::post('/delete',['uses'=>'EventLogController@delete','as'=>'eventDelete']);
+    });
+
     //users/ группа обработки роутов users
     Route::group(['prefix'=>'users'], function(){
         Route::get('/',['uses'=>'UserController@index','as'=>'users']);

@@ -23,6 +23,9 @@
     @endif
     <div class="x_content">
         <h2 class="text-center">{{ $title }}</h2>
+        <div class="row">
+            <div class="alert alert-warning col-xs-offset-2 col-xs-8"><p class="text-center">Форма заполняется в случае установки нового или замены старого счетчика!</p></div>
+        </div>
         {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
 
         <div class="form-group">

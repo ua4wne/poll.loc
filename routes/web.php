@@ -69,4 +69,13 @@ Route::middleware(['auth'])->group(function(){
         //works/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\WorkController@delete','as'=>'deleteWork']);
     });
+
+    //profiles/ группа обработки роутов profiles
+    Route::group(['prefix'=>'profiles'], function(){
+        Route::get('/',['uses'=>'ProfileController@index','as'=>'profiles']);
+        //profiles/edit
+        Route::post('/edit',['uses'=>'ProfileController@edit','as'=>'editProfile']);
+        //profiles/avatar
+        Route::post('/avatar',['uses'=>'ProfileController@avatar','as'=>'editAvatar']);
+    });
 });
