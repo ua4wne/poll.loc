@@ -136,9 +136,6 @@ class AnketController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Статистика');
-        //$p=0;
-        //$objPHPExcel->setActiveSheetIndex($p);
-        //$objPHPExcel->getActiveSheet()->setTitle('Статистика');
         $k=1;
         $sheet->setCellValue('A'.$k, Form::find($form_id)->name);
         $sheet->mergeCells('A'.$k.':C'.$k);

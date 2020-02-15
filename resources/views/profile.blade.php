@@ -11,6 +11,16 @@
         <li class="active"><a href="{{ route('profiles') }}">{{ $title }}</a></li>
     </ul>
     <!-- END BREADCRUMB -->
+    @if (session('error'))
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="alert alert-error panel-remove">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    {{ session('error') }}
+                </div>
+            </div>
+        </div>
+    @endif
     <!-- page content -->
     <div class="row">
         <div class="modal fade" id="editAvatar" tabindex="-1" role="dialog" aria-labelledby="editAvatar" aria-hidden="true">
@@ -79,14 +89,14 @@
                         <div class="form-group">
                             {!! Form::label('sex', 'Пол:',['class'=>'col-xs-3 control-label']) !!}
                             <div class="col-xs-8">
-                                {!! Form::select('sex', ['male'=>'Мужской','female'=>'Женский'], old('sex'),['class' => 'form-control','required' => 'required','id'=>'sex']); !!}
+                                {!! Form::select('sex', ['male'=>'Мужской','female'=>'Женский'], $user->sex,['class' => 'form-control','required' => 'required','id'=>'sex']); !!}
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                        {!! Form::submit('Загрузить',['class'=>'btn btn-primary','id'=>'edit']) !!}
+                        {!! Form::submit('Обновить',['class'=>'btn btn-primary','id'=>'edit']) !!}
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -109,9 +119,9 @@
                             <tr><th>ФИО</th><td>{{ $user->name }}</td></tr>
                             <tr><th>E-mail</th><td>{{ $user->email }}</td></tr>
                             @if($user->sex=='male')
-                            <tr><th>Пол</th><td id="usex">Мужской</td></tr>
+                            <tr><th>Пол</th><td>Мужской</td></tr>
                             @else
-                                <th>Пол</th><td id="usex">Женский</td>
+                                <th>Пол</th><td>Женский</td>
                             @endif
                         </table>
                         <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#editAvatar"><i class="fa fa-download blue fa-lg" aria-hidden="true"></i> Сменить аватар</button>
@@ -138,8 +148,6 @@
 
         $('#edit').click( function(e){
             e.preventDefault();
-            let sex = $('#usex').text();
-            $("#sex :contains('"+sex+"')").attr("selected", "selected");
             let error=0;
             $("#edit_user").find(":input").each(function() {// проверяем каждое поле ввода в форме
                 if($(this).attr("required")=='required'){ //обязательное для заполнения поле формы?
@@ -161,15 +169,19 @@
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('editProfile') }}',
-                    data: $('#edit_renter').serialize(),
+                    data: $('#edit_user').serialize(),
                     success: function(res){
                         //alert(res);
-                        if(res=='OK')
+                        if(res=='OK'){
                             alert('Данные профиля обновлены!');
+                            location.reload();
+                        }
                         if(res=='ERR')
                             alert('Ошибка обновления данных!');
                         if(res=='NO')
                             alert('Не корректные данные!');
+                        if(res=='DBL')
+                            alert('Указанный Вами e-mail занят! Введите другой e-mail.');
                     }
                 });
             }

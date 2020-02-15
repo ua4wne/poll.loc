@@ -239,9 +239,9 @@
                     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-users" aria-hidden="true"></i></div>
-                            <div class="count">{{ empty($kassa) ? '0' : $kassa }} чел.</div>
+                            <div class="count">{{ empty($people) ? '0' : $people }} чел.</div>
                             <h3>Посещение выставки</h3>
-                            <p><a href="#">подробнее</a></p>
+                            <p><a href="#" data-toggle="modal" data-target="#viewVisit">подробнее</a></p>
                         </div>
                     </div>
                     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -251,23 +251,23 @@
                                                                                        aria-hidden="true"></i> {{ empty($coming) ? '0' : $coming }}
                                 <i class="fa fa-arrow-circle-up" aria-hidden="true"></i></div>
                             <h3>Счетчики посетителей </h3>
-                            <p>подробнее</p>
+                            <p><a href="#" data-toggle="modal" data-target="#viewCount">подробнее</a></p>
                         </div>
                     </div>
                     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-                            <div class="count">{{ empty($expense) ? '0' : $expense }} час.</div>
+                            <div class="count">{{ empty($time_avg) ? '0' : $time_avg }} час.</div>
                             <h3>Работа домов </h3>
-                            <p>подробнее</p>
+                            <p><a href="#" data-toggle="modal" data-target="#viewTimeWork">подробнее</a></p>
                         </div>
                     </div>
                     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
-                            <div class="count">{{ empty($expense) ? '0' : $expense }} кВт</div>
+                            <div class="count">{{ empty($main_count) ? '0' : $main_count }} кВт</div>
                             <h3>Энергопотребление</h3>
-                            <p>подробнее</p>
+                            <p><a href="#" data-toggle="modal" data-target="#viewEnergy">подробнее</a></p>
                         </div>
                     </div>
                 </div>
@@ -281,7 +281,7 @@
             <!-- footer content -->
                 <footer>
                     <div class="pull-right">
-                        Великолепные системы
+                        Разработано для выставки домов "Малоэтажная Страна". 2014 - 2020
                     </div>
                     <div class="clearfix"></div>
                 </footer>
@@ -307,6 +307,7 @@
 @show
 
 @section('user_script')
+
 @show
 
 </body>

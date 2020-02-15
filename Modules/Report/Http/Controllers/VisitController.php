@@ -28,7 +28,11 @@ class VisitController extends Controller
         if($request->isMethod('post')){
             $input = $request->except('_token'); //параметр _token нам не нужен
             $start = $input['start'];
+            if($start=='start')
+                $start = date('Y-m').'-01';
             $finish = $input['finish'];
+            if($finish=='finish')
+                $finish = date('Y-m-d');
             if(isset($input['export'])){
                 if(!Role::granted('export')){
                     abort(503);
@@ -107,6 +111,10 @@ class VisitController extends Controller
             $input = $request->except('_token'); //параметр _token нам не нужен
             $start = $input['start'];
             $finish = $input['finish'];
+            if($start=='start')
+                $start = date('Y-m').'-01';
+            if($finish=='finish')
+                $finish = date('Y-m-d');
             return Visit::VisitTable($start,$finish);
         }
     }

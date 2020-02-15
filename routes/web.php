@@ -19,6 +19,7 @@ Route::get('/activate','Auth\LoginController@activate');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/', 'MainController@index')->name('main');
+    Route::post('/compare', 'MainController@compare')->name('compare-bar');
 
     //divisions/ группа обработки роутов divisions
     Route::group(['prefix'=>'divisions'], function(){

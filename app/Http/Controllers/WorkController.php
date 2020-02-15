@@ -251,5 +251,7 @@ class WorkController extends Controller
             //event(new AddEventLogs('info',Auth::id(),$msg));
             return redirect('/works')->with('status',$msg.' Обработано записей: '.$num);
         }
+        $msg = 'Ну и где? Где я спрашиваю тот файл, который я должен загрузить из шаблона?';
+        return redirect('/works')->with('error', $msg);
     }
 }

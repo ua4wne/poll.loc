@@ -11,6 +11,14 @@
         <li class="active">{{ $head }}</li>
     </ul>
     <!-- END BREADCRUMB -->
+    @if (session('error'))
+        <div class="row">
+            <div class="alert alert-error panel-remove">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
     <!-- page content -->
     @if (session('status'))
         <div class="row">
@@ -21,7 +29,8 @@
         </div>
     @endif
     <div class="row">
-        <div class="modal fade" id="exportWork" tabindex="-1" role="dialog" aria-labelledby="exportWork" aria-hidden="true">
+        <div class="modal fade" id="exportWork" tabindex="-1" role="dialog" aria-labelledby="exportWork"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -49,14 +58,15 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="importWork" tabindex="-1" role="dialog" aria-labelledby="importWork" aria-hidden="true">
+        <div class="modal fade" id="importWork" tabindex="-1" role="dialog" aria-labelledby="importWork"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i class="fa fa-times-circle fa-lg" aria-hidden="true"></i>
                         </button>
-                        <h4 class="modal-title">Загрузка данных</h4>
+                        <h4 class="modal-title">Загрузка данных из Excel</h4>
                     </div>
                     {!! Form::open(array('route' => 'importWork','method'=>'POST','files'=>'true')) !!}
                     <div class="modal-body">
@@ -64,7 +74,7 @@
                         <div class="form-group">
                             {!! Form::label('file', 'Файл:',['class'=>'col-xs-2 control-label']) !!}
                             <div class="col-xs-8">
-                                {!! Form::file('file', ['class' => 'filestyle','data-buttonText'=>'Выберите файл','data-buttonName'=>"btn-primary",'data-placeholder'=>"Файл не выбран"]) !!}
+                                {!! Form::file('file', ['class' => 'filestyle','data-buttonText'=>'Выберите файл Excel','data-buttonName'=>"btn-primary",'data-placeholder'=>"Файл не выбран"]) !!}
                                 {!! $errors->first('file', '<p class="alert alert-danger">:message</p>') !!}
                             </div>
                         </div>
@@ -83,13 +93,20 @@
             @if($rows)
                 <div class="x_content">
                     <a href="{{route('workAdd')}}">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus green" aria-hidden="true"></i> Новая запись</button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus green"
+                                                                                aria-hidden="true"></i> Новая запись
+                        </button>
                     </a>
                     <a href="#" id="upload">
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exportWork"><i class="fa fa-upload" aria-hidden="true"></i> Выгрузить в шаблон</button>
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exportWork">
+                            <i class="fa fa-upload" aria-hidden="true"></i> Выгрузить в шаблон
+                        </button>
                     </a>
                     <a href="#" id="download">
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#importWork"><i class="fa fa-download" aria-hidden="true"></i> Загрузить из шаблона</button>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                data-target="#importWork"><i class="fa fa-download" aria-hidden="true"></i> Загрузить из
+                            шаблона
+                        </button>
                     </a>
                 </div>
                 <div class="x_panel">
@@ -154,35 +171,34 @@
     @include('confirm')
     <script src="/js/jquery.dataTables.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             var options = {
-                'backdrop' : 'true',
-                'keyboard' : 'true'
+                'backdrop': 'true',
+                'keyboard': 'true'
             }
             $('#basicModal').modal(options);
         });
 
-        $('.btn_del').click(function(){
+        $('.btn_del').click(function () {
             let id = $(this).attr("id");
             let x = confirm("Выбранная запись будет удалена. Продолжить (Да/Нет)?");
             if (x) {
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('deleteWork') }}',
-                    data: {'id':id},
+                    data: {'id': id},
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success: function(res){
+                    success: function (res) {
                         //alert(res);
-                        if(res=='OK')
-                            $('#'+id).parent().parent().parent().hide();
-                        if(res=='NO')
+                        if (res == 'OK')
+                            $('#' + id).parent().parent().parent().hide();
+                        if (res == 'NO')
                             alert('Выполнение операции запрещено!');
                     }
                 });
-            }
-            else {
+            } else {
                 return false;
             }
         });
