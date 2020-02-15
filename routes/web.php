@@ -78,5 +78,7 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/edit',['uses'=>'ProfileController@edit','as'=>'editProfile']);
         //profiles/avatar
         Route::post('/avatar',['uses'=>'ProfileController@avatar','as'=>'editAvatar']);
+        //profiles/reset-pass
+        Route::post('/newpass',['uses'=>'ProfileController@newPass','as'=>'newPass']);
     });
 });

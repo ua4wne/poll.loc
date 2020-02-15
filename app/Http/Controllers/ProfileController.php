@@ -6,6 +6,7 @@ use App\Events\AddEventLogs;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 
 class ProfileController extends Controller
@@ -89,5 +90,48 @@ class ProfileController extends Controller
             else
                 return 'ERR';
         }
+    }
+
+    public function newPass(Request $request){
+        if ($request->isMethod('post')) {
+            $input = $request->except('_token'); //параметр _token нам не нужен
+            if ($input['newpass'] != $input['confpass']) {
+                return 'NO';
+            }
+            //проверяем что старый пароль указан верно
+            $user = User::find(Auth::user()->id);
+            $credentials = ['login' => Auth::user()->login, 'password' => $input['oldpass']];
+            if (!Auth::validate($credentials)) {
+                return 'NOT';
+            }
+            else{
+                if($this->checkPass($input['newpass'])){
+                    $user->password = Hash::make($input['newpass']);
+                    $user->update();
+                    return 'OK';
+                }
+                else
+                    return 'BAD';
+            }
+        }
+        return 'ERR';
+    }
+
+    private function checkPass($pass){
+        $strong = 0;
+        if(strlen($pass)>=8)
+            $strong++;
+        if(preg_match("/([0-9]+)/", $pass))
+            $strong++;
+        if(preg_match("/([a-z]+)/", $pass))
+            $strong++;
+        if(preg_match("/([A-Z]+)/", $pass))
+            $strong++;
+        if(preg_match("/\W/", $pass))
+            $strong++;
+        if($strong>=4)
+            return true;
+        else
+            return false;
     }
 }

@@ -102,6 +102,60 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="editPass" tabindex="-1" role="dialog" aria-labelledby="editPass" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-times-circle fa-lg" aria-hidden="true"></i>
+                        </button>
+                        <h4 class="modal-title">Смена пароля</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="alert alert-warning col-xs-12"><p class="text-center">Пароль должен быть не менее 8 символов и содержать цифры и буквы большого и малого регистра!</p></div>
+                        </div>
+                        {!! Form::open(['url' => '#','id'=>'edit_pass','class'=>'form-horizontal','method'=>'POST']) !!}
+
+                        <div class="form-group">
+                            <div class="col-xs-10">
+                                {!! Form::hidden('id',$user->id,['class' => 'form-control','required'=>'required','id'=>'user_id']) !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('oldpass','Старый пароль:',['class' => 'col-xs-3 control-label'])   !!}
+                            <div class="col-xs-8">
+                                {!! Form::password('oldpass',['class' => 'form-control','required'=>'required','id'=>'oldpass'])!!}
+                                {!! $errors->first('oldpass', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('newpass','Новый пароль:',['class' => 'col-xs-3 control-label'])   !!}
+                            <div class="col-xs-8">
+                                {!! Form::password('newpass',['class' => 'form-control','required'=>'required','id'=>'newpass'])!!}
+                                {!! $errors->first('newpass', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('confpass','Подтверждение:',['class' => 'col-xs-3 control-label'])   !!}
+                            <div class="col-xs-8">
+                                {!! Form::password('confpass',['class' => 'form-control','required'=>'required','id'=>'confpass'])!!}
+                                {!! $errors->first('confpass', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                        {!! Form::submit('Обновить',['class'=>'btn btn-primary','id'=>'new-pass']) !!}
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
         <div class="col-md-offset-2 col-md-8">
             <h2 class="text-center">{{ $head }}</h2>
             @if($user)
@@ -126,6 +180,7 @@
                         </table>
                         <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#editAvatar"><i class="fa fa-download blue fa-lg" aria-hidden="true"></i> Сменить аватар</button>
                         <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#editUser"><i class="fa fa-edit blue fa-lg" aria-hidden="true"></i> Редактировать данные</button>
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#editPass"><i class="fa fa-key blue fa-lg" aria-hidden="true"></i> Сменить пароль</button>
                     </div>
                 </div>
             @endif
@@ -182,6 +237,49 @@
                             alert('Не корректные данные!');
                         if(res=='DBL')
                             alert('Указанный Вами e-mail занят! Введите другой e-mail.');
+                    }
+                });
+            }
+        });
+
+        $('#new-pass').click( function(e){
+            e.preventDefault();
+            let error=0;
+            $("#edit_pass").find(":input").each(function() {// проверяем каждое поле ввода в форме
+                if($(this).attr("required")=='required'){ //обязательное для заполнения поле формы?
+                    if(!$(this).val()){// если поле пустое
+                        $(this).css('border', '1px solid red');// устанавливаем рамку красного цвета
+                        error=1;// определяем индекс ошибки
+                    }
+                    else{
+                        $(this).css('border', '1px solid green');// устанавливаем рамку зеленого цвета
+                    }
+
+                }
+            })
+            if(error){
+                alert("Необходимо заполнять все доступные поля!");
+                return false;
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('newPass') }}',
+                    data: $('#edit_pass').serialize(),
+                    success: function(res){
+                        //alert(res);
+                        if(res=='OK'){
+                            alert('Новый пароль установлен!');
+                            window.location.href = "/logout"
+                        }
+                        if(res=='ERR')
+                            alert('Ошибка обновления данных!');
+                        if(res=='NO')
+                            alert('Новый пароль и его повтор не совпадают!');
+                        if(res=='NOT')
+                            alert('Старый пароль указан не верно!');
+                        if(res=='BAD')
+                            alert('Слишком слабый пароль!');
                     }
                 });
             }
