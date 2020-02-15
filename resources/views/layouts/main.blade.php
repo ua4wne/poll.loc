@@ -59,6 +59,7 @@
                             <ul class="nav side-menu">
                                 <li><a href="{{ route('main') }}"><i class="fa fa-tachometer" aria-hidden="true"></i>Рабочий
                                         стол </a></li>
+                                @if(!\App\User::hasRole('guard'))
                                 <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i> Документы <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
@@ -67,6 +68,7 @@
                                         <li><a href="{{ route('inet-conn') }}">Подключения к интернет</a></li>
                                     </ul>
                                 </li>
+                                @endif
                                 <li><a><i class="fa fa-address-book-o" aria-hidden="true"></i> Контакты <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
@@ -95,6 +97,7 @@
                                         @if(\App\User::hasRole('admin') || \App\User::hasRole('director'))
                                         <li><a href="{{ route('it-cost') }}">Затраты ИТ</a></li>
                                         @endif
+                                        @if(!\App\User::hasRole('guard'))
                                         <li><a href="#">Потребление эл. энергии <span class="fa fa-chevron-down"></span></a>
                                             <ul class="nav child_menu">
                                                 <li><a href="{{ route('cnt-main-report') }}">Счетчики общие</a></li>
@@ -102,6 +105,7 @@
                                                 <li><a href="{{ route('own-report') }}">Собственное потребление</a></li>
                                             </ul>
                                         </li>
+                                        @endif
                                     </ul>
                                 </li>
                                 @if(\App\User::hasRole('admin') || \App\User::hasRole('guard'))

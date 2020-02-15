@@ -88,7 +88,7 @@ class LoginController extends Controller
                 //вызываем event
                 $text = 'Учетная запись была активирована '.date('Y-m-d H:i:s');
                 $ip = $request->getClientIp();
-                event(new AddEventLogs('system',Auth::id(),$text,$ip));
+                event(new AddEventLogs('system',1,$text,$ip));
                 return redirect('/login')->with('status',$msg);
             }
         }
