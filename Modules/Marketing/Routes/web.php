@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function() {
     //forms/ группа обработки роутов forms
     Route::group(['prefix'=>'forms'], function(){
         Route::get('/',['uses'=>'FormController@index','as'=>'forms']);
+        //forms/view
+        Route::get('/view/{id}',['uses'=>'FormController@view','as'=>'form_view']);
         //forms/add
         Route::match(['get','post'],'/add',['uses'=>'FormController@create','as'=>'formAdd']);
         //forms/ajax/edit

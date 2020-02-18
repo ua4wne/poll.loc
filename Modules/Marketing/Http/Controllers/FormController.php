@@ -87,6 +87,18 @@ class FormController extends Controller
         abort(404);
     }
 
+    public function view($id){
+        if(view()->exists('marketing::form_view')){
+            $content = $this->ViewForm($id);
+            $data = [
+                'title' => Form::find($id)->name,
+                'content' => $content,
+            ];
+            return view('marketing::form_view', $data);
+        }
+        abort(404);
+    }
+
     public function media(Request $request){
         if(!User::hasRole('admin') && !User::hasRole('guard')){
             abort(503);
@@ -249,6 +261,66 @@ class FormController extends Controller
             $table->qty = $qty;
             $table->update();
         }
+    }
+
+    private function ViewForm($id){
+        $content='<div class="x_panel">';
+        $content.='<input type="hidden" name="form_id" id="form_id" value="'.$id.'">';
+        //выбираем все вопросы анкеты
+        $questions = Question::where(['form_id'=>$id])->get();
+        foreach($questions as $question){
+            $content.='<div class="row"><div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">'.
+                $question->name . '?'.
+                '</div>
+                        <div class="panel-body">';
+            //выбираем все ответы на вопрос
+            $answers = Answer::where(['question_id'=>$question->id])->get();
+            $k=0;
+            $content.='<table class="table table-bordered">';
+            foreach ($answers as $answer){
+                if($k==0)
+                    $content.='<tr>';
+                if(strpos($answer->htmlcode,"select size=",0)!=false)
+                {
+                    $html='<option value="" selected disabled>Выберите из списка</option>';
+                    $query="SELECT name FROM ".$answer->source;
+                    if($answer->source=='renters'){
+                        $query = "SELECT `name`,`area` FROM renters where STATUS=1 and place_id IN (1,6,7) ORDER BY `area`+0 ASC";
+                    }
+                    // подключение к базе данных
+                    $rows = DB::select($query);
+                    foreach($rows as $row){
+                        if($row->name != 'Другое (свой вариант)')
+                            if($answer->source=='renters')
+                                $html.='<option value="'.$row->name.'"> Участок №'.$row->area.' '.$row->name.'</option>';
+                            else
+                                $html.='<option value="'.$row->name.'">'.$row->name.'</option>';
+                    }
+                    $html.='</select>';
+                    $content.= '<td>'.$answer->htmlcode.$html.'</td>';
+                }
+                else
+                    $content.= '<td>'.$answer->htmlcode.'</td>';
+
+                $k++;
+                if($k==2){
+                    $content.='</tr>';
+                    $k=0;
+                }
+            }
+            if($k==1){
+                $content.='<td></td></tr>';
+            }
+            //<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+            $content.='</table></div>
+                    </div></div>
+                </div>';
+        }
+
+        $content.='</div>';
+        return $content;
     }
 
 }
