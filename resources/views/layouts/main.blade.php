@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="images/favicon.ico" type="image/ico"/>
+    <link rel="icon" href="favicon.ico" type="image/ico"/>
 
     <title>{{ $title ?? '' }}</title>
 
@@ -147,6 +147,7 @@
                                             <li><a href="{{ route('own-ecounters') }}">Собственные счетчики</a></li>
                                             <li><a href="{{ route('places') }}">Территории</a></li>
                                             <li><a href="{{ route('describers') }}">Подписчики</a></li>
+                                            <li><a href="{{ route('view-requests') }}">Запросы к серверу</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="{{ route('connections') }}"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к

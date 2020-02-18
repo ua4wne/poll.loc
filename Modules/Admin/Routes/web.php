@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/control',['uses'=>'RequestController@control','as'=>'control']);
+
 Route::middleware(['auth'])->group(function() {
     Route::prefix('roles')->group(function () {
             Route::get('/',['uses'=>'RoleController@index','as'=>'roles']);
@@ -37,6 +39,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/',['uses'=>'EventLogController@index','as'=>'events']);
         //events/delete
         Route::post('/delete',['uses'=>'EventLogController@delete','as'=>'eventDelete']);
+        Route::get('/view-requests',['uses'=>'RequestController@index','as'=>'view-requests']);
+        Route::post('/delrequest',['uses'=>'RequestController@delete','as'=>'requestDel']);
     });
 
     //users/ группа обработки роутов users

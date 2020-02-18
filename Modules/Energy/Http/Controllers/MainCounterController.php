@@ -79,7 +79,7 @@ class MainCounterController extends Controller
                 //выбираем данные за предыдущий период
                 $row = MainLog::where(['ecounter_id'=>$model->ecounter_id,'year'=>$y,'month'=>$m])->first();
                 if(!empty($row)) {
-                    $model->encount += $row[0]->encount;
+                    $model->encount += $row->encount;
                 }
             }
             else
