@@ -32,18 +32,19 @@ class RequestController extends Controller
 
     public function control(Request $request)
     {
-        if ($request->isMethod('get')) {
-            $log = new GetData();
-            $log->created_at = date('Y-m-d H:i:s');
-            $log->type = 'GET';
-            $log->request = $request->getRequestUri();
-            $log->save();
-        }
         if ($request->isMethod('post')) {
             $log = new GetData();
             $log->created_at = date('Y-m-d H:i:s');
             $log->type = 'POST';
-            $log->request = $request->getContentType();
+            $log->request = $request->getContent();
+            $log->save();
+        }
+        else {
+            $json_str = file_get_contents('php://input');
+            $log = new GetData();
+            $log->created_at = date('Y-m-d H:i:s');
+            $log->type = 'JSON';
+            $log->request = $json_str;
             $log->save();
         }
         return 'OK';

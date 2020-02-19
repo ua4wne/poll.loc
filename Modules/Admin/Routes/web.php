@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/control',['uses'=>'RequestController@control','as'=>'control']);
+Route::post('/control',['uses'=>'RequestController@control','as'=>'control']);
 
 Route::middleware(['auth'])->group(function() {
     Route::prefix('roles')->group(function () {
