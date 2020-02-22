@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -27,14 +26,14 @@
 
 <body class="login">
 
-    <div class="login_wrapper">
+<div class="login_wrapper">
 
-            @yield('content')
+    @yield('content')
 
-    </div>
-    <!-- jQuery -->
-    <script src="/js/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/js/bootstrap.min.js"></script>
+</div>
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

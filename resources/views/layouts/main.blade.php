@@ -83,7 +83,8 @@
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         @if(\App\User::hasRole('admin') || \App\User::hasRole('market'))
-                                        <li><a href="{{ route('forms') }}">Анкеты</a></li>
+                                            <li><a href="{{ route('forms') }}">Анкеты</a></li>
+                                            <li><a href="{{ route('megacounts') }}">Счетчики посетителей</a></li>
                                         @endif
                                         <li><a href="{{ route('media_form') }}">Источники медиарекламы</a></li>
                                     </ul>

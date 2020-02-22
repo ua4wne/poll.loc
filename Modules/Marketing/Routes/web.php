@@ -80,4 +80,15 @@ Route::middleware(['auth'])->group(function() {
         //answers/delete
         Route::post('/delete',['uses'=>'AnswerController@delete','as'=>'deleteAnswer']);
     });
+
+    //megacounts/ группа обработки роутов megacounts
+    Route::group(['prefix'=>'megacount'], function(){
+        Route::get('/',['uses'=>'MegacountController@index','as'=>'megacounts']);
+        //megacount/add
+        Route::match(['get','post'],'/add',['uses'=>'MegacountController@create','as'=>'megacountAdd']);
+        //megacount/edit
+        Route::post('/edit',['uses'=>'MegacountController@edit','as'=>'editMegacount']);
+        //megacount/delete
+        Route::post('/delete',['uses'=>'MegacountController@delete','as'=>'deleteMegacount']);
+    });
 });

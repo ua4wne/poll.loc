@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\Admin\Entities\GetData;
+use Modules\Marketing\Entities\Megacount;
+use Modules\Marketing\Entities\Visitorlog;
 
 class RequestController extends Controller
 {
@@ -32,22 +34,39 @@ class RequestController extends Controller
 
     public function control(Request $request)
     {
+        $debug = false;
         if ($request->isMethod('post')) {
-            $log = new GetData();
-            $log->created_at = date('Y-m-d H:i:s');
-            $log->type = 'POST';
-            $log->request = $request->getContent();
-            $log->save();
+            if($debug){
+                $log = new GetData();
+                $log->created_at = date('Y-m-d H:i:s');
+                $log->type = 'POST';
+                $log->request = $request->getContent();
+                $log->save();
+            }
+            $json = $request->getContent();
+            $data = json_decode($json,true);
+            //разгребаем поступившие данные
+            //определяем есть ли такой счетчик, если нет - то создаем запись в БД
+            $serial = $data['sensor-info']['serial-number'];
+            $ip = $data['sensor-info']['ip-address'];
+            $name = $data['sensor-info']['name'];
+            $mega = Megacount::firstOrCreate(['ip_address'=>$ip],['serial_number'=>$serial,'name'=>$name,'place_id'=>1]);
+            $counter_id = $mega->id;
+            $rows = $data['content']['element'][0]['measurement'];
+            foreach ($rows as $row){
+                $dt = explode('T', $row['from']);
+                $date = $dt[0];
+                $hour = substr($dt[1],0,2);
+                foreach ($row['value'] as $val){
+                    if($val['label']=='fw') $fw = $val['value'];
+                    if($val['label']=='bw') $bw = $val['value'];
+                }
+                if((int)$hour > 9 && (int)$hour < 21){//рабочее время счетчика
+                    Visitorlog::updateOrCreate(['data'=>$date,'hours'=>$hour],['fw'=>$fw,'bw'=>$bw,'counter_id'=>$counter_id,'created_at'=>date('Y-m-d H:i:s')]);
+                }
+            }
         }
-        else {
-            $json_str = file_get_contents('php://input');
-            $log = new GetData();
-            $log->created_at = date('Y-m-d H:i:s');
-            $log->type = 'JSON';
-            $log->request = $json_str;
-            $log->save();
-        }
-        return 'OK';
+        return view('admin::empty');
     }
 
     public function delete(Request $request){
