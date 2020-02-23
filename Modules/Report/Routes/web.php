@@ -48,6 +48,9 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/anket-pie',['uses'=>'AnketController@pie_graph','as'=>'anket-pie']);
         Route::post('/anket-table',['uses'=>'AnketController@table','as'=>'anket-table']);
 
+        Route::post('/mega-bar', 'MegacountController@bar_graph')->name('mega-bar');
+        Route::post('/mega-pie', 'MegacountController@pie_graph')->name('mega-pie');
+
     });
 
 });

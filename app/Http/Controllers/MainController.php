@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Energy\Entities\MainLog;
+use Modules\Marketing\Entities\Visitorlog;
 
 class MainController extends Controller
 {
@@ -91,6 +92,21 @@ class MainController extends Controller
                 $worktime.='<tr><td>В среднем</td><td class="danger">'.$time_avg.'</td></tr>';
         }
         $worktime.='</table>';
+        //инфа для виджета счетчиков посетителей
+        $fw = Visitorlog::whereBetween('data',[$start,$finish])->sum('fw');
+        $bw = Visitorlog::whereBetween('data',[$start,$finish])->sum('bw');
+        $result = DB::select("SELECT SUM(vl.fw) AS forward, SUM(vl.bw) AS backward, m.name AS megacnt, p.name AS plname FROM visitorlogs vl
+                            JOIN megacounts m ON m.id = vl.counter_id
+                            JOIN places p ON p.id = m.place_id
+                            WHERE vl.`data` BETWEEN '$start' AND '$finish'
+                            GROUP BY vl.counter_id");
+        $megatbl = '<table class="table table-hover table-striped"><tr  class="tblh"><th>Территория</th><th>Счетчик</th><th>Зашло</th><th>Вышло</th></tr>';
+        if(!empty($result)){
+            foreach ($result as $res){
+                $megatbl .= '<tr><td>'.$res->plname.'</td><td>'.$res->megacnt.'</td><td>'.$res->forward.'</td><td>'.$res->backward.'</td></tr>';
+            }
+        }
+        $megatbl .= '</table>';
         $data = [
             'title' => 'Главная панель',
             'people' => $people,
@@ -99,6 +115,9 @@ class MainController extends Controller
             'worktime' => $worktime,
             'main_count' => $main_count,
             'energy' => $energy,
+            'fw' => $fw,
+            'bw'=> $bw,
+            'megatbl' => $megatbl,
         ];
 
         if(view()->exists('main_index')){

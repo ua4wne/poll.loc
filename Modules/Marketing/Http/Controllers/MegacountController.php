@@ -59,9 +59,4 @@ class MegacountController extends Controller
                 return 'ERR';
         }
     }
-
-    public function delete(){
-        return 'OK';
-    }
-
 }

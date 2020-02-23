@@ -49,8 +49,7 @@
                     <h4 class="modal-title">Данные со счетчиков посетителей Megacount</h4>
                 </div>
                 <div class="modal-body">
-                    <span
-                        class="label label-primary">Функционал в разработке! Скоро здесь появятся реальные данные.</span>
+                    {!! $megatbl !!}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
@@ -123,6 +122,28 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-7  col-sm-7 col-xs-12 h-panel">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Данные со счетчиков посетителей за текущий месяц</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div id="mega-bar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5  col-sm-5 col-xs-12 h-panel">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Проходимость по территориям выставки за текущий месяц</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div id="mega-pie" style="height: 347px;"></div>
+                </div>
+            </div>
+        </div>
         <div class="panel-body col-md-12 x_content">
             <div id="vtbl"></div>
         </div>
@@ -134,6 +155,7 @@
 @section('user_script')
     <script src="/js/raphael.min.js"></script>
     <script src="/js/morris.min.js"></script>
+    <script src="/js/gstatic_charts_loader.js"></script>
 
     <script>
 
@@ -179,6 +201,66 @@
                         alert(thrownError);
                     }
                 });
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('mega-bar') }}',
+                    data: {'start': 'start', 'finish': 'finish'},
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (res) {
+                        //alert(res);
+                        $("#mega-bar").empty();
+                        Morris.Bar({
+                            element: 'mega-bar',
+                            data: JSON.parse(res),
+                            xkey: 'd',
+                            ykeys: ['f', 'b'],
+                            labels: ['Вход', 'Выход'],
+                            //barColors: ["#34495e","#26b99a"],
+                        });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('mega-pie') }}',
+                    data: {'start': 'start', 'finish': 'finish'},
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (res) {
+                        //alert(res);
+                        $("#mega-pie").empty();
+                        let obj = jQuery.parseJSON(res);
+                        google.charts.load('current', {'packages': ['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        function drawChart() {
+                            let data = new google.visualization.DataTable();
+                            data.addColumn('string', 'Счетчик');
+                            data.addColumn('number', 'Входы');
+                            $.each(obj, function (index, val) {
+                                data.addRow([
+                                    val.cnt,
+                                    parseInt(val.fw),
+                                ]);
+                            });
+                            let options = {
+                                is3D: true,
+                            };
+                            let chart = new google.visualization.PieChart(document.getElementById('mega-pie'));
+                            chart.draw(data, options);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -186,7 +268,7 @@
             }
         });
 
-        $('#view_table').click(function(e){
+        $('#view_table').click(function (e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -195,7 +277,7 @@
                 headers: {
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function(res){
+                success: function (res) {
                     //alert("Сервер вернул вот что: " + res);
                     $("#visitor-chart").hide();
                     $(".h-panel").hide();

@@ -20,7 +20,6 @@
             </div>
         </div>
     @endif
-    <div id="loader"></div> <!--  идентификатор загрузки (анимация) - ожидания выполнения-->
     <div class="row">
         <div class="modal fade" id="editCount" tabindex="-1" role="dialog" aria-labelledby="editCount" aria-hidden="true">
             <div class="modal-dialog">
@@ -118,10 +117,9 @@
                                     <td><span role="button" class="label label-danger">Не известно</span></td>
                                 @endif
 
-                                <td style="width:100px;">
+                                <td style="width:70px;">
                                     <div class="form-group" role="group">
                                         {!! Form::button('<i class="fa fa-edit fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-success btn_edit','type'=>'button','title'=>'Редактироватьть запись','data-toggle'=>'modal','data-target'=>'#editCount','id'=>$row->id]) !!}
-                                        {!! Form::button('<i class="fa fa-trash-o fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-danger btn_del','type'=>'button','title'=>'Удалить запись']) !!}
                                     </div>
                                     {!! Form::close() !!}
                                 </td>
@@ -151,7 +149,7 @@
         });
 
         $('#my_datatable').DataTable( {
-            //"order": [[ 0, "asc" ]]
+            "order": [[ 1, "asc" ]]
         } );
 
         $('#save').click(function(e){
@@ -206,38 +204,5 @@
             $('#count_id').val(id);
             $("#place_id :contains('"+placeid+"')").attr("selected", "selected");
         });
-
-        $('.btn_del').click(function(){
-            let id = $(this).prev().attr("id");
-            let x = confirm("Удаление счетчика не поддерживается. Продолжить (Да/Нет)?");
-            $("#loader").show();
-            if (x) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('deleteMegacount') }}',
-                    data: {'id':id},
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(res){
-                        //alert(res);
-                        if(res=='OK')
-                            alert('Функция не поддерживается!');
-                            //$('#'+id).parent().parent().parent().hide();
-                        if(res=='NO')
-                            alert('Выполнение операции запрещено!');
-                    },
-                    error: function (xhr, response) {
-                    alert('Error! ' + xhr.responseText);
-                }
-                });
-            }
-            else {
-                $("#loader").hide();
-                return false;
-            }
-            $("#loader").hide();
-        });
-
     </script>
 @endsection

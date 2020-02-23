@@ -88,7 +88,5 @@ Route::middleware(['auth'])->group(function() {
         Route::match(['get','post'],'/add',['uses'=>'MegacountController@create','as'=>'megacountAdd']);
         //megacount/edit
         Route::post('/edit',['uses'=>'MegacountController@edit','as'=>'editMegacount']);
-        //megacount/delete
-        Route::post('/delete',['uses'=>'MegacountController@delete','as'=>'deleteMegacount']);
     });
 });

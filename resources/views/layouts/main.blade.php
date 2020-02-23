@@ -254,8 +254,8 @@
                     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
-                            <div class="count">{{ empty($coming) ? '0' : $coming }} <i class="fa fa-arrow-circle-down"
-                                                                                       aria-hidden="true"></i> {{ empty($coming) ? '0' : $coming }}
+                            <div class="count">{{ empty($fw) ? '0' : $fw }} <i class="fa fa-arrow-circle-down"
+                                                                                       aria-hidden="true"></i> {{ empty($bw) ? '0' : $bw }}
                                 <i class="fa fa-arrow-circle-up" aria-hidden="true"></i></div>
                             <h3>Счетчики посетителей </h3>
                             <p><a href="#" data-toggle="modal" data-target="#viewCount">подробнее</a></p>

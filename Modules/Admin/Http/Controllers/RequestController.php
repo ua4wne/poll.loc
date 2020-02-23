@@ -62,7 +62,7 @@ class RequestController extends Controller
                     if($val['label']=='bw') $bw = $val['value'];
                 }
                 if((int)$hour > 9 && (int)$hour < 21){//рабочее время счетчика
-                    Visitorlog::updateOrCreate(['data'=>$date,'hours'=>$hour],['fw'=>$fw,'bw'=>$bw,'counter_id'=>$counter_id,'created_at'=>date('Y-m-d H:i:s')]);
+                    Visitorlog::updateOrCreate(['data'=>$date,'hours'=>$hour,'counter_id'=>$counter_id],['fw'=>$fw,'bw'=>$bw,'created_at'=>date('Y-m-d H:i:s')]);
                 }
             }
         }
