@@ -265,12 +265,16 @@ class FormController extends Controller
 
     private function ViewForm($id){
         $content='<div class="x_panel">';
+        $content.='<div class="row"><div class="col-xs-12">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">0%</div></div></div><hr>';
         $content.='<input type="hidden" name="form_id" id="form_id" value="'.$id.'">';
         //выбираем все вопросы анкеты
         $questions = Question::where(['form_id'=>$id])->get();
+        $content.='<input type="hidden" name="qst_count" id="qst_count" value="'.$questions->count().'">';
+        $qst = 1;
         foreach($questions as $question){
             $content.='<div class="row"><div class="col-md-12">
-                    <div class="panel panel-info">
+                    <div class="panel panel-info" id="qpanel'.$qst.'">
                         <div class="panel-heading">'.
                 $question->name . '?'.
                 '</div>
@@ -313,12 +317,14 @@ class FormController extends Controller
             if($k==1){
                 $content.='<td></td></tr>';
             }
-            //<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
             $content.='</table></div>
                     </div></div>
                 </div>';
+            $qst++;
         }
-
+        $content.='<button class="btn btn-primary" id="prev_btn"><i class="fa fa-chevron-left" aria-hidden="true"></i> Назад</button>
+                    <button class="btn btn-primary" id="next_btn">Вперед <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                    <button class="btn btn-success" id="save_btn">Сохранить анкету</button>';
         $content.='</div>';
         return $content;
     }

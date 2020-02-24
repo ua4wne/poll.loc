@@ -100,7 +100,7 @@
             </div>
         </div>
         <!-- /.panel-heading -->
-        <div class="col-md-7  col-sm-7 col-xs-12 h-panel">
+        <div class="col-md-7  col-sm-12 col-xs-12 h-panel">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>График посещений выставки за текущий месяц</h2>
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5  col-sm-5 col-xs-12 h-panel">
+        <div class="col-md-5  col-sm-12 col-xs-12 h-panel">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Динамика посещений выставки в сравнении с прошлым годом</h2>
@@ -122,7 +122,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-7  col-sm-7 col-xs-12 h-panel">
+        <div class="col-md-7  col-sm-12 col-xs-12 h-panel">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Данные со счетчиков посетителей за текущий месяц</h2>
@@ -133,7 +133,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5  col-sm-5 col-xs-12 h-panel">
+        <div class="col-md-5  col-sm-12 col-xs-12 h-panel">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Проходимость по территориям выставки за текущий месяц</h2>

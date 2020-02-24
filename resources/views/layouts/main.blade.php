@@ -243,7 +243,7 @@
         @section('tile_widget')
             <!-- top tiles -->
                 <div class="row top_tiles">
-                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-users" aria-hidden="true"></i></div>
                             <div class="count">{{ empty($people) ? '0' : $people }} чел.</div>
@@ -251,7 +251,7 @@
                             <p><a href="#" data-toggle="modal" data-target="#viewVisit">подробнее</a></p>
                         </div>
                     </div>
-                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
                             <div class="count">{{ empty($fw) ? '0' : $fw }} <i class="fa fa-arrow-circle-down"
@@ -261,7 +261,7 @@
                             <p><a href="#" data-toggle="modal" data-target="#viewCount">подробнее</a></p>
                         </div>
                     </div>
-                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
                             <div class="count">{{ empty($time_avg) ? '0' : $time_avg }} час.</div>
@@ -269,7 +269,7 @@
                             <p><a href="#" data-toggle="modal" data-target="#viewTimeWork">подробнее</a></p>
                         </div>
                     </div>
-                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <div class="tile-stats">
                             <div class="icon"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
                             <div class="count">{{ empty($main_count) ? '0' : $main_count }} кВт</div>

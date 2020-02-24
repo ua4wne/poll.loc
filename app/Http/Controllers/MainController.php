@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visit;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,15 @@ use Modules\Marketing\Entities\Visitorlog;
 class MainController extends Controller
 {
     public function index(){
+        if(User::hasRole('poll')){ //для интервьюеров свой отдельный вид
+            if(view()->exists('interv')){
+                $data = [
+                    'title' => 'Главная панель',
+                ];
+                return view('interv',$data);
+            }
+            abort(404);
+        }
         $year = date('Y');
         $month = date('m');
         $start = date('Y-m').'-01';
