@@ -8,15 +8,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Energy\Entities\MainLog;
+use Modules\Marketing\Entities\Form;
 use Modules\Marketing\Entities\Visitorlog;
 
 class MainController extends Controller
 {
     public function index(){
         if(User::hasRole('poll')){ //для интервьюеров свой отдельный вид
-            if(view()->exists('interv')){
+            if(view()->exists('interv')) {
+                $ankets = Form::select('id','name')->where(['is_active'=>1,'is_work'=>1])->get();
+                $menu = '';
+                foreach ($ankets as $row){
+                    $menu .= '<li><a href="/forms/view/'. $row->id .'">'.$row->name.'</a></li>';
+                }
+                $content = '';
                 $data = [
-                    'title' => 'Главная панель',
+                    'title' => 'Выберите анкету для работы',
+                    'menu' => $menu,
+                    'content' => $content,
                 ];
                 return view('interv',$data);
             }

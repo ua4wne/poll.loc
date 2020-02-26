@@ -51,6 +51,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/',['uses'=>'FormController@index','as'=>'forms']);
         //forms/view
         Route::get('/view/{id}',['uses'=>'FormController@view','as'=>'form_view']);
+        //save poll
+        Route::post('/save-poll',['uses'=>'FormController@storePoll','as'=>'save_poll']);
         //forms/add
         Route::match(['get','post'],'/add',['uses'=>'FormController@create','as'=>'formAdd']);
         //forms/ajax/edit

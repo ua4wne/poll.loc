@@ -16,7 +16,7 @@
     <div id="loader"></div> <!--  идентификатор загрузки (анимация) - ожидания выполнения-->
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
-            {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST']) !!}
+            {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST','id'=>'form-poll']) !!}
             <h2 class="text-center">{{ $title }}</h2>
             {!! $content !!}
             {!! Form::close() !!}
@@ -56,6 +56,7 @@
                 $('#save_btn').show();
                 $('#next_btn').hide();
             }
+            $('#next_btn').attr('disabled', false);
         });
 
         $('input[type="checkbox"]').on('change', function (e) {
@@ -70,6 +71,7 @@
                 $('#save_btn').show();
                 $('#next_btn').hide();
             }
+            $('#next_btn').attr('disabled', false);
         });
 
         $('#next_btn').click(function (e) {
@@ -95,9 +97,6 @@
                         $('#qpanel' + i).hide();
                     }
                     step++;
-                    let obj = $('#qpanel' + step);
-                    obj.find(':radio').first().prop('checked', true);
-                    obj.find(':checkbox').first().prop('checked', true);
                     $('#qpanel' + step).show();
                     let per = set_percent(step, qcnt);
                     $('.progress-bar').css('width', per + '%');
@@ -111,6 +110,7 @@
                 }
                 if (step == 2)
                     $('#prev_btn').show();
+                $('#next_btn').attr('disabled', true);
             }
         });
 
@@ -138,11 +138,26 @@
                 $('.progress-bar').css('width', '2%');
                 $('.progress-bar').text('0%');
             }
+            $('#next_btn').attr('disabled', false);
         });
 
         $('#save_btn').click(function (e) {
             e.preventDefault();
-            alert('Сохраняем анкету');
+            $('#loader').show();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('save_poll') }}',
+                data: $('#form-poll').serialize(),
+                success: function(res){
+                    //alert(res);
+                    if(res=='OK')
+                        location.reload(true);
+                },
+                error: function(xhr, response){
+                    alert('Error! '+ xhr.responseText);
+                }
+            });
+            $('#loader').hide();
         });
 
         function set_percent(a, b) {

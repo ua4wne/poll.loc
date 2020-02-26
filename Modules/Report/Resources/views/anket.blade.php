@@ -15,8 +15,10 @@
     <div id="loader"></div> <!--  идентификатор загрузки (анимация) - ожидания выполнения-->
     <div class="row">
         <div class="col-md-12">
-            <h2 class="text-header text-center">{{ $head }}</h2>
-            <p class="text-header text-center"></p>
+            <div class="x_panel">
+                <h2 class="text-header text-center">{{ $head }}</h2>
+                <p class="text-header text-center text-info"></p>
+            </div>
             <div class="x_content">
                 {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST','id'=>'new_val']) !!}
 
@@ -128,14 +130,14 @@
                 data: $('#new_val').serialize(),
                 success: function (res) {
                     let obj = jQuery.parseJSON(res);
-                    $("p.text-header").text('за период с ' + $('#start').val() + ' по ' + $('#finish').val() + ' опрошено ' + obj[0].qty + ' человек');
+                    $("p.text-header").text('за период с ' + $('#start').val() + ' по ' + $('#finish').val() + ' кол-во опрошенных ' + obj[0].qty);
                     $('#result').show();
                     //alert("Сервер вернул вот что: " + res);
                     //заполняем графики
                     let qst = obj[2].pie;
                     //цикл по вопросам
                     $.each(qst, function (key, objpie) {
-                        let idx = key+1;
+                        let idx = key + 1;
                         google.charts.load('current', {'packages': ['corechart']});
                         google.charts.setOnLoadCallback(drawChart);
 
@@ -152,12 +154,12 @@
                             let options = {
                                 is3D: true,
                             };
-                            let chart = new google.visualization.PieChart(document.getElementById('pie-'+idx));
+                            let chart = new google.visualization.PieChart(document.getElementById('pie-' + idx));
                             chart.draw(data, options);
                         }
                     });
                     $('#result').html(obj[1].content);
-                    $("h2.text-header").text($('#form_id').text());
+                    $("h2.text-header").text($('#form_id option:selected').text());
                     $('.x_content').hide();
                     $('.other').hide(); //скрыли значения в таблице вывода анкеты
                     $('.fa-plus-square-o').show();

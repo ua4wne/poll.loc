@@ -88,6 +88,23 @@ class FormController extends Controller
     }
 
     public function view($id){
+        if(User::hasRole('poll')){ //для интервьюеров свой отдельный вид
+            if(view()->exists('interv')) {
+                $ankets = Form::select('id','name')->where(['is_active'=>1,'is_work'=>1])->get();
+                $menu = '';
+                foreach ($ankets as $row){
+                    $menu .= '<li><a href="/forms/view/'. $row->id .'">'.$row->name.'</a></li>';
+                }
+                $content = $this->ViewForm($id);
+                $data = [
+                    'title' => Form::find($id)->name,
+                    'content' => $content,
+                    'menu' => $menu,
+                ];
+                return view('interv',$data);
+            }
+            abort(404);
+        }
         if(view()->exists('marketing::form_view')){
             $content = $this->ViewForm($id);
             $data = [
@@ -97,6 +114,19 @@ class FormController extends Controller
             return view('marketing::form_view', $data);
         }
         abort(404);
+    }
+
+    public function storePoll(Request $request) {
+        if(!User::hasRole('admin') && !User::hasRole('poll') && !User::hasRole('market')){
+            abort(503);
+        }
+        if($request->isMethod('post')) {
+            $input = $request->except('_token'); //параметр _token нам не нужен
+            $id = $input['form_id'];
+            $input['date'] = date('Y-m-d'); //текущая дата
+            self::SavePoll($id, $input);
+            return 'OK';
+        }
     }
 
     public function media(Request $request){
@@ -204,13 +234,56 @@ class FormController extends Controller
                         if(strstr($answer->name,'укажите')||strstr($answer->name,'указать'))
                         {
                             $alt = "other".$answer->id;
-                            if(strlen($input[$alt])!=0)
-                                $val = $input[$alt];
-                            else
-                                $val = 'Другое (не указано)';
+                            $val = $input[$alt];
                         }
                         else
                             $val = $answer->name;
+                        if(is_array($val)){
+                            foreach ($val as $v){
+                                $model = new Logform();
+                                $model->data = $input['date'];
+                                $model->form_id = $idform;
+                                $model->question_id = $question->id;
+                                $model->answer_id = $answer->id;
+                                $model->answer = $v;
+                                $model->user_id = $iduser;
+                                $model->save();
+                            }
+                        }
+                        else{
+                            $model = new Logform();
+                            $model->data = $input['date'];
+                            $model->form_id = $idform;
+                            $model->question_id = $question->id;
+                            $model->answer_id = $answer->id;
+                            $model->answer = $val;
+                            $model->user_id = $iduser;
+                            $model->save();
+                        }
+                    }
+                }
+                else{
+                    $answer = Answer::find($input[$idx]);
+                    if(strstr($answer->name,'укажите')||strstr($answer->name,'указать'))
+                    {
+                        $alt = "other".$answer->id;
+                        $val = $input[$alt];
+                    }
+                    else
+                        $val = $answer->name; //заполняем ассоциативный массив ответов
+                    if(is_array($val)){
+                        foreach ($val as $v){
+                            $model = new Logform();
+                            $model->data = $input['date'];
+                            $model->form_id = $idform;
+                            $model->question_id = $question->id;
+                            $model->answer_id = $answer->id;
+                            $model->answer = $v;
+                            $model->user_id = $iduser;
+                            $model->save();
+                        }
+                    }
+                    else{
                         $model = new Logform();
                         $model->data = $input['date'];
                         $model->form_id = $idform;
@@ -220,27 +293,6 @@ class FormController extends Controller
                         $model->user_id = $iduser;
                         $model->save();
                     }
-                }
-                else{
-                    $answer = Answer::find($input[$idx]);
-                    if(strstr($answer->name,'укажите')||strstr($answer->name,'указать'))
-                    {
-                        $alt = "other".$answer->id;
-                        if(strlen($input[$alt])!=0)
-                            $val = $input[$alt];
-                        else
-                            $val = 'Другое (не указано)';
-                    }
-                    else
-                        $val = $answer->name; //заполняем ассоциативный массив ответов
-                    $model = new Logform();
-                    $model->data = $input['date'];
-                    $model->form_id = $idform;
-                    $model->question_id = $question->id;
-                    $model->answer_id = $answer->id;
-                    $model->answer = $val;
-                    $model->user_id = $iduser;
-                    $model->save();
                 }
             }
         }
