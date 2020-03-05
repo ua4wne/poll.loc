@@ -193,7 +193,7 @@ class WorkController extends Controller
             $sheet->setCellValue('A'.$k, 'Учет времени присутствия на выставке за период с '.$start.' по '.$finish.'');
             $sheet->mergeCells('A'.$k.':E'.$k);
             $sheet->getStyle('A'.$k.':E'.$k)->getFont()->setBold(true);
-            $sheet->getStyle('A'.$k.':E'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('A'.$k.':E'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
             $k++;
             $sheet->setCellValue('A'.$k, '№ участка');
             $sheet->setCellValue('B'.$k, 'Название компании');
