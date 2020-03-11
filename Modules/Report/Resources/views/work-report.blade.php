@@ -16,7 +16,11 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-header text-center">{{ $head }}</h2>
-            <p class="text-header text-center">За период с {{ $start }} по {{ $finish }}</p>
+            @if($firm)
+                <p class="text-header text-center">За период с {{ $start }} по {{ $finish }}</p>
+            @else
+                <p class="text-header text-center">За прошедший месяц</p>
+            @endif
                 <div class="x_panel">
                     {!! $firm !!}
                     {!! $content !!}
