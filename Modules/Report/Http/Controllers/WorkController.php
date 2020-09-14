@@ -54,6 +54,22 @@ class WorkController extends Controller
                 }
                 return $this->RenterReport($renter_id,$start,$finish);
             }
+            if(isset($input['control'])) {
+                if(!Role::granted('view_report')){
+                    abort(503);
+                }
+                $title='Учет времени присутствия на выставке';
+                $content = $this->controlWork();
+                $data = [
+                    'title' => $title,
+                    'head' => 'Контроль заполнения данных по времени присутствия арендаторов',
+                    'start' => '',
+                    'finish' => '',
+                    'firm' => '',
+                    'content' => $content,
+                ];
+                return view('report::work-report',$data);
+            }
         }
         if(view()->exists('report::works')){
             $title='Присутствие арендаторов на выставке';
@@ -193,7 +209,7 @@ class WorkController extends Controller
             $sheet->setCellValue('A'.$k, 'Учет времени присутствия на выставке за период с '.$start.' по '.$finish.'');
             $sheet->mergeCells('A'.$k.':E'.$k);
             $sheet->getStyle('A'.$k.':E'.$k)->getFont()->setBold(true);
-            $sheet->getStyle('A'.$k.':E'.$k)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('A'.$k.':E'.$k)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
             $k++;
             $sheet->setCellValue('A'.$k, '№ участка');
             $sheet->setCellValue('B'.$k, 'Название компании');
@@ -244,6 +260,47 @@ class WorkController extends Controller
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
+    }
+
+    private function controlWork() {
+        //вычисляем количество дней предыдущего месяца
+        $prev_month = date("m", strtotime("first day of previous month"));
+        $year = date("Y");
+        if($prev_month==12) $year-=1;
+        $number = cal_days_in_month(CAL_GREGORIAN, $prev_month, $year); // 31
+        $templ = array();
+        for($i=1;$i<=$number;$i++){
+            $templ[$i] = 'X';
+        }
+        //выбираем всех активных арендаторов с МС
+        $renters = Rentlog::GetActiveRenters('МС');
+        $content='<table class="table table-hover table-striped"><tr><th>Арендатор/Дата</th>';
+        foreach($templ as $key=>$val){
+            if(strlen($key)==1) $key = "0$key";
+            $content.= "<th>$key</th>";
+        }
+        $content.='</tr>';
+        //выбираем все записи по присутствию арендаторов за месяц и формируем строку в таблице для отчета
+        foreach ($renters as $renter){
+            $rows = DB::select("SELECT `data`, SUM(period1+period2+period3+period4+period5+period6+period7+period8+period9+period10+period11) AS `time`
+                                        FROM rentlogs WHERE renter_id=$renter->id AND `data` LIKE '$year-$prev_month-%' GROUP BY `data`");
+            $tmp = $templ;
+            foreach ($rows as $row){
+                $data = explode('-',$row->data);
+                $i = (int)$data[2];
+                $tmp[$i] = $row->time;
+            }
+            $content.='<tr><td>'.Renter::find($renter->id)->title.' участок №'.Renter::find($renter->id)->area.'</td>';
+            foreach ($tmp as $item){
+                if($item == 'X')
+                $content.= "<td class='red'>$item</td>";
+                else
+                    $content.= "<td>$item</td>";
+            }
+            $content.='</tr>';
+        }
+        $content.='</table>';
+        return $content;
     }
 
 }

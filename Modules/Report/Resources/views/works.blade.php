@@ -60,6 +60,7 @@
                         <div class="col-xs-offset-2 col-xs-8">
                             {!! Form::button('<span class="fa  fa-bar-chart-o"></span> Сформировать', ['class' => 'btn btn-primary','type'=>'submit','name' => 'report','value' => 'report','id'=>'report']) !!}
                             {!! Form::button('<span class="fa  fa-file-excel-o"></span> Скачать', ['class' => 'btn btn-primary','type'=>'submit','name' => 'export','value' => 'export','id'=>'export']) !!}
+                            {!! Form::button('<span class="fa  fa-bug"></span> Контроль заполнения', ['class' => 'btn btn-danger','type'=>'submit','name' => 'control','value' => 'control','id'=>'control']) !!}
                         </div>
                     </div>
 
