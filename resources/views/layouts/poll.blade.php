@@ -57,6 +57,8 @@
                             <ul class="nav side-menu">
                                 <li><a href="{{ route('main') }}"><i class="fa fa-tachometer" aria-hidden="true"></i>Рабочий
                                         стол </a></li>
+                                <li><a href="{{ route('singleForm') }}"><i class="fa fa-file-text-o" aria-hidden="true"></i>Отдельные анкеты </a></li>
+                                <li><a href="{{ route('groupForm') }}"><i class="fa fa-book" aria-hidden="true"></i>Группа анкет </a></li>
                             </ul>
                         </div>
                     </div>

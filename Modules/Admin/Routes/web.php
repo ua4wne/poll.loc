@@ -107,4 +107,9 @@ Route::middleware(['auth'])->group(function() {
         //places/ajax/delete
         Route::post('/ajax/delete',['uses'=>'Ajax\PlaceController@delete','as'=>'deletePlace']);
     });
+
+    //backups/ группа обработки роутов backups
+    Route::group(['prefix'=>'backups'], function(){
+        Route::get('/',['uses'=>'BackupController@index','as'=>'backups']);
+    });
 });

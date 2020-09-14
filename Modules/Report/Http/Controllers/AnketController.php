@@ -44,13 +44,14 @@ class AnketController extends Controller
             $pie = array();
             $content = '';
             //определяем вопросы анкеты из логов
-            $rows = DB::select("SELECT DISTINCT `name` FROM (`questions` JOIN `logforms`  ON((`questions`.`id` = `logforms`.`question_id`))) WHERE `questions`.`form_id`=$form_id AND `data` BETWEEN '$start' AND '$finish' ");
+            $rows = DB::select("SELECT DISTINCT `name` FROM (`questions` JOIN `logforms`  ON((`questions`.`id` = `logforms`.`question_id`)))
+                        WHERE `questions`.`form_id`=$form_id AND `data` BETWEEN '$start' AND '$finish' ORDER BY `name`+0 ASC");
             $i=1;
             foreach ($rows as $row) {
                 $qst = array();
                 $question = Question::where(['form_id'=>$form_id,'name'=>$row->name])->first();
                 $sum = Logform::select('answer')->where(['question_id' => $question->id])->whereBetween('data',[$start,$finish])->count('answer');
-                $values = DB::select("select answer,count(answer) as kol,count(answer)/$sum as percent from logforms where question_id=$question->id 
+                $values = DB::select("select answer,count(answer) as kol,count(answer)/$sum as percent from logforms where question_id=$question->id
                                      and (`data` between '$start' and '$finish') group by answer order by kol DESC");
                 $content.= '<div class="col-md-offset-2 col-md-8"><h2 class="text-info text-center">'.$row->name.'</h2><div class="pie" id="pie-'.$i.'">График</div>';
                 $content.= '<button type="button" class="btn btn-default btn-sm"><i class="fa fa-expand fa-lg show" aria-hidden="true"></i></button><div class="other">';
@@ -192,6 +193,4 @@ class AnketController extends Controller
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
     }
-
-
 }

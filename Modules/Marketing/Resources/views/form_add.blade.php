@@ -27,6 +27,13 @@
         </div>
 
         <div class="form-group">
+            {!! Form::label('form_group_id', 'Группа анкет:',['class'=>'col-xs-3 control-label']) !!}
+            <div class="col-xs-8">
+                {!! Form::select('form_group_id', $selgroup, old('form_group_id'),['class' => 'form-control','required' => 'required','id'=>'form_group_id']); !!}
+            </div>
+        </div>
+
+        <div class="form-group">
             {!! Form::label('is_active', 'Статус активности:',['class'=>'col-xs-3 control-label']) !!}
             <div class="col-xs-8">
                 {!! Form::select('is_active', ['0'=>'Не активная','1'=>'Активная'], old('is_active'),['class' => 'form-control','required' => 'required','id'=>'is_active']); !!}

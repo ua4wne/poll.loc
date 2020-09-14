@@ -67,10 +67,11 @@
                     </a>
                 </div>
                 <div class="x_panel">
-                    <table id="my_datatable" class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
                             <th>Наименование</th>
+                            <th>Видимость</th>
                             <th>Дата создания</th>
                             <th>Дата обновления</th>
                             <th>Действия</th>
@@ -80,15 +81,22 @@
 
                         @foreach($rows as $k => $row)
 
-                            <tr>
+                            <tr id="{{ $row->id }}">
                                 <td>{{ $row->name }}</td>
+                                <td>
+                                    @if($row->visibility)
+                                        <span role="button" class="label label-success">Включена</span>
+                                    @else
+                                        <span role="button" class="label label-danger">Отключена</span>
+                                    @endif
+                                </td>
                                 <td>{{ $row->created_at }}</td>
                                 <td>{{ $row->updated_at }}</td>
 
-                                <td style="width:150px;">
+                                <td style="width:160px;">
                                     <div class="form-group" role="group">
                                         <a href="{{ route('answers',[$row->id]) }}"><button class="btn btn-info btn_qst" type="button" title="Ответы на вопрос"><i class="fa fa-th-list fa-lg>" aria-hidden="true"></i></button></a>
-                                        {!! Form::button('<i class="fa fa-edit fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-success btn_edit','type'=>'button','title'=>'Редактировать запись','data-toggle'=>'modal','data-target'=>'#editQuestion','id'=>$row->id]) !!}
+                                        {!! Form::button('<i class="fa fa-edit fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-success btn_edit','type'=>'button','title'=>'Редактировать запись','data-toggle'=>'modal','data-target'=>'#editQuestion']) !!}
                                         {!! Form::button('<i class="fa fa-trash-o fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-danger btn_del','type'=>'button','title'=>'Удалить запись']) !!}
                                     </div>
                                     {!! Form::close() !!}
@@ -98,6 +106,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    {{ $rows->links() }}
                 </div>
             @endif
         </div>
@@ -107,7 +116,7 @@
 @endsection
 
 @section('user_script')
-    <script src="/js/jquery.dataTables.min.js"></script>
+{{--    <script src="/js/jquery.dataTables.min.js"></script>--}}
     @include('confirm')
     <script>
         $(document).ready(function(){
@@ -118,9 +127,9 @@
             $('#basicModal').modal(options);
         });
 
-        $('#my_datatable').DataTable( {
-            "order": [[ 0, "asc" ]]
-        } );
+        // $('#my_datatable').DataTable( {
+        //     //"order": [[ 0, "asc" ]]
+        // } );
 
         $('#save').click(function(e){
             e.preventDefault();
@@ -158,17 +167,55 @@
         });
 
         $('.btn_edit').click(function(){
-            let id = $(this).attr("id");
-            let name = $(this).parent().parent().prevAll().eq(2).text();
-
+            let id = $(this).parent().parent().parent().attr('id');
+            let name = $(this).parent().parent().prevAll().eq(3).text();
             $('#name').val(name);
             $('#question_id').val(id);
         });
 
+        $('.label-success').click(function(){
+            let id = $(this).parent().parent().attr('id');
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('switchQuestion') }}',
+                data: {'id':id,'visibility':0},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res){
+                    //alert(res);
+                    if(res=='OK'){
+                        location.reload(true);
+                    }
+                    if(res=='NO')
+                        alert('Выполнение операции запрещено!');
+                }
+            });
+        });
+
+        $('.label-danger').click(function(){
+            let id = $(this).parent().parent().attr('id');
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('switchQuestion') }}',
+                data: {'id':id,'visibility':1},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res){
+                    //alert(res);
+                    if(res=='OK'){
+                        location.reload(true);
+                    }
+                    if(res=='NO')
+                        alert('Выполнение операции запрещено!');
+                }
+            });
+        });
+
         $('.btn_del').click(function(){
-            let id = $(this).prev().attr("id");
+            let id = $(this).parent().parent().parent().attr('id');
             let x = confirm("Выбранный вопрос будет удален безвозвратно со всеми ответами и имеющейся статистикой! Продолжить (Да/Нет)?");
-            $("#loader").show();
             if (x) {
                 $.ajax({
                     type: 'POST',
@@ -176,6 +223,9 @@
                     data: {'id':id},
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    beforeSend: function(){
+                        $('#loader').show();
                     },
                     success: function(res){
                         //alert(res);

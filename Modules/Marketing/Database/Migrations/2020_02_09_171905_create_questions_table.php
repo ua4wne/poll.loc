@@ -18,6 +18,7 @@ class CreateQuestionsTable extends Migration
             $table->integer('form_id')->unsigned();
             $table->foreign('form_id')->on('forms')->references('id');
             $table->string('name',255);
+            $table->tinyInteger('visibility')->default(1);
             $table->timestamps();
         });
     }

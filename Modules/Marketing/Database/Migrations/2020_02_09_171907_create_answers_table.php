@@ -20,6 +20,7 @@ class CreateAnswersTable extends Migration
             $table->string('name',100);
             $table->text('htmlcode');
             $table->string('source',20)->default(null);
+            $table->tinyInteger('visibility')->default(1);
             $table->timestamps();
         });
     }

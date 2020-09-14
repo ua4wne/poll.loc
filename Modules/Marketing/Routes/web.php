@@ -61,6 +61,13 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/ajax/delete',['uses'=>'Ajax\FormController@delete','as'=>'deleteForm']);
         //forms/media
         Route::match(['get','post'],'/media',['uses'=>'FormController@media','as'=>'media_form']);
+
+        Route::get('/single',['uses'=>'FormController@singleForm','as'=>'singleForm']);
+        Route::match(['get','post'],'/group',['uses'=>'FormController@groupForm','as'=>'groupForm']);
+        //forms/group-view
+        Route::get('/group-view/{id}',['uses'=>'FormController@groupView','as'=>'group_view']);
+        //forms/set-form
+        Route::get('/set-form',['uses'=>'FormController@setForm','as'=>'set_form']);
     });
 
     //questions/ группа обработки роутов questions
@@ -68,6 +75,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/{id}',['uses'=>'QuestionController@index','as'=>'questions']);
         //questions/add
         Route::match(['get','post'],'/add/{id}',['uses'=>'QuestionController@create','as'=>'questionAdd']);
+        //questions/ajax/show
+        Route::post('/ajax/show',['uses'=>'Ajax\QuestionController@show','as'=>'switchQuestion']);
         //questions/ajax/edit
         Route::post('/ajax/edit',['uses'=>'Ajax\QuestionController@edit','as'=>'editQuestion']);
         //questions/ajax/delete
@@ -79,6 +88,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/{id}',['uses'=>'AnswerController@index','as'=>'answers']);
         //answers/add
         Route::match(['get','post'],'/add/{id}',['uses'=>'AnswerController@create','as'=>'answerAdd']);
+        //answers/edit
+        Route::post('/edit',['uses'=>'AnswerController@edit','as'=>'switchAnswer']);
         //answers/delete
         Route::post('/delete',['uses'=>'AnswerController@delete','as'=>'deleteAnswer']);
     });

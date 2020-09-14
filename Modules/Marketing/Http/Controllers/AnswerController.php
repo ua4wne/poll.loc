@@ -28,7 +28,7 @@ class AnswerController extends Controller
         if(view()->exists('marketing::answers')){
             $question = Question::find($id);
             $title='Ответы на вопрос "'.$question->name.'"';
-            $rows = Answer::where(['question_id'=>$id])->get();
+            $rows = Answer::where(['question_id'=>$id])->paginate(env('PAGINATION_SIZE'));
             $data = [
                 'title' => $title,
                 'rows' => $rows,
@@ -59,6 +59,7 @@ class AnswerController extends Controller
             $validator = Validator::make($input,[
                 'name' => 'required|max:255|string',
                 'question_id' => 'required|numeric',
+                'visibility' => 'required|numeric',
                 'htmlcode' => 'required|string',
                 'refbook' => 'nullable|string',
             ],$messages);
@@ -142,6 +143,26 @@ class AnswerController extends Controller
         abort(404);
     }
 
+    public function edit(Request $request){
+        if($request->isMethod('post')){
+            $id = $request->input('id');
+            $visibility = $request->input('visibility');
+            $ans = Answer::find($id);
+            $ans->visibility = $visibility;
+
+            if($ans->update()){
+                if($visibility)
+                    $msg = 'Ответ '.$ans->name.' из вопроса '.$ans->question->name.' был включен';
+                else
+                    $msg = 'Ответ '.$ans->name.' из вопроса '.$ans->question->name.' был отключен';
+                $ip = $request->getClientIp();
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                return 'OK';
+            }
+            else
+                return 'ERR';
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

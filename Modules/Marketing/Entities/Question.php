@@ -9,7 +9,7 @@ class Question extends Model
     //указываем имя таблицы
     protected $table = 'questions';
 
-    protected $fillable = ['name','form_id'];
+    protected $fillable = ['name','form_id','visibility'];
 
     public function answers()
     {

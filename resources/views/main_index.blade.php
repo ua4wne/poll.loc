@@ -128,19 +128,39 @@
                     <h2>Данные со счетчиков посетителей за текущий месяц</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content" style="height: 440px">
                     <div id="mega-bar"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-5  col-sm-12 col-xs-12 h-panel">
             <div class="x_panel">
-                <div class="x_title">
-                    <h2>Проходимость по территориям выставки за текущий месяц</h2>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
-                    <div id="mega-pie" style="height: 347px;"></div>
+
+                    <!-- start accordion -->
+                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel">
+                            <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <h4 class="panel-title">Проходимость по входам выставки за текущий месяц</h4>
+                            </a>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                <div class="panel-body">
+                                    <div id="mega-pie" style="height: 347px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <h4 class="panel-title">Проходимость по территориям выставки за текущий месяц</h4>
+                            </a>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <div id="mega-place-pie"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of accordion -->
                 </div>
             </div>
         </div>
@@ -253,6 +273,44 @@
                                 is3D: true,
                             };
                             let chart = new google.visualization.PieChart(document.getElementById('mega-pie'));
+                            chart.draw(data, options);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('mega-place-pie') }}',
+                    data: {'start': 'start', 'finish': 'finish'},
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (res) {
+                        //alert(res);
+                        $("#mega-place-pie").empty();
+                        let obj = jQuery.parseJSON(res);
+                        google.charts.load('current', {'packages': ['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        function drawChart() {
+                            let data = new google.visualization.DataTable();
+                            data.addColumn('string', 'Территория');
+                            data.addColumn('number', 'Входы');
+                            $.each(obj, function (index, val) {
+                                data.addRow([
+                                    val.cnt,
+                                    parseInt(val.fw),
+                                ]);
+                            });
+                            let options = {
+                                is3D: true,
+                                'width':590,
+                                'height':347,
+                            };
+                            let chart = new google.visualization.PieChart(document.getElementById('mega-place-pie'));
                             chart.draw(data, options);
                         }
                     },

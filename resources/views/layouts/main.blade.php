@@ -96,6 +96,7 @@
                                         <li><a href="{{ route('anket-report') }}">Анкетирование</a></li>
                                         <li><a href="{{ route('visit-report') }}">Посещаемость выставки</a></li>
                                         <li><a href="{{ route('work-report') }}">Присутствие на выставке</a></li>
+                                        <li><a href="{{ route('megacount-report') }}">Счетчики посетителей</a></li>
                                         @if(\App\User::hasRole('admin') || \App\User::hasRole('director'))
                                         <li><a href="{{ route('it-cost') }}">Затраты ИТ</a></li>
                                         @endif
@@ -149,6 +150,7 @@
                                             <li><a href="{{ route('places') }}">Территории</a></li>
                                             <li><a href="{{ route('describers') }}">Подписчики</a></li>
                                             <li><a href="{{ route('view-requests') }}">Запросы к серверу</a></li>
+                                            <li><a href="#">Бэкап сайта</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="{{ route('connections') }}"><i class="fa fa-globe" aria-hidden="true"></i> Подключения к

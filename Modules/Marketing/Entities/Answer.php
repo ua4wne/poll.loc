@@ -9,7 +9,7 @@ class Answer extends Model
     //указываем имя таблицы
     protected $table = 'answers';
 
-    protected $fillable = ['name','question_id','htmlcode','source'];
+    protected $fillable = ['name','question_id','htmlcode','source','visibility'];
 
     public function question(){
         return $this->belongsTo('Modules\Marketing\Entities\Question');

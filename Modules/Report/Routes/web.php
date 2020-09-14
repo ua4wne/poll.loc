@@ -50,6 +50,8 @@ Route::middleware(['auth'])->group(function() {
 
         Route::post('/mega-bar', 'MegacountController@bar_graph')->name('mega-bar');
         Route::post('/mega-pie', 'MegacountController@pie_graph')->name('mega-pie');
+        Route::post('/mega-place-pie', 'MegacountController@place_pie_graph')->name('mega-place-pie');
+        Route::match(['get','post'],'/megacount-report',['uses'=>'MegacountController@index','as'=>'megacount-report']);
 
     });
 

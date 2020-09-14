@@ -49,6 +49,13 @@
                         </div>
 
                         <div class="form-group">
+                            {!! Form::label('form_group_id', 'Группа анкет:',['class'=>'col-xs-3 control-label']) !!}
+                            <div class="col-xs-8">
+                                {!! Form::select('form_group_id', $selgroup, old('form_group_id'),['class' => 'form-control','required' => 'required','id'=>'group_id']); !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             {!! Form::label('is_active', 'Статус активности:',['class'=>'col-xs-3 control-label']) !!}
                             <div class="col-xs-8">
                                 {!! Form::select('is_active', ['0'=>'Не активная','1'=>'Активная'], old('is_active'),['class' => 'form-control','required' => 'required','id'=>'is_active']); !!}
@@ -84,6 +91,7 @@
                         <thead>
                         <tr>
                             <th>Наименование</th>
+                            <th>Группа</th>
                             <th>Статус активности</th>
                             <th>Видимость анкеты</th>
                             <th>Действия</th>
@@ -95,6 +103,7 @@
 
                             <tr>
                                 <td>{{ $row->name }}</td>
+                                <td>{{ $row->form_group->title }}</td>
                                 @if($row->is_active)
                                     <td><span role="button" class="label label-success">Активная</span></td>
                                 @else
@@ -181,12 +190,14 @@
 
         $('.btn_edit').click(function(){
             let id = $(this).attr("id");
-            let name = $(this).parent().parent().prevAll().eq(2).text();
+            let name = $(this).parent().parent().prevAll().eq(3).text();
+            let group = $(this).parent().parent().prevAll().eq(2).text();
             let isactive = $(this).parent().parent().prevAll().eq(1).text();
             let iswork = $(this).parent().parent().prevAll().eq(0).text();
 
             $('#name').val(name);
             $('#form_id').val(id);
+            $("#group_id :contains('"+group+"')").attr("selected", "selected");
             $("#is_active :contains('"+isactive+"')").attr("selected", "selected");
             $("#is_work :contains('"+iswork+"')").attr("selected", "selected");
         });

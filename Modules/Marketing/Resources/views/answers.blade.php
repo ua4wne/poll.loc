@@ -34,12 +34,13 @@
                     </a>
                 </div>
                 <div class="x_panel">
-                    <table id="my_datatable" class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
                             <th>Вопрос</th>
                             <th>Ответ</th>
                             <th>Вид HTML</th>
+                            <th>Видимость</th>
                             <th>Справочник</th>
                             <th>Действия</th>
                         </tr>
@@ -48,15 +49,22 @@
 
                         @foreach($rows as $k => $row)
 
-                            <tr>
+                            <tr id="{{ $row->id }}">
                                 <td>{{ $row->question->name }}</td>
                                 <td>{{ $row->name }}</td>
                                 <td>{!! $row->htmlcode !!}</td>
+                                <td>
+                                    @if($row->visibility)
+                                        <span role="button" class="label label-success">Включена</span>
+                                    @else
+                                        <span role="button" class="label label-danger">Отключена</span>
+                                    @endif
+                                </td>
                                 <td>{{ $row->source }}</td>
 
                                 <td style="width:70px;">
                                     <div class="form-group" role="group">
-                                        {!! Form::button('<i class="fa fa-trash-o fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-danger btn_del','type'=>'button','title'=>'Удалить запись','id'=>$row->id]) !!}
+                                        {!! Form::button('<i class="fa fa-trash-o fa-lg>" aria-hidden="true"></i>',['class'=>'btn btn-danger btn_del','type'=>'button','title'=>'Удалить запись']) !!}
                                     </div>
                                     {!! Form::close() !!}
                                 </td>
@@ -65,6 +73,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    {{ $rows->links() }}
                 </div>
             @endif
         </div>
@@ -74,15 +83,55 @@
 @endsection
 
 @section('user_script')
-    <script src="/js/jquery.dataTables.min.js"></script>
+{{--    <script src="/js/jquery.dataTables.min.js"></script>--}}
     @include('confirm')
     <script>
-        $('#my_datatable').DataTable( {
-            "order": [[ 0, "asc" ]]
-        } );
+        // $('#my_datatable').DataTable( {
+        //     "order": [[ 0, "asc" ]]
+        // } );
+
+        $('.label-success').click(function(){
+            let id = $(this).parent().parent().attr('id');
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('switchAnswer') }}',
+                data: {'id':id,'visibility':0},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res){
+                    //alert(res);
+                    if(res=='OK'){
+                        location.reload(true);
+                    }
+                    if(res=='NO')
+                        alert('Выполнение операции запрещено!');
+                }
+            });
+        });
+
+        $('.label-danger').click(function(){
+            let id = $(this).parent().parent().attr('id');
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('switchAnswer') }}',
+                data: {'id':id,'visibility':1},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res){
+                    //alert(res);
+                    if(res=='OK'){
+                        location.reload(true);
+                    }
+                    if(res=='NO')
+                        alert('Выполнение операции запрещено!');
+                }
+            });
+        });
 
         $('.btn_del').click(function(){
-            let id = $(this).attr("id");
+            let id = $(this).parent().parent().parent().attr('id');
             let x = confirm("Ответ будет удален безвозвратно со всей имеющейся статистикой. Продолжить (Да/Нет)?");
             $("#loader").show();
             if (x) {
@@ -96,7 +145,7 @@
                     success: function(res){
                         //alert(res);
                         if(res=='OK')
-                            $('#'+id).parent().parent().parent().hide();
+                            $('#'+id).hide();
                         if(res=='NO')
                             alert('Выполнение операции запрещено!');
                     },

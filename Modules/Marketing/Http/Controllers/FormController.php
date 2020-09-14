@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Marketing\Entities\Answer;
 use Modules\Marketing\Entities\Form;
+use Modules\Marketing\Entities\FormGroup;
 use Modules\Marketing\Entities\FormQty;
 use Modules\Marketing\Entities\Logform;
 use Modules\Marketing\Entities\Question;
@@ -30,10 +31,16 @@ class FormController extends Controller
         if(view()->exists('marketing::forms')){
             $title='Анкеты';
             $rows = Form::all();
+            $groups = FormGroup::select(['id', 'title'])->get();
+            $selgroup = array();
+            foreach ($groups as $val) {
+                $selgroup[$val->id] = $val->title; //массив для заполнения данных в select формы
+            }
             $data = [
                 'title' => $title,
                 'head' => 'Список анкет',
                 'rows' => $rows,
+                'selgroup' => $selgroup,
             ];
             return view('marketing::forms',$data);
         }
@@ -62,6 +69,7 @@ class FormController extends Controller
                 'name' => 'required|max:80|string',
                 'is_active' => 'required|numeric',
                 'is_work' => 'required|numeric',
+                'form_group_id' => 'required|numeric',
             ],$messages);
             if($validator->fails()){
                 return redirect()->route('/formAdd')->withErrors($validator)->withInput();
@@ -79,8 +87,14 @@ class FormController extends Controller
             }
         }
         if(view()->exists('marketing::form_add')){
+            $groups = FormGroup::select(['id', 'title'])->get();
+            $selgroup = array();
+            foreach ($groups as $val) {
+                $selgroup[$val->id] = $val->title; //массив для заполнения данных в select формы
+            }
             $data = [
                 'title' => 'Новая запись',
+                'selgroup' => $selgroup,
             ];
             return view('marketing::form_add', $data);
         }
@@ -89,19 +103,24 @@ class FormController extends Controller
 
     public function view($id){
         if(User::hasRole('poll')){ //для интервьюеров свой отдельный вид
-            if(view()->exists('interv')) {
+            if(view()->exists('marketing::form_single')) {
                 $ankets = Form::select('id','name')->where(['is_active'=>1,'is_work'=>1])->get();
                 $menu = '';
                 foreach ($ankets as $row){
-                    $menu .= '<li><a href="/forms/view/'. $row->id .'">'.$row->name.'</a></li>';
+                    $menu .= '<li><h4><a href="/forms/view/'. $row->id .'">'.$row->name.'</a></h4></li>';
                 }
                 $content = $this->ViewForm($id);
+                $name = Form::find($id)->name;
+                while(strlen($name)<132){
+                    $name = ' - '.$name.' - ';
+                }
                 $data = [
                     'title' => Form::find($id)->name,
+                    'name' => $name,
                     'content' => $content,
                     'menu' => $menu,
                 ];
-                return view('interv',$data);
+                return view('marketing::form_single',$data);
             }
             abort(404);
         }
@@ -114,6 +133,99 @@ class FormController extends Controller
             return view('marketing::form_view', $data);
         }
         abort(404);
+    }
+
+    public function singleForm(){
+        if(User::hasRole('poll')){ //для интервьюеров свой отдельный вид
+            if(view()->exists('marketing::form_single')) {
+                $ankets = Form::select('id','name')->where(['is_active'=>1,'is_work'=>1])->get();
+                $menu = '';
+                foreach ($ankets as $row){
+                    $menu .= '<li><a href="/forms/view/'. $row->id .'">'.$row->name.'</a></li>';
+                }
+                $name = 'Выбор анекты';
+                $content = '';
+                while(strlen($name)<132){
+                    $name = ' - '.$name.' - ';
+                }
+                $data = [
+                    'title' => 'Нет выбранных анкет',
+                    'name' => $name,
+                    'menu' => $menu,
+                    'content' => $content,
+                ];
+                return view('marketing::form_single',$data);
+            }
+            abort(404);
+        }
+    }
+
+    public function groupForm(Request $request){
+        if(User::hasRole('poll')) { //для интервьюеров свой отдельный вид
+            if($request->isMethod('post')){
+                $input = $request->except('_token'); //параметр _token нам не нужен
+                //выбираем все активные анкеты группы
+                $forms = Form::select('id')->where(['form_group_id'=>$input['group_id'],'is_active'=>1,'is_work'=>1])->get();
+                $result = array();
+                foreach ($forms as $row){
+                    array_push($result,$row->id);
+                }
+                $key = $result[0]; //первый элемент массива
+                $keys = implode('|',$result);
+                //запоминаем выбранные значения в сессии
+                session(['key' => $key]);
+                session(['keys' => $keys]);
+                if(view()->exists('marketing::form_group_view')) {
+                    $name = Form::find($key)->name;
+                    $content = $this->groupView($key);
+                    $data = [
+                        'title' => Form::find($key)->name,
+                        'name' => $name,
+                        'content' => $content,
+                    ];
+                    return view('marketing::form_group_view',$data);
+                }
+                abort(404);
+            }
+            if (view()->exists('marketing::form_group')) {
+                $groups = FormGroup::select('id', 'title')->where('title', '!=', 'Без группы')->get();
+                $content = '';
+                foreach ($groups as $row) {
+                    $content .= '<option value="'.$row->id.'">'.$row->title.'</option>';
+                }
+                $data = [
+                    'title' => 'Выбор группы анкет',
+                    'content' => $content,
+                ];
+                return view('marketing::form_group', $data);
+            }
+            abort(404);
+        }
+    }
+
+    public function setForm(){
+        //получаем значения из сессии
+        $old = session('key');
+        $keys = session('keys');
+        if(!empty($old) && !empty($keys)){
+            $tmp = explode('|',$keys);
+            $max_index = count($tmp) - 1;
+            $idx = array_search($old,$tmp);
+            $idx < $max_index ? $idx++ : $idx = 0;
+            $key = $tmp[$idx];
+            session(['key' => $key]); //установили новое значение
+            if(view()->exists('marketing::form_group_view')) {
+                $name = Form::find($key)->name;
+                $content = $this->groupView($key);
+                $data = [
+                    'title' => Form::find($key)->name,
+                    'name' => $name,
+                    'content' => $content,
+                ];
+                return view('marketing::form_group_view',$data);
+            }
+            abort(404);
+        }
     }
 
     public function storePoll(Request $request) {
@@ -224,7 +336,7 @@ class FormController extends Controller
         $questions = Question::select('id')->where(['form_id'=>$idform])->get(); //выбрали все вопросы анкеты
         foreach ($questions as $question){
             $idx="q".$question->id; //value = id ответов
-            if(isset($input[$idx])){
+            if(!empty($input[$idx])){
                 //return '$_POST[$idx]='.$_POST[$idx];
                 if(is_array($input[$idx]))
                 {
@@ -320,8 +432,8 @@ class FormController extends Controller
         $content.='<div class="row"><div class="col-xs-12">
                     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">0%</div></div></div><hr>';
         $content.='<input type="hidden" name="form_id" id="form_id" value="'.$id.'">';
-        //выбираем все вопросы анкеты
-        $questions = Question::where(['form_id'=>$id])->get();
+        //выбираем все активные вопросы анкеты
+        $questions = Question::where(['form_id'=>$id,'visibility'=>1])->get();
         $content.='<input type="hidden" name="qst_count" id="qst_count" value="'.$questions->count().'">';
         $qst = 1;
         foreach($questions as $question){
@@ -331,8 +443,8 @@ class FormController extends Controller
                 $question->name . '?'.
                 '</div>
                         <div class="panel-body">';
-            //выбираем все ответы на вопрос
-            $answers = Answer::where(['question_id'=>$question->id])->get();
+            //выбираем все активные ответы на вопрос
+            $answers = Answer::where(['question_id'=>$question->id,'visibility'=>1])->get();
             $k=0;
             $content.='<table class="table table-bordered">';
             foreach ($answers as $answer){
@@ -376,7 +488,75 @@ class FormController extends Controller
         }
         $content.='<button class="btn btn-primary" id="prev_btn"><i class="fa fa-chevron-left" aria-hidden="true"></i> Назад</button>
                     <button class="btn btn-primary" id="next_btn">Вперед <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
-                    <button class="btn btn-success" id="save_btn">Сохранить анкету</button>';
+                    <button class="btn btn-success" id="save_btn">Сохранить анкету</button>
+                    <button class="btn btn-danger pull-right" id="presave_btn">Завершить опрос</button>';
+        $content.='</div>';
+        return $content;
+    }
+
+    private function groupView($id){
+        $content='<div class="x_panel">';
+        $content.='<div class="row"><div class="col-xs-12">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">0%</div></div></div><hr>';
+        $content.='<input type="hidden" name="form_id" id="form_id" value="'.$id.'">';
+        //выбираем все активные вопросы анкеты
+        $questions = Question::where(['form_id'=>$id,'visibility'=>1])->get();
+        $content.='<input type="hidden" name="qst_count" id="qst_count" value="'.$questions->count().'">';
+        $qst = 1;
+        foreach($questions as $question){
+            $content.='<div class="row"><div class="col-md-12">
+                    <div class="panel panel-info" id="qpanel'.$qst.'">
+                        <div class="panel-heading">'.
+                $question->name . '?'.
+                '</div>
+                        <div class="panel-body">';
+            //выбираем все активные ответы на вопрос
+            $answers = Answer::where(['question_id'=>$question->id,'visibility'=>1])->get();
+            $k=0;
+            $content.='<table class="table table-bordered">';
+            foreach ($answers as $answer){
+                if($k==0)
+                    $content.='<tr>';
+                if(strpos($answer->htmlcode,"select size=",0)!=false)
+                {
+                    $html='<option value="" selected disabled>Выберите из списка</option>';
+                    $query="SELECT name FROM ".$answer->source;
+                    if($answer->source=='renters'){
+                        $query = "SELECT `name`,`area` FROM renters where STATUS=1 and place_id IN (1,6,7) ORDER BY `area`+0 ASC";
+                    }
+                    // подключение к базе данных
+                    $rows = DB::select($query);
+                    foreach($rows as $row){
+                        if($row->name != 'Другое (свой вариант)')
+                            if($answer->source=='renters')
+                                $html.='<option value="'.$row->name.'"> Участок №'.$row->area.' '.$row->name.'</option>';
+                            else
+                                $html.='<option value="'.$row->name.'">'.$row->name.'</option>';
+                    }
+                    $html.='</select>';
+                    $content.= '<td>'.$answer->htmlcode.$html.'</td>';
+                }
+                else
+                    $content.= '<td>'.$answer->htmlcode.'</td>';
+
+                $k++;
+                if($k==2){
+                    $content.='</tr>';
+                    $k=0;
+                }
+            }
+            if($k==1){
+                $content.='<td></td></tr>';
+            }
+            $content.='</table></div>
+                    </div></div>
+                </div>';
+            $qst++;
+        }
+        $content.='<button class="btn btn-primary" id="prev_btn"><i class="fa fa-chevron-left" aria-hidden="true"></i> Назад</button>
+                    <button class="btn btn-primary" id="next_btn">Вперед <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                    <button class="btn btn-success" id="save_btn">Сохранить анкету</button>
+                    <button class="btn btn-danger pull-right" id="presave_btn">Завершить опрос</button>';
         $content.='</div>';
         return $content;
     }

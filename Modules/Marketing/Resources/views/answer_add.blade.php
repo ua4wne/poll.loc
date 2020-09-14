@@ -29,8 +29,15 @@
         <div class="form-group">
             {!! Form::label('name','Наименование:',['class' => 'col-xs-3 control-label'])   !!}
             <div class="col-xs-8">
-                {!! Form::text('name',old('name'),['class' => 'form-control','placeholder'=>'Введите вопрос анкеты','required'=>'required','size'=>'100'])!!}
+                {!! Form::text('name',old('name'),['class' => 'form-control','placeholder'=>'Введите ответ на вопрос анкеты','required'=>'required','size'=>'100'])!!}
                 {!! $errors->first('name', '<p class="text-danger">:message</p>') !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('visibility', 'Видимость:',['class'=>'col-xs-3 control-label']) !!}
+            <div class="col-xs-8">
+                {!! Form::select('visibility', ['1'=>'Да','0'=>'Нет'], old('visibility'),['class' => 'form-control','required' => 'required','id'=>'visibility']); !!}
             </div>
         </div>
 

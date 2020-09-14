@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="3af78559-ed45-4a69-8f84-83ed715d85c6" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="71287a87-92d6-4347-a788-bb45bfe92ac7" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="4793d9b9-45e4-4aeb-b68e-75e0a78b6d0c" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="38ceaf81-cf62-4036-a6d6-d02642c5b56d" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="e3dc7893-a48e-4b0e-90d1-4ba4550d8334" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="0e6346d8-748b-4124-a921-7fee9078265b" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="b28baa66-524f-4b43-ac90-6f2a84e6f080" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="41aeb97a-4126-47be-ad19-aa30c7e33c0e" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="3746a529-1ff8-4531-8745-8a73f7704bd0" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="0999a6d3-d544-4772-82b2-986c363e4f0d" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="b99a1fdc-c786-48c2-a7ad-5bf3f1d1de62" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="d5cba386-1cf7-40c6-bd56-08bad56662c1" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="8f6955fc-2d40-4534-a660-0231112de2b1" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="57392c84-c7e7-4e98-a509-02136d36b319" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="3f892bd4-fe4b-4836-b27c-0d1cc5b3eb54" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="dd789255-e07a-460c-a6b1-0daa8f0963d1" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="05125edf-b418-478a-8ca9-636e13c24aaf" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="f383e26f-885f-4372-a91d-55496755f9b2" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="52d19b1a-d52f-4443-95b2-03003716bd7d" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="8a8275f8-0cae-4040-8226-7092bd1185a4" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="4ac7332a-6ee0-429a-8916-bd131bf79f81" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="66fff2e9-57c2-4897-bfd0-fa3de6b0b61c" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="ef4399a5-38ab-4ca8-ab4b-fe5f336aca03" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="811890a0-68e0-4989-b68c-f205b1d34d1b" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="e1290578-6fa9-41b6-90b0-ce11ea91adbf" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="45.12.18.93" id="645c1f2f-103d-4187-b318-13a927ded0a4" port="22" customName="45.12.18.93" nameFormat="CUSTOM" />
+    </configs>
+  </component>
+</project>

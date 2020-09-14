@@ -34,6 +34,13 @@
         </div>
 
         <div class="form-group">
+            {!! Form::label('visibility', 'Видимость:',['class'=>'col-xs-3 control-label']) !!}
+            <div class="col-xs-8">
+                {!! Form::select('visibility', ['1'=>'Да','0'=>'Нет'], old('visibility'),['class' => 'form-control','required' => 'required','id'=>'visibility']); !!}
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-xs-offset-3 col-xs-8">
                 {!! Form::button('Сохранить', ['class' => 'btn btn-primary','type'=>'submit','id'=>'save']) !!}
             </div>

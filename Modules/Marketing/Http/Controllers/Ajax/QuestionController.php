@@ -36,6 +36,27 @@ class QuestionController extends Controller
         }
     }
 
+    public function show(Request $request){
+        if($request->isMethod('post')){
+            $id = $request->input('id');
+            $visibility = $request->input('visibility');
+            $qst = Question::find($id);
+            $qst->visibility = $visibility;
+
+            if($qst->update()){
+                if($visibility)
+                    $msg = 'Вопрос '.$qst->name.' из анкеты '.$qst->form->name.' был включен';
+                else
+                    $msg = 'Вопрос '.$qst->name.' из анкеты '.$qst->form->name.' был отключен';
+                $ip = $request->getClientIp();
+                event(new AddEventLogs('info',Auth::id(),$msg,$ip));
+                return 'OK';
+            }
+            else
+                return 'ERR';
+        }
+    }
+
     public function delete(Request $request)
     {
         if ($request->isMethod('post')) {

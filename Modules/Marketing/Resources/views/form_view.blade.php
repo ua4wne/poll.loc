@@ -43,6 +43,12 @@
         let qcnt = $('#qst_count').val();
 
         $('#qpanel1').find(':radio').first().prop('checked', true);
+        $('td').css('cursor', 'pointer');
+
+        $('td').click(function(){
+            $(this).find(':radio').prop('checked', true);
+            $(this).find(':radio').change();
+        });
 
         $('input[type="radio"]').on('change', function (e) {
             let stp = $(this).data('step');

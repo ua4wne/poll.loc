@@ -124,7 +124,7 @@
             $("#division_id").prepend($('<option value="0">Выберите за кем закреплен</option>'));
             $("#division_id :first").attr("selected", "selected");
             $("#division_id :first").attr("disabled", "disabled");
-            $('#koeff').val('5.8');
+            $('#koeff').val('6.2');
 
          $('#new_renter').submit(function(){
              //e.preventDefault();

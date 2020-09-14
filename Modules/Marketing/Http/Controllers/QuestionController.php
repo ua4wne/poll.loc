@@ -26,7 +26,8 @@ class QuestionController extends Controller
         if(view()->exists('marketing::questions')){
             $title='Вопросы для анкеты';
             $anket = Form::find($id);
-            $rows = Question::where(['form_id'=>$id])->get();
+            $rows = Question::where(['form_id'=>$id])->paginate(env('PAGINATION_SIZE'));
+            //$roles = Role::paginate(env('PAGINATION_SIZE'));
             $data = [
                 'title' => $title,
                 'head' => 'Вопросы для анкеты "'. $anket->name.'"',
@@ -54,9 +55,11 @@ class QuestionController extends Controller
                 'required' => 'Поле обязательно к заполнению!',
                 'max' => 'Значение поля должно быть не более :max символов!',
                 'string' => 'Значение поля должно быть текстовой строкой!',
+                'numeric' => 'Значение поля должно быть числом!',
             ];
             $validator = Validator::make($input,[
                 'name' => 'required|max:255|string',
+                'visibility' => 'required|numeric',
             ],$messages);
             if($validator->fails()){
                 return redirect()->route('/questionAdd',[$id])->withErrors($validator)->withInput();
