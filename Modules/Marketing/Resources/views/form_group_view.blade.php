@@ -42,7 +42,7 @@
         let next_step = 0;
         let qcnt = $('#qst_count').val();
 
-        $('#qpanel1').find(':radio').first().prop('checked', true);
+        //$('#qpanel1').find(':radio').first().prop('checked', true);
         $('td').css('cursor', 'pointer');
 
         $('td').click(function(){
@@ -115,7 +115,7 @@
                     $('.progress-bar').css('width', '100%');
                     $('.progress-bar').text('100%');
                 }
-                if (step == 2){
+                if (step > 1){
                     $('#prev_btn').show();
                     $('#presave_btn').show();
                 }

@@ -43,12 +43,19 @@
                     </div>
                 </div>
 
-                {{--<div class="form-group">
-                    {!! Form::label('version', 'Выбор анкет:',['class'=>'col-xs-2 control-label']) !!}
+                <div class="form-group">
+                    {!! Form::label('group_id', 'Выбор группы анкет:',['class'=>'col-xs-2 control-label']) !!}
+                    <div class="col-xs-8">
+                        {!! Form::select('group_id', $grpsel, old('group_id'),['class' => 'select2 form-control','required' => 'required','id'=>'group_id']); !!}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('version', 'Версия выгрузки:',['class'=>'col-xs-2 control-label']) !!}
                     <div class="col-xs-8">
                         {!! Form::select('version', $verselect, old('version'),['class' => 'form-control','required' => 'required','id'=>'version']); !!}
                     </div>
-                </div>--}}
+                </div>
 
                 <div class="form-group">
                     <div class="col-xs-offset-2 col-xs-8">
@@ -117,7 +124,6 @@
                 alert("Необходимо заполнять все доступные поля!");
                 return false;
             }
-            $("#loader").show();
             return true;
         });
 
