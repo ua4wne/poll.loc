@@ -307,7 +307,7 @@ class BillingController extends Controller
                 join renters as r on r.id = l.renter_id
                 join divisions as d on d.id = r.division_id
                 join places as p on p.id = r.place_id
-                WHERE p.name LIKE ('%МС%') and l.year='$y' and l.month='$period[1]' GROUP BY rname ORDER BY  pname, `area` + 0 , `owner`, rname");
+                WHERE p.name LIKE ('%МС%') and l.year='$y' and l.month='$period[1]' GROUP BY rname ORDER BY  `area` + 0 , `owner`, rname");
         $k = 6;
         //$num = 1;
         $pay = 0;

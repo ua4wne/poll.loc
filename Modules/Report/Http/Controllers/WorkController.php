@@ -188,7 +188,7 @@ class WorkController extends Controller
                 ->where(['renter_id'=>$renter])->whereBetween('data', [$start, $finish])->orderBy('data', 'asc')->get();
             foreach($logs as $log){
                 $sheet->setCellValue('A'.$k, $log->data);
-                for($j=1; $j<12; $j++)
+                for($j=2; $j<13; $j++)
                 {
                     $period = 'period'.$j;
                     if($log->$period==1)

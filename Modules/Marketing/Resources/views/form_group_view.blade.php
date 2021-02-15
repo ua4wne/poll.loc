@@ -169,6 +169,7 @@
                     alert('Error! '+ xhr.responseText);
                 }
             });
+            clear_set();
             $('#loader').hide();
         });
 
@@ -190,11 +191,22 @@
                     alert('Error! '+ xhr.responseText);
                 }
             });
+            clear_set();
             $('#loader').hide();
         });
 
         function set_percent(a, b) {
             return Math.round((a / b) * 100);
+        }
+
+        function clear_set() {
+            //сбрасываем все отмеченные чекбоксы
+            $('input:checkbox:checked').each(function() {
+                $(this).prop('checked', false);
+            });
+            $('input:radio:checked').each(function() {
+                $(this).prop('checked', false);
+            });
         }
 
     </script>
