@@ -98,7 +98,7 @@ class CostController extends Controller
             }
         }
         if(view()->exists('oit::cost_add')){
-            $sups = Supplier::select(['id','name'])->get();
+            $sups = Supplier::select(['id','name'])->orderBy('name','asc')->get();
             $supsel = array();
             foreach ($sups as $val){
                 $supsel[$val->id] = $val->name;

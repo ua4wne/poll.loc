@@ -21,7 +21,7 @@
         <div class="form-group">
             {!! Form::label('supplier_id', 'Поставщик:',['class'=>'col-xs-3 control-label']) !!}
             <div class="col-xs-8">
-                {!! Form::select('supplier_id', $supsel, old('supplier_id'),['class' => 'form-control','required' => 'required','id'=>'supplier_id']); !!}
+                {!! Form::select('supplier_id', $supsel, old('supplier_id'),['class' => 'select2 form-control','required' => 'required','id'=>'supplier_id']); !!}
             </div>
         </div>
 
@@ -68,7 +68,13 @@
 @endsection
 
 @section('user_script')
+    <script src="/js/select2.min.js"></script>
     <script>
+        $('.select2').css('width', '100%').select2({
+            placeholder: "Выберите поставщика",
+            allowClear: true
+        })
+
         $("#supplier_id").prepend($('<option value="0">Выберите поставщика</option>'));
         $("#supplier_id :first").attr("selected", "selected");
         $("#supplier_id :first").attr("disabled", "disabled");
