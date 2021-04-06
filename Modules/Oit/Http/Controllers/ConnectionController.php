@@ -25,19 +25,19 @@ class ConnectionController extends Controller
         }
         if(view()->exists('oit::connections')){
             $title='Подключения к интернет';
-            $renters = Renter::select(['id','title'])->where(['status'=>1])->get();
+            /*$renters = Renter::select(['id','title','area'])->where(['status'=>1])->get();
             $rentsel = array();
             foreach ($renters as $val){
-                $rentsel[$val->id] = $val->title;
-            }
-            $typesel = ['dynamic'=>'Динамический IP','static'=>'Статический IP'];
+                $rentsel[$val->id] = $val->title . ' (' . $val->area . ')';
+            }*/
+            //$typesel = ['dynamic'=>'Динамический IP','static'=>'Статический IP'];
             $rows = Connection::all();
             $data = [
                 'title' => $title,
                 'head' => 'Подключения к интернет',
                 'rows' => $rows,
-                'rentsel' => $rentsel,
-                'typesel' => $typesel,
+                //'rentsel' => $rentsel,
+                //'typesel' => $typesel,
             ];
             return view('oit::connections',$data);
         }
@@ -86,10 +86,10 @@ class ConnectionController extends Controller
             }
         }
         if(view()->exists('oit::connection_add')){
-            $renters = Renter::select(['id','title'])->where(['status'=>1])->get();
+            $renters = Renter::select(['id','title','area'])->where(['status'=>1])->get();
             $rentsel = array();
             foreach ($renters as $val){
-                $rentsel[$val->id] = $val->title;
+                $rentsel[$val->id] = $val->title . ' (' . $val->area . ')';
             }
             $typesel = ['dynamic'=>'Динамический IP','static'=>'Статический IP'];
             $data = [

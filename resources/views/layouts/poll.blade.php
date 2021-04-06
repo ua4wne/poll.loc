@@ -113,7 +113,7 @@
             <!-- footer content -->
                 <footer>
                     <div class="pull-right">
-                        Разработано для выставки домов "Малоэтажная Страна". 2014 - 2020
+                        <?php echo 'Разработано для выставки домов "Малоэтажная Страна". 2014 - ' . date("Y") ?>
                     </div>
                     <div class="clearfix"></div>
                 </footer>
