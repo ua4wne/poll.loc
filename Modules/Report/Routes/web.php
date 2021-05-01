@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/rent-table',['uses'=>'RenterCounterController@table','as'=>'rent-table']);
 
         Route::match(['get','post'],'/anket-report',['uses'=>'AnketController@index','as'=>'anket-report']);
+        Route::match(['get','post'],'/anket-work',['uses'=>'AnketController@work','as'=>'anket-work']);
         Route::post('/anket-pie',['uses'=>'AnketController@pie_graph','as'=>'anket-pie']);
         Route::post('/anket-table',['uses'=>'AnketController@table','as'=>'anket-table']);
 

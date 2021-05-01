@@ -18,6 +18,9 @@
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="/css/custom.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -32,7 +35,6 @@
                     </div>
 
                     <div class="clearfix"></div>
-
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
@@ -105,8 +107,8 @@
             </div>
             <!-- /top navigation -->
         @show
-        <div class="right_col" role="main">
 
+        <div class="right_col" role="main">
         @yield('content')
 
         @section('footer')
@@ -125,7 +127,9 @@
     <script src="/js/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="/js/bootstrap.min.js"></script>
-<!-- Custom Theme Scripts -->
+    <!-- bootstrap-progressbar -->
+    <script src="/js/bootstrap-progressbar.min.js"></script>
+    <!-- Custom Theme Scripts -->
     <script src="/js/custom.min.js"></script>
 
 @show

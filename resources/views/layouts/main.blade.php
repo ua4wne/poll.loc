@@ -94,6 +94,7 @@
                                     <ul class="nav child_menu">
 
                                         <li><a href="{{ route('anket-report') }}">Анкетирование</a></li>
+                                        <li><a href="{{ route('anket-work') }}">Работа интервьюера</a></li>
                                         <li><a href="{{ route('visit-report') }}">Посещаемость выставки</a></li>
                                         <li><a href="{{ route('work-report') }}">Присутствие на выставке</a></li>
                                         <li><a href="{{ route('megacount-report') }}">Счетчики посетителей</a></li>

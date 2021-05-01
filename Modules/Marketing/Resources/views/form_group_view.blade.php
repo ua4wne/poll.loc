@@ -16,6 +16,7 @@
     <div id="loader"></div> <!--  идентификатор загрузки (анимация) - ожидания выполнения-->
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
+            <p class="text-uppercase text-info">Собрано анкет {{ $ankets ?? '' }}</p>
             {!! Form::open(['url' => '#','class'=>'form-horizontal','method'=>'POST','id'=>'form-poll']) !!}
             <h2 class="text-center">{{ $title }}</h2>
             {!! $content !!}

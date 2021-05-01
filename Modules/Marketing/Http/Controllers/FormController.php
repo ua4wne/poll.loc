@@ -162,6 +162,8 @@ class FormController extends Controller
 
     public function groupForm(Request $request){
         if(User::hasRole('poll')) { //для интервьюеров свой отдельный вид
+            $date = date('Y-m-d');
+            $qty = FormQty::where('date',$date)->sum('qty');
             if($request->isMethod('post')){
                 $input = $request->except('_token'); //параметр _token нам не нужен
                 //выбираем все активные анкеты группы
@@ -182,6 +184,7 @@ class FormController extends Controller
                         'title' => Form::find($key)->name,
                         'name' => $name,
                         'content' => $content,
+                        'ankets' => $qty,
                     ];
                     return view('marketing::form_group_view',$data);
                 }
@@ -196,6 +199,7 @@ class FormController extends Controller
                 $data = [
                     'title' => 'Выбор группы анкет',
                     'content' => $content,
+                    'ankets' => $qty,
                 ];
                 return view('marketing::form_group', $data);
             }
@@ -215,12 +219,15 @@ class FormController extends Controller
             $key = $tmp[$idx];
             session(['key' => $key]); //установили новое значение
             if(view()->exists('marketing::form_group_view')) {
+                $date = date('Y-m-d');
+                $qty = FormQty::where('date',$date)->sum('qty');
                 $name = Form::find($key)->name;
                 $content = $this->groupView($key);
                 $data = [
                     'title' => Form::find($key)->name,
                     'name' => $name,
                     'content' => $content,
+                    'ankets' => $qty,
                 ];
                 return view('marketing::form_group_view',$data);
             }
@@ -409,14 +416,14 @@ class FormController extends Controller
             }
         }
         //после сохранения анкеты увеличиваем счетчик опрошенных в таблице form_qty
-        $table = FormQty::where(['form_id'=>$idform, 'date'=>$input['date']])->first();
+        $table = FormQty::where(['form_id'=>$idform, 'date'=>$input['date'], 'user_id'=>$iduser])->first();
         if(empty($table)){
             $new = new FormQty();
             $new->form_id = $idform;
             $new->date = $input['date'];
             $new->qty = 1;
+            $new->user_id = $iduser;
             $new->created_at = date('Y-m-d H:i:s');
-            //$new->updated_at = $new->created_at;
             $new->save();
         }
         else{

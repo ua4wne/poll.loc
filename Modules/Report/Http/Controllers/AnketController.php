@@ -423,4 +423,63 @@ class AnketController extends Controller
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
     }
+
+    public function work(Request $request)
+    {
+        if (!Role::granted('view_report')) {
+            abort(503);
+        }
+        if ($request->isMethod('post')) {
+            $role_id = Role::where('code','poll')->first()->id;
+            $users = DB::select("select user_id from role_user where role_id = $role_id");
+            $in_users = '';
+            foreach ($users as $user){
+                $in_users .= $user->user_id . ',';
+            }
+            $in_users = mb_substr($in_users,0,strlen($in_users)-1);
+            $input = $request->except('_token'); //параметр _token нам не нужен
+            $start = $input['start'];
+            $finish = $input['finish'];
+            $max_qty = $input['max_qty'];
+            $type = $input['type'];
+            $data = array();
+            $content = '<div class="col-md-offset-1 col-md-9">';
+            if($type == 'anket'){
+                $content.='<table class="table table-hover table-bordered"><tr><th>Дата</th><th>Анкета</th><th>Кол-во анкет</th></tr>';
+                $rows = DB::select("SELECT fq.date, f.name AS fname, SUM(fq.qty) AS qty FROM forms_qty AS fq
+                                        JOIN forms AS f ON f.id = fq.form_id
+                                        WHERE user_id IN ($in_users) AND fq.date BETWEEN '$start' AND '$finish'
+                                        group BY fq.date, fname ORDER BY fq.date");
+                foreach ($rows as $row){
+                    $content.= '<tr><td>'.$row->date.'</td><td>'.$row->fname.'</td><td>'.$row->qty.'</td></tr>';
+                }
+                $content .= '</table></div>';
+            }
+            else{
+                $content.='<table class="table table-hover table-bordered"><tr><th>Дата</th><th>Кол-во анкет</th><th>% выполнения</th></tr>';
+                $rows = DB::select("SELECT `date`, SUM(qty) AS qty, ROUND(100 * sum(qty) / $max_qty, 0) AS percent FROM forms_qty
+                                        WHERE user_id IN ($in_users) AND `date` BETWEEN '$start' AND '$finish'
+                                        GROUP BY `date` ORDER BY `date`");
+                foreach ($rows as $row){
+                    $content.= '<tr><td>'.$row->date.'</td><td>'.$row->qty.'</td><td>'.$row->percent.'</td></tr>';
+                }
+                $content .= '</table></div>';
+            }
+            array_push($data,["content"=>$content]);
+            $qty = FormQty::whereBetween('date',[$start,$finish])->sum('qty');
+            array_push($data,["qty"=>$qty]);
+            return json_encode($data);
+        }
+        if (view()->exists('report::anket_work')) {
+            $title = 'Работа интервьюера';
+
+            $data = [
+                'title' => $title,
+                'head' => 'Задайте условия отбора',
+                'max_qty' => '50',
+            ];
+            return view('report::anket_work', $data);
+        }
+        abort(404);
+    }
 }
