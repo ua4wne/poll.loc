@@ -18,6 +18,7 @@ class CreateFormsQtyTable extends Migration
             $table->integer('form_id')->unsigned();
             $table->date('date');
             $table->integer('qty');
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }

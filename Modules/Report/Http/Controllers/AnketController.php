@@ -432,11 +432,14 @@ class AnketController extends Controller
         if ($request->isMethod('post')) {
             $role_id = Role::where('code','poll')->first()->id;
             $users = DB::select("select user_id from role_user where role_id = $role_id");
+            $inusers = array();
             $in_users = '';
             foreach ($users as $user){
+                array_push($inusers,$user->user_id);
                 $in_users .= $user->user_id . ',';
             }
-            $in_users = mb_substr($in_users,0,strlen($in_users)-1);
+            //$in_users = mb_substr($in_users,0,strlen($in_users)-1);
+            $in_users = rtrim($in_users,',');
             $input = $request->except('_token'); //параметр _token нам не нужен
             $start = $input['start'];
             $finish = $input['finish'];
@@ -466,7 +469,7 @@ class AnketController extends Controller
                 $content .= '</table></div>';
             }
             array_push($data,["content"=>$content]);
-            $qty = FormQty::whereBetween('date',[$start,$finish])->sum('qty');
+            $qty = FormQty::whereIn('user_id' , $inusers)->whereBetween('date',[$start,$finish])->sum('qty');
             array_push($data,["qty"=>$qty]);
             return json_encode($data);
         }
