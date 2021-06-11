@@ -19,4 +19,16 @@ class Question extends Model
     public function form(){
         return $this->belongsTo('Modules\Marketing\Entities\Form');
     }
+
+    public function getOnAnswerAttribute()
+    {
+        $on = Answer::where(['question_id'=>$this->id,'visibility'=>1])->get()->count();
+        return $on;
+    }
+
+    public function getOffAnswerAttribute()
+    {
+        $off = Answer::where(['question_id'=>$this->id,'visibility'=>0])->count('id');
+        return $off;
+    }
 }

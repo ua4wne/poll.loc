@@ -29,10 +29,13 @@ class AnswerController extends Controller
             $question = Question::find($id);
             $title='Ответы на вопрос "'.$question->name.'"';
             $rows = Answer::where(['question_id'=>$id])->paginate(env('PAGINATION_SIZE'));
+            $htmlsel = array ('tradio' => 'Единичный выбор','tcheck' => 'Множественный выбор', 'tonetext' => 'Свой вариант (единичный выбор)',
+                'tmultext' => 'Свой вариант (множественный выбор)', 'tmail' => 'Контактный email','tphone' => 'Контактный телефон','taddr' => 'Контактный адрес');
             $data = [
                 'title' => $title,
                 'rows' => $rows,
                 'question' => $question,
+                'htmlsel' => $htmlsel,
             ];
             return view('marketing::answers',$data);
         }
@@ -62,9 +65,10 @@ class AnswerController extends Controller
                 'visibility' => 'required|numeric',
                 'htmlcode' => 'required|string',
                 'refbook' => 'nullable|string',
+                'jump' => 'nullable|numeric',
             ],$messages);
             if($validator->fails()){
-                return redirect()->route('/answerAdd',[$id])->withErrors($validator)->withInput();
+                return redirect()->back()->withErrors($validator)->withInput();
             }
             $dbl = Answer::where(['name'=>$input['name'],'question_id'=>$input['question_id']])->first();
             if(empty($dbl)){
@@ -72,41 +76,7 @@ class AnswerController extends Controller
                 $answer->fill($input);
                 $answer->created_at = date('Y-m-d H:i:s');
                 if($answer->save()){
-                    switch ($answer->htmlcode) {
-                        case 'tradio':
-                            $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name;
-                            break;
-                        case 'tcheck':
-                            $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'">'.$answer->name;
-                            break;
-                        case 'tmail':
-                            $html='<label for="mail">'.$answer->name.'</label><input type="email" name="mail" id="mail" value="" placeholder="login@domain" maxlength="30">';
-                            break;
-                        case 'tphone':
-                            $html='<label for="phone">'.$answer->name.'</label><input type="text" name="phone" id="phone" value="" placeholder="4951234567" maxlength="20">';
-                            break;
-                        case 'taddr':
-                            $html='<label for="addr">'.$answer->name.'</label><input type="text" name="addr" id="addr" value="" maxlength="100">';
-                            break;
-                        case 'tonetext':
-                            $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name.'<input type="text" name="other'.$answer->id.'" value="">';
-                            break;
-                        case 'tmultext':
-                            $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name.'<input type="text" name="other'.$answer->id.'" value="">';
-                            break;
-                        case 'tonesel':
-                            //if($model->refbook=='city')
-                            //    $html='<input type="radio" name="q'.$id.'" id="a'.$last_id.'" value="'.$last_id.'" >'.$model->name.'<input type="text" name="other'.$last_id.'" value="" placeholder="начинайте вводить текст" class="'.$model->refbook.'">';
-                            //else
-                            $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name.'<select size="1" name="other'.$answer->id.'" id="s'.$answer->id.'">';
-                            break;
-                        case 'tmulsel':
-                            //if($model->refbook=='city')
-                            //    $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$last_id.'" value="'.$last_id.'" >'.$model->name.'<input type="text" name="other'.$last_id.'" value="" placeholder="начинайте вводить текст" class="'.$model->refbook.'">';
-                            //else
-                            $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name.'<select size="1" name="other'.$answer->id.'" id="s'.$answer->id.'">';
-                            break;
-                    }
+                    $html = $this->get_html($id,$answer);
                     if($answer->htmlcode=='tonesel' || $answer->htmlcode=='tmulsel'){
 
                         $answer->source = $input['refbook'];
@@ -122,10 +92,9 @@ class AnswerController extends Controller
         }
         if(view()->exists('marketing::answer_add')){
             $question = Question::find($id);
-            $htmlsel = array ('tmail' => 'Контактный email','tphone' => 'Контактный телефон','taddr' => 'Контактный адрес',
-                'tradio' => 'Единичный выбор','tcheck' => 'Множественный выбор', 'tonetext' => 'Свой вариант (единичный выбор)',
+            $htmlsel = array ('tradio' => 'Единичный выбор','tcheck' => 'Множественный выбор', 'tonetext' => 'Свой вариант (единичный выбор)',
                 'tmultext' => 'Свой вариант (множественный выбор)', 'tonesel' => 'Выбор из списка (единичный выбор)',
-                'tmulsel' => 'Выбор из списка (множественный выбор)');
+                'tmulsel' => 'Выбор из списка (множественный выбор)','tmail' => 'Контактный email','tphone' => 'Контактный телефон','taddr' => 'Контактный адрес');
             //выбираем доступные справочники
             $books = Catalog::all();
             $refsel = array();
@@ -144,6 +113,24 @@ class AnswerController extends Controller
     }
 
     public function edit(Request $request){
+        if($request->isMethod('post')){
+            $input = $request->except('_token'); //параметр _token нам не нужен
+            $id = $input['id'];
+            $answer = Answer::find($id);
+            $answer->name = $input['name'];
+            $answer->visibility = $input['visibility'];
+            $answer->jump = $input['jump'];
+            $answer->htmlcode = $input['htmlcode']; //код для генерации html для следующей функции
+            $answer->htmlcode = $this->get_html($answer->question_id, $answer);
+            if($answer->update())
+                return 'OK';
+            else
+                return 'ERR';
+
+        }
+    }
+
+    public function switch(Request $request){
         if($request->isMethod('post')){
             $id = $request->input('id');
             $visibility = $request->input('visibility');
@@ -195,5 +182,58 @@ class AnswerController extends Controller
                 return 'ERR';
             }
         }
+    }
+
+    private function get_html($id,$answer){
+        if(isset($answer->jump))
+            $jump = $answer->jump;
+        switch ($answer->htmlcode) {
+            case 'tradio':
+                if(!empty($jump))
+                    $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'" data-step="'.$jump.'">'.$answer->name;
+                else
+                    $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name;
+                break;
+            case 'tcheck':
+                if(!empty($jump))
+                    $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'" data-step="'.$jump.'">'.$answer->name;
+                else
+                    $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'">'.$answer->name;
+                break;
+            case 'tmail':
+                $html='<label for="mail">'.$answer->name.'</label><input type="email" name="mail" id="mail" value="" placeholder="login@domain" maxlength="30">';
+                break;
+            case 'tphone':
+                $html='<label for="phone">'.$answer->name.'</label><input type="text" name="phone" id="phone" value="" placeholder="4951234567" maxlength="20">';
+                break;
+            case 'taddr':
+                $html='<label for="addr">'.$answer->name.'</label><input type="text" name="addr" id="addr" value="" maxlength="100">';
+                break;
+            case 'tonetext':
+                if(!empty($jump))
+                    $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'" data-step="'.$jump.'">'.$answer->name.'<input type="text" name="other'.$answer->id.'" value="">';
+                else
+                    $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'">'.$answer->name.'<input type="text" name="other'.$answer->id.'" value="">';
+                break;
+            case 'tmultext':
+                if(!empty($jump))
+                    $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'" data-step="'.$jump.'">'.$answer->name.'<input type="text" name="other'.$answer->id.'" value="">';
+                else
+                    $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'">'.$answer->name.'<input type="text" name="other'.$answer->id.'" value="">';
+                break;
+            case 'tonesel':
+                //if($model->refbook=='city')
+                //    $html='<input type="radio" name="q'.$id.'" id="a'.$last_id.'" value="'.$last_id.'" >'.$model->name.'<input type="text" name="other'.$last_id.'" value="" placeholder="начинайте вводить текст" class="'.$model->refbook.'">';
+                //else
+                $html='<input type="radio" name="q'.$id.'" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name.'<select size="1" name="other'.$answer->id.'" id="s'.$answer->id.'">';
+                break;
+            case 'tmulsel':
+                //if($model->refbook=='city')
+                //    $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$last_id.'" value="'.$last_id.'" >'.$model->name.'<input type="text" name="other'.$last_id.'" value="" placeholder="начинайте вводить текст" class="'.$model->refbook.'">';
+                //else
+                $html='<input type="checkbox" name="q'.$id.'[]" id="a'.$answer->id.'" value="'.$answer->id.'" >'.$answer->name.'<select size="1" name="other'.$answer->id.'" id="s'.$answer->id.'">';
+                break;
+        }
+        return $html;
     }
 }

@@ -29,7 +29,7 @@
         <div class="form-group">
             {!! Form::label('name','Наименование:',['class' => 'col-xs-3 control-label'])   !!}
             <div class="col-xs-8">
-                {!! Form::text('name',old('name'),['class' => 'form-control','placeholder'=>'Введите ответ на вопрос анкеты','required'=>'required','size'=>'100'])!!}
+                {!! Form::text('name',old('name'),['class' => 'form-control','placeholder'=>'Введите ответ на вопрос анкеты','required'=>'required','maxlength'=>'100'])!!}
                 {!! $errors->first('name', '<p class="text-danger">:message</p>') !!}
             </div>
         </div>
@@ -45,6 +45,14 @@
             {!! Form::label('htmlcode', 'Тип ответа:',['class'=>'col-xs-3 control-label']) !!}
             <div class="col-xs-8">
                 {!! Form::select('htmlcode', $htmlsel, old('htmlcode'),['class' => 'form-control','id'=>'htmlcode']); !!}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('jump','Переход к вопросу №:',['class' => 'col-xs-3 control-label'])   !!}
+            <div class="col-xs-8">
+                {!! Form::text('jump',old('jump'),['class' => 'form-control','placeholder'=>'Введите номер вопроса анкеты','maxlength'=>'2'])!!}
+                {!! $errors->first('jump', '<p class="text-danger">:message</p>') !!}
             </div>
         </div>
 

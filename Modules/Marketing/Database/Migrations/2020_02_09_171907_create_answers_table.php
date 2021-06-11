@@ -21,6 +21,7 @@ class CreateAnswersTable extends Migration
             $table->text('htmlcode');
             $table->string('source',20)->default(null);
             $table->tinyInteger('visibility')->default(1);
+            $table->string('jump',2)->nullable();
             $table->timestamps();
         });
     }

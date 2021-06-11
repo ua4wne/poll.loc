@@ -88,8 +88,10 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/{id}',['uses'=>'AnswerController@index','as'=>'answers']);
         //answers/add
         Route::match(['get','post'],'/add/{id}',['uses'=>'AnswerController@create','as'=>'answerAdd']);
+        //answers/switch
+        Route::post('/switch',['uses'=>'AnswerController@switch','as'=>'switchAnswer']);
         //answers/edit
-        Route::post('/edit',['uses'=>'AnswerController@edit','as'=>'switchAnswer']);
+        Route::post('/edit',['uses'=>'AnswerController@edit','as'=>'editAnswer']);
         //answers/delete
         Route::post('/delete',['uses'=>'AnswerController@delete','as'=>'deleteAnswer']);
     });

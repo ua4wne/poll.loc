@@ -82,7 +82,11 @@
                         @foreach($rows as $k => $row)
 
                             <tr id="{{ $row->id }}">
-                                <td>{{ $row->name }}</td>
+                                <td>{{ $row->name }} <span class="badge bg-green">{{ $row->on_answer }}</span>
+                                    @if($row->off_answer)
+                                    <span class="badge bg-red">{{ $row->off_answer }}</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($row->visibility)
                                         <span role="button" class="label label-success">Включена</span>
@@ -230,7 +234,7 @@
                     success: function(res){
                         //alert(res);
                         if(res=='OK')
-                            $('#'+id).parent().parent().parent().hide();
+                            $('#'+id).hide();
                         if(res=='NO')
                             alert('Выполнение операции запрещено!');
                     },
