@@ -49,6 +49,8 @@
         $('td').click(function(){
             $(this).find(':radio').prop('checked', true);
             $(this).find(':radio').change();
+            $(this).find(':checkbox').prop('checked', true);
+            $(this).find(':checkbox').change();
         });
 
         $('input[type="radio"]').on('change', function (e) {
@@ -79,6 +81,23 @@
                 $('#next_btn').hide();
             }
             $('#next_btn').attr('disabled', false);
+
+            $('input:checkbox:checked').each(function(){
+                let name = $(this).parent().text();
+                let ch = $(this);
+                 if(name.indexOf("Затрудняюсь") !== -1){
+                     // Снять все
+                     let _parent = ch.parent().parent().parent().parent();
+                     //$('body input:checkbox').prop('checked', false);
+                     let chs = _parent.find('input:checkbox');
+                     chs.each(function(index, value){
+                         $(this).prop('checked', false);
+                         //console.log('value' + value + ':' + $(this).attr('id'));
+                     });
+                     //оставить только пункт Затрудняюсь ответить
+                     ch.prop('checked', true);
+                 }
+            });
         });
 
         $('#next_btn').click(function (e) {

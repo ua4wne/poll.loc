@@ -446,16 +446,16 @@ class FormController extends Controller
         foreach($questions as $question){
             $content.='<div class="row"><div class="col-md-12">
                     <div class="panel panel-info" id="qpanel'.$qst.'">
-                        <div class="panel-heading">'.
+                        <div class="panel-heading">'. $qst . '. ' .
                 $question->name . '?'.
                 '</div>
                         <div class="panel-body">';
             //выбираем все активные ответы на вопрос
             $answers = Answer::where(['question_id'=>$question->id,'visibility'=>1])->get();
-            $k=0;
+            $num=1;
             $content.='<table class="table table-bordered">';
             foreach ($answers as $answer){
-                if($k==0)
+                //if($k==0)
                     $content.='<tr>';
                 if(strpos($answer->htmlcode,"select size=",0)!=false)
                 {
@@ -474,20 +474,20 @@ class FormController extends Controller
                                 $html.='<option value="'.$row->name.'">'.$row->name.'</option>';
                     }
                     $html.='</select>';
-                    $content.= '<td>'.$answer->htmlcode.$html.'</td>';
+                    $content.= '<td>'.$num.'</td><td>'.$answer->htmlcode.$html.'</td>';
                 }
                 else
-                    $content.= '<td>'.$answer->htmlcode.'</td>';
+                    $content.= '<td>'.$num.'</td><td>'.$answer->htmlcode.'</td>';
 
-                $k++;
-                if($k==2){
+                $num++;
+                //if($k==2){
                     $content.='</tr>';
-                    $k=0;
-                }
+                //    $k=0;
+                //}
             }
-            if($k==1){
-                $content.='<td></td></tr>';
-            }
+//            if($k==1){
+//                $content.='<td></td></tr>';
+//            }
             $content.='</table></div>
                     </div></div>
                 </div>';
